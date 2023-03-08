@@ -1,7 +1,6 @@
-package com.bittlebittle.user.dao;
+package com.spring.bittlebittle.user.dao;
 
-import com.bittlebittle.user.vo.User;
-import com.bittlebittle.utils.DaoInterface;
+import com.spring.bittlebittle.utils.DaoInterface;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

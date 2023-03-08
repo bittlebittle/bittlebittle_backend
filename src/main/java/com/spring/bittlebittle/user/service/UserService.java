@@ -1,8 +1,7 @@
-package com.bittlebittle.user.service;
+package com.spring.bittlebittle.user.service;
 
-import com.bittlebittle.user.dao.UserDao;
-import com.bittlebittle.user.vo.User;
-import com.bittlebittle.utils.ServiceInterface;
+import com.spring.bittlebittle.user.dao.UserDao;
+import com.spring.bittlebittle.utils.ServiceInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.bittlebittle.utils;
+package com.spring.bittlebittle.utils;
 
 import com.google.gson.Gson;
 import org.springframework.context.annotation.Bean;
