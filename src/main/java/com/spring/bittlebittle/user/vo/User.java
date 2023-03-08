@@ -1,4 +1,4 @@
-package com.bittlebittle.user.vo;
+package com.spring.bittlebittle.user.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

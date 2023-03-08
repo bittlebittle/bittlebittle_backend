@@ -1,8 +1,10 @@
-package com.bittlebittle.utils;
+package com.spring.bittlebittle.utils;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface DaoInterface {
+public interface ServiceInterface {
 
     // selectList
     List<Object> selectList(Object obj);
@@ -14,7 +16,7 @@ public interface DaoInterface {
     int insert(Object obj);
 
     // update
-    int update(Object obj);
+    Object update(Object obj);
 
     // delete
     int delete(Object obj);

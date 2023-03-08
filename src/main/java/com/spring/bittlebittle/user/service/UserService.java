@@ -1,21 +1,20 @@
-package com.bittlebittle.user.dao;
+package com.spring.bittlebittle.user.service;
 
-import com.bittlebittle.user.vo.User;
-import com.bittlebittle.utils.DaoInterface;
-import org.apache.ibatis.session.SqlSession;
+import com.spring.bittlebittle.user.dao.UserDao;
+import com.spring.bittlebittle.utils.ServiceInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
-public class UserDao implements DaoInterface {
+@Service
+public class UserService implements ServiceInterface {
 
     private Logger log = LogManager.getLogger("case3");
     @Autowired
-    private SqlSession sqlSession;
+    private UserDao dao;
 
     @Override
     public List<Object> selectList(Object obj) {
@@ -33,8 +32,8 @@ public class UserDao implements DaoInterface {
     }
 
     @Override
-    public int update(Object obj) {
-        return 0;
+    public Object update(Object obj) {
+        return null;
     }
 
     @Override

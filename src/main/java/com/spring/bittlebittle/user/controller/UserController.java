@@ -1,7 +1,7 @@
-package com.bittlebittle.user.controller;
+package com.spring.bittlebittle.user.controller;
 
-import com.bittlebittle.user.service.UserService;
-import com.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.user.service.UserService;
+import com.spring.bittlebittle.user.vo.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ public class UserController {
 
     @Autowired
     private UserService service;
-
 
     @PostMapping(value = "api/users")
     public void post(@ModelAttribute User user) {

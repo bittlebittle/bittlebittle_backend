@@ -1,24 +1,20 @@
-package com.bittlebittle.user.service;
+package com.spring.bittlebittle.user.dao;
 
-import com.bittlebittle.user.dao.UserDao;
-import com.bittlebittle.user.vo.User;
-import com.bittlebittle.utils.ServiceInterface;
+import com.spring.bittlebittle.utils.DaoInterface;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Service
-@Transactional
-public class UserService implements ServiceInterface {
-
+@Repository
+public class UserDao implements DaoInterface {
 
     private Logger log = LogManager.getLogger("case3");
     @Autowired
-    private UserDao dao;
+    private SqlSession sqlSession;
 
     @Override
     public List<Object> selectList(Object obj) {
@@ -36,8 +32,8 @@ public class UserService implements ServiceInterface {
     }
 
     @Override
-    public Object update(Object obj) {
-        return null;
+    public int update(Object obj) {
+        return 0;
     }
 
     @Override
