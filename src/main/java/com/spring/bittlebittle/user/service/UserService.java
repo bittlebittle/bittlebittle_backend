@@ -28,6 +28,8 @@ public class UserService implements ServiceInterface {
 
     @Override
     public int insert(Object obj) {
+//        dao.insert();
+//        dao.selectOne();
         return 0;
     }
 
