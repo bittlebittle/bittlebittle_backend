@@ -1,6 +1,4 @@
-package com.spring.bittlebittle.bottle.vo;
-
-import java.util.Date;
+package com.spring.bittlebittle.review.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,16 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bottle {
-	
+public class Review {
+
+	private int reviewNo;
+	private int userNo;
 	private int bottleNo;
-	private String bottleName;
-	private String bottleContent;
-	private String bottleBrand;
-	private int viewCnt;
+	private int grade;
+	private String reviewTitle;
+	private String reviewContent;
 	private String createDate;
 	private String imgUrl;
 	private String imgCusUrl;
 	private String status;
-	
 }

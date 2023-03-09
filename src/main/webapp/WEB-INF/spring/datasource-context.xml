@@ -35,6 +35,10 @@
         <property name="mapperLocations">
             <list>
                 <value>classpath:mappers/user-mapper.xml</value>
+                <value>classpath:mappers/bottle-mapper.xml</value>
+                <value>classpath:mappers/review-mapper.xml</value>
+                <value>classpath:mappers/food-mapper.xml</value>
+                <value>classpath:mappers/favorite-mapper.xml</value>
             </list>
         </property>
     </bean>
@@ -50,7 +54,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
+	<!--
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" rollback-for="Exception"/>
@@ -61,5 +65,5 @@
         <aop:pointcut id="requiredTx" expression="bean(userService)"/>
 
         <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
-    </aop:config>
+    </aop:config> -->
 </beans>

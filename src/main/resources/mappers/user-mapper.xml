@@ -4,6 +4,7 @@
 
 <mapper namespace="userMapper">
 
+<!--
     <insert id="insert" parameterType="user">
         INSERT INTO USER VALUES (#{userId})
     </insert>
@@ -16,5 +17,6 @@
     <insert id="insertNull" parameterType="String">
         insert into user values (#{key}, #{key})
     </insert>
+-->
 
 </mapper>
