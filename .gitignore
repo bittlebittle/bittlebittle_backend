@@ -165,4 +165,4 @@ buildNumber.properties
 bittlebittle_backend.iml
 META-INF/*
 
-config/database.properties
+/src/main/resources/config/
