@@ -1,13 +1,56 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bottleMapper">
 
-    <select id="selectAll" resultMap="result">
+
+   
+   <resultMap id="result"
+      type="com.spring.bittlebittle.bottle.vo.Bottle">
+      <result property="bottleNo" column="BOTTLE_NO_PK"/>
+      <result property="bottleName" column="BOTTLE_NAME"/>
+      <result property="bottleContent" column="BOTTLE_CONTENT" />
+      <result property="bottleBrand" column="BOTTLE_BRAND" />
+      <result property="viewCnt" column="VIEW_CNT" />
+      <result property="createDate" column="CREATE_DATE" jdbcType="TIME" javaType="String" />
+      <result property="imgUrl" column="IMG_URL" />
+      <result property="imgCusUrl" column="IMG_CUS_URL" />
+      <result property="status" column="STATUS" />
+   </resultMap>
+
+   <select id="selectOne" parameterType="Integer" resultMap="result">
+       <![CDATA[   
+         SELECT *
+         FROM bottle_tb
+         WHERE bottleNo=#{bottleNo}
+      ]]>
+   </select>
+   
+   <!--
+   <select id="selectRelated" parameterType="Integer" resultMap="result">
+       <![CDATA[   
+         SELECT *
+         FROM bottle_tb
+         WHERE bottleNo=#{bottleNo}
+      ]]>
+   </select>
+   
+    <update id="updateOne" parameterType="Bottle">
+       <![CDATA[   
+         UPDATE bottle_tb
+         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, IMG_URL=#{imgUrl}
+         WHERE bottleNo=#{bottleNo}
+      ]]>
+   </update>
+	-->
+	
+  
+   <select id="selectAll" resultMap="result">
         SELECT bottleName
         FROM bottle_tb
     </select>
-
 </mapper>
