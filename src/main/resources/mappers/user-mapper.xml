@@ -4,17 +4,30 @@
 
 <mapper namespace="userMapper">
 
+    <resultMap id="UserResultSet" type="user">
+        <result property="userNo" column="USER_NO_PK" />
+        <result property="userId" column="USER_ID" />
+        <result property="userPwd" column="USER_PWD" />
+        <result property="userName" column="USER_NAME" />
+        <result property="nickname" column="NICKNAME" />
+        <result property="email" column="EMAIL" />
+        <result property="phone" column="PHONE" />
+        <result property="status" column="STATUS" />
+        <result property="adminYn" column="ADMIN_YN" />
+    </resultMap>
+
     <insert id="insert" parameterType="user">
-        INSERT INTO USER VALUES (#{userId})
+        INSERT INTO USER_TB VALUES (#{userId})
     </insert>
 
     <select id="selectOne" resultType="int">
-        select count(*)
-        from user
+        SELECT COUNT(*)
+        FROM USER_TB;
     </select>
 
-    <insert id="insertNull" parameterType="String">
-        insert into user values (#{key}, #{key})
-    </insert>
+    <select id="selectList" resultType="user" resultMap="UserResultSet">
+        select *
+        from USER_TB;
+    </select>
 
 </mapper>

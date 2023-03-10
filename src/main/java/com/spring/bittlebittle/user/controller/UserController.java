@@ -1,35 +1,41 @@
 package com.spring.bittlebittle.user.controller;
 
-import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.utils.ServiceInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController // @Controller + @ResponseBody
+@RequestMapping(value = "api/users", produces = "application/json; charset=utf-8")
 public class UserController {
 
     private Logger log = LogManager.getLogger("case3");
 
     @Autowired
-    private UserService service;
+    @Qualifier("userService")
+    private ServiceInterface service;
+    // service = new USerService();
 
-    @PostMapping(value = "api/users")
+
+
+    @PostMapping
     public void post(@ModelAttribute User user) {
         service.insert(user);
     }
 
-    @GetMapping(value = "api/users")
-    public void get2(){
-        System.out.println(112111);
-        log.debug("dddd");
+    @GetMapping
+    public List<Object> get(){
+        log.debug("user 전체 조회");
+        return service.selectList("");
     }
 
-    @RequestMapping(value = "start")
-    public String get4() {
-        System.out.println(222);
-        return "start";
+    public Object update(User user) {
+        return null;
     }
+
 }

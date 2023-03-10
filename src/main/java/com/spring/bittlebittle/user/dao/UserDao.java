@@ -17,8 +17,8 @@ public class UserDao implements DaoInterface {
     private SqlSession sqlSession;
 
     @Override
-    public List<Object> selectList(Object obj) {
-        return null;
+    public List<Object> selectList(Object user) {
+        return sqlSession.selectList("userMapper.selectList", user);
     }
 
     @Override
