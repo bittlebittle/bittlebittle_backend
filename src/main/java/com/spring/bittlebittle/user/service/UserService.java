@@ -1,43 +1,24 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.user.dao.UserDao;
-import com.spring.bittlebittle.utils.ServiceInterface;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.spring.bittlebittle.user.vo.User;
 
 import java.util.List;
 
-@Service
-public class UserService implements ServiceInterface {
+public interface UserService {
 
-    private Logger log = LogManager.getLogger("case3");
-    @Autowired
-    private UserDao dao;
+    // selectList
+    List<User> selectList();
 
-    @Override
-    public List<Object> selectList(Object obj) {
-        return null;
-    }
+    // selectOne
+    User selectOne(User user);
 
-    @Override
-    public Object selectOne(Object obj) {
-        return null;
-    }
+    // insert
+    int insert(User user);
 
-    @Override
-    public int insert(Object obj) {
-        return 0;
-    }
+    // update
+    Object update(User user);
 
-    @Override
-    public Object update(Object obj) {
-        return null;
-    }
+    // delete
+    int delete(User user);
 
-    @Override
-    public int delete(Object obj) {
-        return 0;
-    }
 }

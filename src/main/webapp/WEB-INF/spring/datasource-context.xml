@@ -63,7 +63,7 @@
     </tx:advice>
 
     <aop:config proxy-target-class="true">
-        <aop:pointcut id="requiredTx" expression="bean(userService)"/>
+        <aop:pointcut id="requiredTx" expression="bean(*Service)"/>
 
         <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
     </aop:config> -->

@@ -62,13 +62,13 @@
         _method=put,delete 값에 따라 @PutMapping
         또는 @DeleteMapping 으로 request 의 method 를
         바꿔주는 filter -->
-    <filter>
-        <filter-name>httpMethodFilter</filter-name>
-        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>httpMethodFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+<!--    <filter>-->
+<!--        <filter-name>httpMethodFilter</filter-name>-->
+<!--        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>httpMethodFilter</filter-name>-->
+<!--        <url-pattern>/*</url-pattern>-->
+<!--    </filter-mapping>-->
 
 </web-app>
