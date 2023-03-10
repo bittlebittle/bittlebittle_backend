@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tagMapper">
+
+<!-- 
+   <resultMap id="tag"
+      type="com.spring.bittlebittle.tag.vo.Tag">
+      <result property="tagNo" column="TAG_NO_PK"/>
+      <result property="keyTypeNo" column="TAG_TYPE_NO_FK"/>
+      <result property="tagName" column="TAG_NAME" />
+   </resultMap>
+
+	<resultMap id="tagType"
+      type="com.spring.bittlebittle.tag.vo.TagType">
+      <result property="tagTypeNo" column="TAG_TYPE_NO_PK"/>
+      <result property="tagTypeName" column="TAG_TYPE_NAME"/>
+   </resultMap>
+
+   <select id="selectAllTagType" resultType="tagType">
+       <![CDATA[   
+         SELECT *
+         FROM tagtype_tb
+      ]]>
+   </select>
+
+	<select id="selectAllTag" resultType="tag">
+       <![CDATA[   
+         SELECT *
+         FROM tag_tb
+      ]]>
+   </select>
+
+	<select id="selectTag" parameterType="Integer" resultType="tag">
+       <![CDATA[   
+         SELECT TAG_NO_PK,TAG_TYPE_NO_FK,TAG_NAME
+         FROM bottle_tag_tb bt
+         INNER JOIN tag_tb t
+         ON bt.bottle_tag_fk=t.tag_no_pk
+         WHERE bottle_no_fk = #{bottleNo}
+      ]]>
+   </select>
+   
+   <update id="deleteBottleTag" parameterType="Integer">
+       <![CDATA[   
+         DELETE *
+         FROM bottle_tag_tb
+         WHERE bottleNo=#{bottleNo}
+      ]]>
+   </update>
+   
+   
+   <update id="insertBottleTag">
+       <![CDATA[   
+         INSERT INTO bottle_tag.tb
+         VALUES
+         <foreach collection="tagList" item="item">
+         (#{tagNo}, #{keyTypeNo}, #{tagName})
+         </foreach>
+      ]]>
+   </update>
+
+-->
+</mapper>

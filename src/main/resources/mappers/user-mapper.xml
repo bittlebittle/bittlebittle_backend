@@ -4,6 +4,7 @@
 
 <mapper namespace="userMapper">
 
+
     <resultMap id="UserResultSet" type="user">
         <result property="userNo" column="USER_NO_PK" />
         <result property="userId" column="USER_ID" />
@@ -29,5 +30,6 @@
         select *
         from USER_TB;
     </select>
+
 
 </mapper>
