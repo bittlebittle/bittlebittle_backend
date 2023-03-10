@@ -1,23 +1,23 @@
 package com.spring.bittlebittle.bottle.service;
 
-import java.util.List;
-
+import com.spring.bittlebittle.bottle.dao.BottleDao;
+import com.spring.bittlebittle.bottle.vo.Bottle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.bittlebittle.bottle.dao.BottleDao;
-import com.spring.bittlebittle.bottle.vo.Bottle;
+import java.util.List;
 
 @Service
 public class BottleServiceImpl implements BottleService{
-		
+
 	@Autowired
 	private BottleDao dao;
-	
-  @Override
-    public List<Bottle> getAllBottles() {
-        return dao.selectAll();
+
+    @Override
+    public List<Bottle> getBottles() {
+        return dao.getBottles();
+
     }
   
 	@Override

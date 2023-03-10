@@ -33,13 +33,13 @@ public class BottleController {
 	@Autowired
 	private FavoriteService fvservice;
 	
-  @GetMapping(value="/bottles")
 
-    public String selectAll() {
+	@GetMapping(produces = "application/json; charset=UTF-8")
+    public List<Bottle> selectList() {
 
-        List<Bottle> selectAll = bservice.getAllBottles();
+        List<Bottle> selectList = bservice.getBottles();
 
-        return "allBottle";
+        return selectList;
     }
   
 	@GetMapping(produces="application/json; charset=UTF-8")

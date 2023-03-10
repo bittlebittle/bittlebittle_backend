@@ -42,9 +42,9 @@
       ]]>
    </update>
 	-->
-  
-   <select id="selectAll" resultMap="result">
-        SELECT bottleName
+
+    <select id="selectAll" resultMap="result">
+        SELECT bottle_name
         FROM bottle_tb
     </select>
 </mapper>
