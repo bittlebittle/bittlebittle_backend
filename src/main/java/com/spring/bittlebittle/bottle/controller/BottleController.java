@@ -1,15 +1,5 @@
 package com.spring.bittlebittle.bottle.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
@@ -18,9 +8,18 @@ import com.spring.bittlebittle.food.service.FoodService;
 import com.spring.bittlebittle.food.vo.Food;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(value="/api/bottles/{bottleNo}")
+@RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
 public class BottleController {
 
 	
@@ -34,15 +33,15 @@ public class BottleController {
 	private FavoriteService fvservice;
 	
 
-	@GetMapping(produces = "application/json; charset=UTF-8")
-    public List<Bottle> selectList() {
+	@GetMapping
+	public List<Bottle> getBottles() {
 
-        List<Bottle> selectList = bservice.getBottles();
+		List<Bottle> selectList = bservice.getBottles();
 
-        return selectList;
-    }
+		return selectList;
+	}
   
-	@GetMapping(produces="application/json; charset=UTF-8")
+	@GetMapping("/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);

@@ -16,7 +16,7 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="result">
+   <select id="selectList" parameterType="Integer" resultMap="result">
        <![CDATA[   
          SELECT *
          FROM food_tb

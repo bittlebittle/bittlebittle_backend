@@ -44,7 +44,7 @@
 	-->
 
     <select id="selectAll" resultMap="result">
-        SELECT bottle_name
+        SELECT *
         FROM bottle_tb
     </select>
 </mapper>

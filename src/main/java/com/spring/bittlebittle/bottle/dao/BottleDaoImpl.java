@@ -16,8 +16,9 @@ public class BottleDaoImpl implements BottleDao {
 	private SqlSession sqlSession;
 
     @Override
-    public List<Bottle> getBottles() {
-        return sqlSession.selectList("bottleMapper.selectAll");
+    public List<Bottle> selectList() {
+
+		return sqlSession.selectList("bottleMapper.selectAll");
     }
   
 	@Override

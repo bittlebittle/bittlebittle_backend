@@ -8,7 +8,7 @@ import java.util.List;
 public interface BottleDao {
 
 
-	List<Bottle> getBottles();
+	List<Bottle> selectList();
 	Bottle selectOne(int bottleNo);
 
 	List<Bottle> selectRelatedBottleList(int bottleNo);

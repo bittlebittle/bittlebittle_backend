@@ -7,21 +7,20 @@
 <mapper namespace="replyMapper">
 
 
-   <resultMap id="result"
-      type="review">
+   <resultMap id="replyResultSet" type="review">
       <result property="replyNo" column="REPLY_NO_PK"/>
       <result property="userNo" column="USER_NO_FK"/>
       <result property="reviewNo" column="REVIEW_NO_FK" />
       <result property="replyContent" column="REPLY_CONTENT" />
-      <result property="createTime" column="CREATE_DATE" />
+      <result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="result">
-       <![CDATA[   
-         SELECT *
+   <select id="selectList" parameterType="reply" resultMap="replyResultSet">
+       <![CDATA[
+         SELECT reply_no_pk, format(create_date, 'yyyy-mm-dd :HH:MM:ss')
          FROM reply_tb
-         WHERE reviewNo=#{reviewNo}
+         WHERE review_no_fk = #{reviewNo}
       ]]>
    </select>
 

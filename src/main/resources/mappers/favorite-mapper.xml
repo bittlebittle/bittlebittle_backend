@@ -6,14 +6,12 @@
 
 <mapper namespace="favoriteMapper">
 
+    <resultMap id="favoriteResultSet" type="favorite">
+        <result property="userNo" column="USER_NO_FK"/>
+        <result property="bottleNo" column="BOTTLE_NO_FK"/>
+    </resultMap>
 
-   <resultMap id="result"
-      type="favorite">
-      <result property="userNo" column="USER_NO_FK"/>
-      <result property="bottleNo" column="BOTTLE_NO_FK"/>
-   </resultMap>
-
-   <select id="selectCnt" parameterType="Integer" resultType="result">
+   <select id="selectCnt" parameterType="Integer" resultType="Integer">
        <![CDATA[   
          SELECT count(*)
          FROM favorite_tb

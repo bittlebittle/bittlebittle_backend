@@ -16,14 +16,15 @@ public class BottleServiceImpl implements BottleService{
 
     @Override
     public List<Bottle> getBottles() {
-        return dao.getBottles();
+        return dao.selectList();
 
     }
   
 	@Override
+	@Transactional
 	public Bottle getBottle(int bottleNo) {
-		
 		return dao.selectOne(bottleNo);
+
 	}
 	
 	@Override
