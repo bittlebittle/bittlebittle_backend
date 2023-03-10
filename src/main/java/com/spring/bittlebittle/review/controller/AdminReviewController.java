@@ -25,24 +25,24 @@ public class AdminReviewController {
 	@GetMapping(produces="application/json; charset=UTF-8")
 	public List<Review> getReviewList(int bottleNo){
 		
-		List<Review> reviewList = rservice.getReviewList(bottleNo);
+		List<Review> reviewList = rservice.getReviews(bottleNo);
 		
 		
 		return reviewList;
 	}
 	
 	@GetMapping(value="/deletion", produces="application/json; charset=UTF-8")
-	public List<Review> deleteReview(Review review){
+	public List<Review> removeReview(Review review){
 		
-		List<Review> reviewList = rservice.deleteReview(review);
+		List<Review> reviewList = rservice.removeReview(review);
 		
 		return reviewList;
 	}
 	
 	@GetMapping(value="/replies/deletion", produces="application/json; charset=UTF-8")
-	public List<Reply> deleteReply(Reply reply){
+	public List<Reply> removeReply(Reply reply){
 	
-		List<Reply> replyList = rpservice.deleteReply(reply);
+		List<Reply> replyList = rpservice.removeReply(reply);
 		
 		return replyList;
 	}

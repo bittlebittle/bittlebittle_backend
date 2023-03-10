@@ -2,17 +2,20 @@ package com.spring.bittlebittle.tag.service;
 
 import java.util.List;
 
+import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
 public interface TagService {
 
-	List<TagType> getAllTagType();
+	List<TagType> getAllTagTypes();
 
-	List<Tag> getAllTag();
+	List<Tag> getAllTags();
 
-	List<Tag> getTag(int bottleNo);
+	List<Tag> getTags(int bottleNo);
 
-	void updateTag(int i, List<Tag> taglist);
+	void editTag(int i, List<BottleTag> taglist);
+
+	void insertBottleTag(List<BottleTag> tagList);
 
 }

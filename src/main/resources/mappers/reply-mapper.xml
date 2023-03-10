@@ -6,8 +6,8 @@
 
 <mapper namespace="replyMapper">
 
-
-   <resultMap id="replyResultSet" type="review">
+   <resultMap id="replyResultSet"
+      type="reply">
       <result property="replyNo" column="REPLY_NO_PK"/>
       <result property="userNo" column="USER_NO_FK"/>
       <result property="reviewNo" column="REVIEW_NO_FK" />
@@ -20,13 +20,13 @@
        <![CDATA[
          SELECT reply_no_pk, format(create_date, 'yyyy-mm-dd :HH:MM:ss')
          FROM reply_tb
-         WHERE review_no_fk = #{reviewNo}
+         WHERE REVIEW_NO_FK = #{reviewNo}
       ]]>
    </select>
 
 	<update id="insertOne" parameterType="Reply">
        <![CDATA[   
-         INSERT INTO reply_tb(userNo, reviewNo, replyContent)
+         INSERT INTO reply_tb(USER_NO_FK, REVIEW_NO_FK, REPLY_CONTENT)
          VALUES(#{userNo}, #{reviewNo}, #{replyContent})
       ]]>
    </update>
@@ -34,8 +34,8 @@
    <update id="updateOne" parameterType="Reply">
        <![CDATA[   
          UPDATE reply_tb
-         SET replyContent=#{replyContent}
-         WHERE replyNo=#{replyNo}
+         SET REPLY_CONTENT=#{replyContent} AND CREATE_DATE=NOW()
+         WHERE REPLY_NO_PK=#{replyNo}
       ]]>
    </update>
 
@@ -43,7 +43,7 @@
        <![CDATA[   
          DELETE
          FROM reply_tb
-         WHERE replyNo=#{replyNo}
+         WHERE REPLY_NO_PK=#{replyNo}
       ]]>
    </update>
 

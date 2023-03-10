@@ -6,7 +6,7 @@
 
 <mapper namespace="reviewMapper">
 
-   <resultMap id="result"
+   <resultMap id="reviewResultSet"
       type="review">
       <result property="reviewNo" column="REVIEW_NO_PK"/>
       <result property="userNo" column="USER_NO_FK"/>
@@ -20,25 +20,26 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultMap="result">
+   <select id="selectList" parameterType="Integer" resultType="reviewResultSet">
        <![CDATA[   
          SELECT *
          FROM review_tb
-         WHERE bottleNo=#{bottleNo}
+         WHERE BOTTLE_NO_FK=#{bottleNo}
       ]]>
    </select>
 
-	<select id="selectOne" parameterType="Integer" resultMap="result">
+
+	<select id="selectOne" parameterType="Integer" resultType="reviewResultSet">
        <![CDATA[   
          SELECT *
          FROM review_tb
-         WHERE reviewNo=#{reviewNo}
+         WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
    </select>
 	
 	<update id="insertOne" parameterType="review">
        <![CDATA[   
-         INSERT INTO review_tb(userNo, bottleNo, grade, reviewTitle, reviewContent, imgUrl)
+         INSERT INTO review_tb(USER_NO_FK, BOTTLE_NO_FK, GRADE, REVIEW_TITLE, REVIEW_CONTENT, IMG_URL)
          VALUE(#{userNo}, #{bottleNo}, #{grade}, #{reviewTitle}, #{reviewContent}, #{imgUrl})
       ]]>
 	</update>
@@ -46,8 +47,8 @@
 	<update id="updateOne" parameterType="review">
        <![CDATA[
          UPDATE review
-         SET grade=#{grade}, reviewTitle=#{reviewTitle}, reviewContent=#{reviewContent}, imgUrl=#{imgUrl}
-         WHERE reviewNo=#{reviewNo}
+         SET GRADE=#{grade}, REVIEW_TITLE=#{reviewTitle}, REVIEW_CONTENT=#{reviewContent}, IMG_URL=#{imgUrl}
+         WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
 	</update>
 	
