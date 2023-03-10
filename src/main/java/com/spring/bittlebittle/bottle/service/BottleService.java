@@ -12,6 +12,7 @@ public interface BottleService {
 
 	Bottle addBottle(Bottle newBottle);
 
-	Bottle updateBottle(Bottle updateBottle);
+	Bottle editBottle(Bottle updateBottle);
+
 
 }

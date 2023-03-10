@@ -18,7 +18,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	
 	@Override
-	public List<Review> getReviewList(int bottleNo) {
+	public List<Review> getReviews(int bottleNo) {
 		
 		return dao.selectList(bottleNo);
 	}
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Override
 	@Transactional
-	public List<Review> updateReview(Review review) {
+	public List<Review> editReview(Review review) {
 		
 		dao.updateOne(review);
 		
@@ -54,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Override
 	@Transactional
-	public List<Review> deleteReview(Review review) {
+	public List<Review> removeReview(Review review) {
 
 		dao.deleteOne(review);
 		List<Review> list = dao.selectList(review.getBottleNo());

@@ -26,14 +26,14 @@ public class FavoriteServiceImpl implements FavoriteService{
 	}
 	
 	@Override
-	public int checkFavorite(Favorite favorite) {
+	public int isFavorite(Favorite favorite) {
 		
 		return dao.selectOne(favorite);
 	}
 	
 	@Override
 	@Transactional
-	public int deleteFavorite(Favorite favorite) {
+	public int removeFavorite(Favorite favorite) {
 		
 		return dao.deleteOne(favorite);
 	}

@@ -8,32 +8,32 @@
 
 
    <!--
-   <resultMap id="result"
-      type="com.spring.bittlebittle.favorite.vo.Favorite">
+   <resultMap id="favoriteResultSet"
+      type="favorite">
       <result property="userNo" column="USER_NO_FK"/>
       <result property="bottleNo" column="BOTTLE_NO_FK"/>
    </resultMap>
 
-   <select id="selectCnt" parameterType="Integer" resultType="result">
+   <select id="selectCnt" parameterType="Integer" resultType="Integer">
        <![CDATA[   
          SELECT count(*)
          FROM favorite_tb
-         WHERE bottleNo=#{bottleNo}
+         WHERE BOTTLE_NO_FK=#{bottleNo}
       ]]>
    </select>
 
-	<update id="insertFavorite" parameterType="Favorite">
+	<update id="insertFavorite" parameterType="favorite">
        <![CDATA[   
-         INSERT favorite_tb(userNo, bottleNo)
+         INSERT favorite_tb(USER_NO_FK, BOTTLE_NO_FK)
          VALUES(#{userNo},#{bottleNo})
       ]]>
    </update>
    
-   <select id="selectOne" parameterType="Favorite" resultType="Integer">
+   <select id="selectOne" parameterType="favorite" resultType="Integer">
        <![CDATA[   
          SELECT count(*)
          FROM favorite_tb
-         WHERE userNo=#{userNo} AND bottleNo=#{bottleNo}
+         WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
       ]]>
    </select>
    
@@ -41,7 +41,7 @@
        <![CDATA[   
          DELETE
          FROM favorite_tb
-         WHERE userNo=#{userNo} AND bottleNo=#{bottleNo}
+         WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
       ]]>
    </update>
 -->

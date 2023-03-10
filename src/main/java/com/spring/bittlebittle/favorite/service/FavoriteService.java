@@ -6,8 +6,8 @@ public interface FavoriteService {
 
 	int addFavorite(Favorite favorite);
 
-	int checkFavorite(Favorite favorite);
+	int isFavorite(Favorite favorite);
 
-	int deleteFavorite(Favorite favorite);
+	int removeFavorite(Favorite favorite);
 
 }

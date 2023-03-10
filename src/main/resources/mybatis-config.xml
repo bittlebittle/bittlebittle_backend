@@ -20,6 +20,8 @@
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="food" />
         <typeAlias type="com.spring.bittlebittle.favorite.vo.Favorite" alias="favorite" />
         <typeAlias type="com.spring.bittlebittle.reply.vo.Reply" alias="reply" />
+        <typeAlias type="com.spring.bittlebittle.tag.vo.Tag" alias="tag" />
+        <typeAlias type="com.spring.bittlebittle.tag.vo.TagType" alias="tagType" />
 	 -->	
     </typeAliases>
 

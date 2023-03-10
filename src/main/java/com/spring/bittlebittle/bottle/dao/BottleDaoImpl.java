@@ -27,8 +27,21 @@ public class BottleDaoImpl implements BottleDao{
 	}
 	
 	@Override
-	public int updateOne(Bottle updateBottle) {
+	public Bottle insertOne(Bottle newBottle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public int updateOne(Bottle editBottle) {
 		
-		return sqlSession.update("bottleMapper.updateOne", updateBottle);
+		return sqlSession.update("bottleMapper.updateOne", editBottle);
+	}
+	
+	@Override
+	public void editViewCnt(int bottleNo) {
+	
+		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
+		
 	}
 }

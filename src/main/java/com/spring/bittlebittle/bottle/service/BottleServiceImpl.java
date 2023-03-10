@@ -18,7 +18,9 @@ public class BottleServiceImpl implements BottleService{
 	@Override
 	public Bottle getBottle(int bottleNo) {
 		
-		return dao.selectOne(bottleNo);
+		dao.editViewCnt(bottleNo);
+		
+		return dao.selectOne(bottleNo);	
 	}
 	
 	@Override
@@ -36,11 +38,12 @@ public class BottleServiceImpl implements BottleService{
 	
 	@Override
 	@Transactional
-	public Bottle updateBottle(Bottle updateBottle) {
+	public Bottle editBottle(Bottle updateBottle) {
 		
 		dao.updateOne(updateBottle);
 		Bottle bottle = dao.selectOne(updateBottle.getBottleNo());
 		
 		return bottle;
 	}
+
 }
