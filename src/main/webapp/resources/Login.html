@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+<title>Insert title here</title>
+</head>
+<body>
+
+<template>
+  <div>
+    <h1>login</h1>
+    <LoginForm @submit="login" />
+  </div>
+</template>
+
+<script>
+import LoginForm from '@/components/LoginForm.vue';
+import axios from 'axios';
+
+export default {
+  name: 'Login',
+  components: {
+    LoginForm
+  },
+  methods: {
+    login(loginData) {
+      axios.post('/api/login', loginData)
+        .then(response => {
+          if (response.data.status === 'success') {
+            localStorage.setItem('token', response.data.data.token);
+            this.$router.push('/');
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+};
+</script>
+
+</body>
+</html>

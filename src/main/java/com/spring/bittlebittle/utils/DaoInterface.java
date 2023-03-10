@@ -2,8 +2,14 @@ package com.spring.bittlebittle.utils;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
+
 import com.spring.bittlebittle.user.vo.User;
 
+@Mapper
+@Repository
 public interface DaoInterface {
 
 //    // selectList
@@ -21,7 +27,7 @@ public interface DaoInterface {
 //    // delete
 //    int delete(Object obj);
 	
-	
+	@Select("select * from user where user_id = #{userId}")
 	User getUserById(String userId);
 	
 	User getUserByPwd(int userPwd);

@@ -14,13 +14,15 @@ import java.util.List;
 public class UserDao implements DaoInterface {
 
     private Logger log = LogManager.getLogger("case3");
+    
     @Autowired
     private SqlSession sqlSession;
     
 	@Override
 	public User getUserById(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		
+			return sqlSession.selectOne("getUserById", userId);
+		
 	}
 	@Override
 	public User getUserByPwd(int userPwd) {

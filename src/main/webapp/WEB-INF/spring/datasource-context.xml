@@ -50,7 +50,7 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
+<!--  
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" rollback-for="Exception"/>
@@ -61,5 +61,5 @@
         <aop:pointcut id="requiredTx" expression="bean(userService)"/>
 
         <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
-    </aop:config>
+    </aop:config>  -->
 </beans>

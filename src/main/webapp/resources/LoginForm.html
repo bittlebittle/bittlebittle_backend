@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<template>
+  <form @submit.prevent="onSubmit">
+    <div>
+      <label for="userId">ID</label>
+      <input type="userId" id=""userId"" v-model=""userId"" required />
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" id="password" v-model="password" required />
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" v-model="rememberMe" />
+        Remember me
+      </label>
+    </div>
+    <div>
+      <button type="submit">Login</button>
+    </div>
+  </form>
+</template>
+
+<script>
+export default {
+  name: 'LoginForm',
+  data() {
+    return {
+      ID: '',
+      password: '',
+      rememberMe: false
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.$emit('submit', {
+        ID: this.userId,
+        password: this.userPwd,
+        rememberMe: this.rememberMe
+      });
+    }
+  }
+};
+</script>
+
+</body>
+</html>
