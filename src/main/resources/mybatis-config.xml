@@ -12,8 +12,7 @@
         <setting name="logImpl" value="LOG4J2"/>
     </settings>
 
-    <typeAliases>
-<!--         
+    <typeAliases>       
         <typeAlias type="com.spring.bittlebittle.user.vo.User" alias="user" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.Bottle" alias="bottle" />
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
@@ -22,7 +21,6 @@
         <typeAlias type="com.spring.bittlebittle.reply.vo.Reply" alias="reply" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.Tag" alias="tag" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.TagType" alias="tagType" />
-	 -->	
     </typeAliases>
 
     <!-- environment, mapper 설정 등이 모두 빠지게 된다. -->

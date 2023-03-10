@@ -6,7 +6,6 @@
 
 <mapper namespace="reviewMapper">
 
-<!-- 
    <resultMap id="reviewResultSet"
       type="review">
       <result property="reviewNo" column="REVIEW_NO_PK"/>
@@ -59,5 +58,5 @@
          WHERE reviewNo=#{reviewNo}
       ]]>
 	</update>
--->
+
 </mapper>

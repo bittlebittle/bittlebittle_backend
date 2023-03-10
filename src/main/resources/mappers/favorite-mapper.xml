@@ -7,7 +7,7 @@
 <mapper namespace="favoriteMapper">
 
 
-   <!--
+
    <resultMap id="favoriteResultSet"
       type="favorite">
       <result property="userNo" column="USER_NO_FK"/>
@@ -44,5 +44,5 @@
          WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
       ]]>
    </update>
--->
+
 </mapper>

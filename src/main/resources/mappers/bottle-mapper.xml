@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="bottleMapper">
 
-
-   
    <resultMap id="bottleResultSet"
       type="bottle">
       <result property="bottleNo" column="BOTTLE_NO_PK"/>
@@ -54,5 +51,9 @@
       ]]>
    </update>
 	-->
-	
+  
+   <select id="selectAll" resultMap="result">
+        SELECT bottleName
+        FROM bottle_tb
+    </select>
 </mapper>
