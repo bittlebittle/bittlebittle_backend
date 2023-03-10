@@ -7,7 +7,6 @@
 <mapper namespace="foodMapper">
 
 
-   <!-- 
    <resultMap id="foodResultSet"
       type="food">
       <result property="foodNo" column="FOOD_NO_PK"/>
@@ -23,6 +22,7 @@
          WHERE bottleNo=#{bottleNo}
       ]]>
    </select>
+<<<<<<< HEAD
    
     <select id="selectAllFoods" resultType="foodResultSet">
        <![CDATA[   
@@ -31,4 +31,7 @@
       ]]>
    </select>
 -->
+=======
+
+>>>>>>> ef2470b162306b523a2bb8c9a7a378112f42ae8d
 </mapper>

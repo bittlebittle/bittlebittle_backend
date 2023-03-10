@@ -20,7 +20,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping(value="/api/bottles")
+@RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
 public class BottleController {
 
 	
@@ -33,7 +33,18 @@ public class BottleController {
 	@Autowired
 	private FavoriteService fvservice;
 	
-	@GetMapping(value="/{bottleNo}", produces="application/json; charset=UTF-8")
+
+
+  @GetMapping(value="/bottles")
+
+    public String selectAll() {
+
+        List<Bottle> selectAll = bservice.getAllBottles();
+
+        return "allBottle";
+   }
+  
+	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
@@ -69,6 +80,4 @@ public class BottleController {
 		
 		return isFavorite;
 	}
-	
-	
 }

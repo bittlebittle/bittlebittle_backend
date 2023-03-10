@@ -6,7 +6,6 @@
 
 <mapper namespace="replyMapper">
 
-<!-- 
    <resultMap id="replyResultSet"
       type="reply">
       <result property="replyNo" column="REPLY_NO_PK"/>
@@ -47,6 +46,5 @@
          WHERE REPLY_NO_PK=#{replyNo}
       ]]>
    </update>
-   
--->
+
 </mapper>

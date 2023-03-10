@@ -6,7 +6,6 @@
 
 <mapper namespace="tagMapper">
 
-<!-- 
    <resultMap id="tagResultSet"
       type="tag">
       <result property="tagNo" column="TAG_NO_PK"/>
@@ -63,5 +62,4 @@
       ]]>
    </update>
 
--->
 </mapper>
