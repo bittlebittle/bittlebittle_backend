@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Bottle {
 
-    private int     bottle_no_pk;
-    private String  bottle_name;
-    private String  bottle_content;
-    private String  bottle_brand;
-    private int     view_cnt;
-    private String  img_url;
-    private String  img_cus_url;
+    private int     bottleNo;
+    private String  bottleName;
+    private String  bottleContent;
+    private String  bottleBrand;
+    private int     viewCnt;
+    private String  imgUrl;
+    private String  imgCusUrl;
     private String  status;
 
 

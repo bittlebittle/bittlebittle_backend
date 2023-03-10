@@ -137,7 +137,7 @@
                 <div class="carousel-caption">
                   <div class="d-flex align-items-center">
                     <h4 class="hero-text">Steak</h4>
-ß
+                    ß
                     <span class="price-tag ms-4"><small>$</small>26.50</span>
                   </div>
 
@@ -215,6 +215,7 @@
           <h2 class="text-center mb-lg-5 mb-4">NEW/BEST/등등</h2>
         </div>
 
+        // 상품 목록
         <div class="col-lg-4 col-md-6 col-12">
           <div class="menu-thumb">
             <div class="menu-image-wrap">
@@ -224,7 +225,7 @@
             </div>
 
             <div class="menu-info d-flex flex-wrap align-items-center">
-              <h4 class="mb-0">Morning Fresh</h4>
+              <h4 class="mb-0">${Bottle.bottleName}</h4>
 
               <span class="price-tag bg-white shadow-lg ms-4"><small>$</small>12.50</span>
 
@@ -437,7 +438,7 @@
               <span class="category-tag bg-warning">Featured</span>
 
               <h5 class="news-title mt-2">
-         Ï       <a href="news-detail.html" class="news-title-link">How to make a healthy meal</a>
+                Ï       <a href="news-detail.html" class="news-title-link">How to make a healthy meal</a>
               </h5>
             </div>
           </div>
