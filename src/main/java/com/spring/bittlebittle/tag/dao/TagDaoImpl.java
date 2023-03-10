@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
@@ -40,7 +41,7 @@ public class TagDaoImpl implements TagDao{
 	}
 	
 	@Override
-	public void insertBottleTag(List<Tag> tagList) {
+	public void insertBottleTag(List<BottleTag> tagList) {
 		
 		sqlSession.delete("tagMapper.insertBottleTag", tagList);
 		

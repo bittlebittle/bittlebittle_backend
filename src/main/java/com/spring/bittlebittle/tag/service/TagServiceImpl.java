@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.bittlebittle.tag.dao.TagDao;
+import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
@@ -17,28 +18,33 @@ public class TagServiceImpl implements TagService{
 	private TagDao dao;
 	
 	@Override
-	public List<TagType> getAllTagType() {
+	public List<TagType> getAllTagTypes() {
 		
 		return dao.selectAllTagType();
 	}
 	
 	@Override
-	public List<Tag> getAllTag() {
+	public List<Tag> getAllTags() {
 		
 		return dao.selectAllTag();
 	}
 	
 	@Override
-	public List<Tag> getTag(int bottleNo) {
+	public List<Tag> getTags(int bottleNo) {
 		
 		return dao.selectTag(bottleNo);
 	}
 	
 	@Override
 	@Transactional
-	public void updateTag(int i, List<Tag> tagList) {
+	public void editTag(int i, List<BottleTag> tagList) {
 		
 		dao.deleteBottleTag(i);
+		dao.insertBottleTag(tagList);
+		
+	}
+	@Override
+	public void insertBottleTag(List<BottleTag> tagList) {
 		dao.insertBottleTag(tagList);
 		
 	}

@@ -7,8 +7,7 @@
 <mapper namespace="foodMapper">
 
 
-
-   <resultMap id="result"
+   <resultMap id="foodResultSet"
       type="food">
       <result property="foodNo" column="FOOD_NO_PK"/>
       <result property="foodName" column="FOOD_NAME"/>
@@ -16,7 +15,7 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="result">
+   <select id="selectList" parameterType="Integer" resultType="foodResultSet">
        <![CDATA[   
          SELECT *
          FROM food_tb

@@ -7,12 +7,12 @@ import com.spring.bittlebittle.review.vo.Review;
 
 public interface ReplyService {
 
-	List<Reply> getReplyList(int reviewNo);
+	List<Reply> getReplies(int reviewNo);
 
 	List<Reply> addReply(Reply reply);
 
-	List<Reply> updateReply(Reply reply);
+	List<Reply> editReply(Reply reply);
 
-	List<Reply> deleteReply(Reply reply);
+	List<Reply> removeReply(Reply reply);
 
 }

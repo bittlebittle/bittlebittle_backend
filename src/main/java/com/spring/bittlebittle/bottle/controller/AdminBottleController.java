@@ -1,6 +1,8 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.service.TagService;
+import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
@@ -28,53 +31,67 @@ public class AdminBottleController {
 	private TagService tservice;
 	
 	@GetMapping(value="/{bottleNo}", produces="application/json; charset=UTF-8")
-	public Bottle getBottle(int bottleNo) {
+	public Map<String, Object> getBottle(int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
-		List<Review> reviewList = rservice.getReviewList(bottleNo);
+		List<Review> reviewList = rservice.getReviews(bottleNo);
 		
-		// 우선은 이렇게.... 수정해야됨!
-		return bottle;
+		Map<String, Object> map = new HashMap<>();
+		map.put("bottle", bottle);
+		map.put("reviewList", reviewList);
+		
+		return map;
 	}
 	
 	// 추가창 들어갈때
 	@GetMapping(value="/addition", produces="application/json; charset=UTF-8")
-	public Bottle getTag() {
+	public Map<String, Object> getTags() {
 		
 		// 태그 선택할 수 있도록 태그 선택지 불러오기
-		List<TagType> tagTypeList = tservice.getAllTagType();
-		List<Tag> tagList = tservice.getAllTag();
+		List<TagType> tagTypeList = tservice.getAllTagTypes();
+		List<Tag> tagList = tservice.getAllTags();
 		
-		return null;
+		Map<String, Object> map = new HashMap<>();
+		map.put("tagTypeList", tagTypeList);
+		map.put("tagList", tagList);
+		
+		return map;
 	}
 	
 	// 추가 완료할 때
 	@PostMapping(value="/addition", produces="application/json; charset=UTF-8")
-	public Bottle addBottle(Bottle newBottle) {
+	public Bottle addBottle(Bottle newBottle, List<BottleTag> tagList) {
 		
 		Bottle bottle= bservice.addBottle(newBottle);
+		tservice.insertBottleTag(tagList);
 		
 		return bottle;
 	}
 	
 	// 수정창 들어갈때 
-	@GetMapping(value="/set-data", produces="application/json; charset=UTF-8")
-	public Bottle getBottleInfo(int bottleNo) {
+	@GetMapping(value="/{bottleNo}/set-data", produces="application/json; charset=UTF-8")
+	public Map<String, Object> getBottleInfo(int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
-		List<TagType> tagTypeList= tservice.getAllTagType();
-		List<Tag> tagList = tservice.getTag(bottleNo);
+		List<TagType> tagTypeList= tservice.getAllTagTypes();
+		List<Tag> bottleTagList = tservice.getTags(bottleNo);
 		
 		// 태그 리스트도 보내야돼~
-		return bottle;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("bottle", bottle);
+		map.put("tagTypeList", tagTypeList);
+		map.put("bottleTagList", bottleTagList);
+		
+		return map;
 	}
 	
 	// 수정완료할때
-	@PostMapping(value="/set-data", produces="application/json; charset=UTF-8")
-	public Bottle updateBottle(Bottle updateBottle, List<Tag> tagList) {
+	@PostMapping(value="/{bottleNo}/set-data", produces="application/json; charset=UTF-8")
+	public Bottle editBottle(Bottle editBottle, List<BottleTag> tagList) {
 		
-		Bottle bottle = bservice.updateBottle(updateBottle);
-		tservice.updateTag(updateBottle.getBottleNo(), tagList);
+		Bottle bottle = bservice.editBottle(editBottle);
+		tservice.editTag(editBottle.getBottleNo(), tagList);
 		
 		return bottle;
 		

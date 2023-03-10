@@ -5,7 +5,8 @@
 
 <mapper namespace="bottleMapper">
 
-   <resultMap id="result" type="bottle">
+   <resultMap id="bottleResultSet"
+      type="bottle">
       <result property="bottleNo" column="BOTTLE_NO_PK"/>
       <result property="bottleName" column="BOTTLE_NAME"/>
       <result property="bottleContent" column="BOTTLE_CONTENT" />
@@ -17,24 +18,32 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectOne" parameterType="Integer" resultMap="result">
+   <select id="selectOne" parameterType="Integer" resultType="bottleResultSet">
        <![CDATA[   
          SELECT *
          FROM bottle_tb
-         WHERE bottleNo=#{bottleNo}
+         WHERE bottle_no_pk=#{bottleNo}
       ]]>
    </select>
+   
+   <update id="updateViewCnt" parameterType="Integer">
+       <![CDATA[   
+         UPDATE bottle_tb
+         SET VIEW_CNT=VIEW_CNT+1
+         WHERE bottle_no_pk=#{bottleNo}
+      ]]>
+   </update>
    
    <!--
-   <select id="selectRelated" parameterType="Integer" resultMap="result">
+   <select id="selectRelated" parameterType="Integer" resultType="bottleResultSet">
        <![CDATA[   
          SELECT *
          FROM bottle_tb
-         WHERE bottleNo=#{bottleNo}
+         WHERE BOTTLE_NO_PK=#{bottleNo}
       ]]>
    </select>
    
-    <update id="updateOne" parameterType="Bottle">
+    <update id="updateOne" parameterType="bottle">
        <![CDATA[   
          UPDATE bottle_tb
          SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, IMG_URL=#{imgUrl}

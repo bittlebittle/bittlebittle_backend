@@ -6,6 +6,6 @@ import com.spring.bittlebittle.food.vo.Food;
 
 public interface FoodService {
 
-	List<Food> getFoodList(int bottleNo);
+	List<Food> getFoods(int bottleNo);
 
 }
