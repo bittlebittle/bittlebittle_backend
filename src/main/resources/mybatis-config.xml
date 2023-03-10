@@ -19,6 +19,7 @@
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="food" />
         <typeAlias type="com.spring.bittlebittle.favorite.vo.Favorite" alias="favorite" />
+        <typeAlias type="com.spring.bittlebittle.reply.vo.Reply" alias="reply" />
 	 -->	
     </typeAliases>
 

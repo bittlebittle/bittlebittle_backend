@@ -8,8 +8,12 @@ import com.spring.bittlebittle.bottle.vo.Bottle;
 
 public interface BottleDao {
 
-	Bottle selectOne(SqlSession session, int bottleNo);
+	Bottle selectOne(int bottleNo);
 
-	List<Bottle> selectRelatedBottleList(SqlSession session, int bottleNo);
+	List<Bottle> selectRelatedBottleList(int bottleNo);
+
+	int updateOne(Bottle updateBottle);
+
+	Bottle insertOne(Bottle newBottle);
 
 }

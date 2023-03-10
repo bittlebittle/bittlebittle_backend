@@ -10,4 +10,8 @@ public interface BottleService {
 
 	List<Bottle> getRelatedBottleList(int bottleNo);
 
+	Bottle addBottle(Bottle newBottle);
+
+	Bottle updateBottle(Bottle updateBottle);
+
 }

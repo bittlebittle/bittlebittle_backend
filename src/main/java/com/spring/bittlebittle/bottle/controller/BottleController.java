@@ -1,9 +1,12 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +20,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping(value="/api/bottles/bottle")
+@RequestMapping(value="/api/bottles/{bottleNo}")
 public class BottleController {
 
 	
@@ -31,7 +34,7 @@ public class BottleController {
 	private FavoriteService fvservice;
 	
 	@GetMapping(produces="application/json; charset=UTF-8")
-	public Bottle getBottle(int bottleNo) {
+	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
 		List<Bottle> relatedBottleList = bservice.getRelatedBottleList(bottleNo);
@@ -47,7 +50,14 @@ public class BottleController {
 		int checkFavorite = fvservice.checkFavorite(favorite);
 		// 1이면 찜이 되어있는 것, 0이면 찜이 안 되어있는 것.
 	
-		return null;
+		Map<String, Object> map = new HashMap<>();
+		map.put("bottle", bottle);
+		map.put("relatedBottleList", relatedBottleList);
+		map.put("reviewList", reviewList);
+		map.put("foodList",foodList);
+		map.put("checkFavorite", checkFavorite);
+		
+		return map;
 	}
 	
 	@GetMapping(value="/favorite")

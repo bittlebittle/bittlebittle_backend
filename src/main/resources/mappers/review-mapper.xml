@@ -29,18 +29,25 @@
       ]]>
    </select>
 
+	<select id="selectOne" parameterType="Integer" resultType="result">
+       <![CDATA[   
+         SELECT *
+         FROM review_tb
+         WHERE reviewNo=#{reviewNo}
+      ]]>
+   </select>
+	
 	<update id="insertOne" parameterType="result">
-       <![CDATA[
-         UPDATE review
-         SET grade=#{grade}, reviewTitle=#{reviewTitle}, reviewContent=#{reviewContent}, imgUrl=#{imgUrl}
+       <![CDATA[   
          INSERT INTO review_tb(userNo, bottleNo, grade, reviewTitle, reviewContent, imgUrl)
+         VALUE(#{userNo}, #{bottleNo}, #{grade}, #{reviewTitle}, #{reviewContent}, #{imgUrl})
       ]]>
 	</update>
 	
 	<update id="updateOne" parameterType="result">
-       <![CDATA[   
-         INSERT INTO review_tb(userNo, bottleNo, grade, reviewTitle, reviewContent, imgUrl)
-         VALUE(#{userNo}, #{bottleNo}, #{grade}, #{reviewTitle}, #{reviewContent}, #{imgUrl})
+       <![CDATA[
+         UPDATE review
+         SET grade=#{grade}, reviewTitle=#{reviewTitle}, reviewContent=#{reviewContent}, imgUrl=#{imgUrl}
          WHERE reviewNo=#{reviewNo}
       ]]>
 	</update>

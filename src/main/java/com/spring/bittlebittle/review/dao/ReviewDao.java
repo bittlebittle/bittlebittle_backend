@@ -8,12 +8,15 @@ import com.spring.bittlebittle.review.vo.Review;
 
 public interface ReviewDao {
 
-	List<Review> selectList(SqlSession session, int bottleNo);
+	List<Review> selectList(int bottleNo);
 
-	int insertOne(SqlSession session, Review review);
+	Review selectOne(int reviewNo);
 
-	int updateOne(SqlSession session, Review review);
+	int insertOne(Review review);
 
-	int deleteOne(SqlSession session, Review review);
+	int updateOne(Review review);
+
+	int deleteOne(Review review);
+
 
 }

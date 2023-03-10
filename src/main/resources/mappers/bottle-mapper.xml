@@ -29,6 +29,7 @@
       ]]>
    </select>
    
+   <!--
    <select id="selectRelated" parameterType="Integer" resultMap="result">
        <![CDATA[   
          SELECT *
@@ -36,5 +37,14 @@
          WHERE bottleNo=#{bottleNo}
       ]]>
    </select>
-
+   
+    <update id="updateOne" parameterType="Bottle">
+       <![CDATA[   
+         UPDATE bottle_tb
+         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, IMG_URL=#{imgUrl}
+         WHERE bottleNo=#{bottleNo}
+      ]]>
+   </update>
+	-->
+	
 </mapper>

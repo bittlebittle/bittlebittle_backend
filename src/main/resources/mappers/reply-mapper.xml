@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="replyMapper">
+
+<!-- 
+   <resultMap id="result"
+      type="com.spring.bittlebittle.review.vo.Review">
+      <result property="replyNo" column="REPLY_NO_PK"/>
+      <result property="userNo" column="USER_NO_FK"/>
+      <result property="reviewNo" column="REVIEW_NO_FK" />
+      <result property="replyContent" column="REPLY_CONTENT" />
+      <result property="createTime" column="CREATE_DATE" />
+      <result property="status" column="STATUS" />
+   </resultMap>
+
+   <select id="selectList" parameterType="Integer" resultType="result">
+       <![CDATA[   
+         SELECT *
+         FROM reply_tb
+         WHERE reviewNo=#{reviewNo}
+      ]]>
+   </select>
+
+	<update id="insertOne" parameterType="Reply">
+       <![CDATA[   
+         INSERT INTO reply_tb(userNo, reviewNo, replyContent)
+         VALUES(#{userNo}, #{reviewNo}, #{replyContent})
+      ]]>
+   </update>
+   
+   <update id="updateOne" parameterType="Reply">
+       <![CDATA[   
+         UPDATE reply_tb
+         SET replyContent=#{replyContent}
+         WHERE replyNo=#{replyNo}
+      ]]>
+   </update>
+
+  <update id="deleteOne" parameterType="Reply">
+       <![CDATA[   
+         DELETE
+         FROM reply_tb
+         WHERE replyNo=#{replyNo}
+      ]]>
+   </update>
+   
+-->
+</mapper>

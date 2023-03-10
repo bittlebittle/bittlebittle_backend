@@ -8,6 +8,6 @@ import com.spring.bittlebittle.food.vo.Food;
 
 public interface FoodDao {
 
-	List<Food> selectList(SqlSession session, int bottleNo);
+	List<Food> selectList(int bottleNo);
 
 }

@@ -14,12 +14,11 @@ public class FoodServiceImpl implements FoodService{
  
 	@Autowired
 	private FoodDao dao;
-	@Autowired
-	private SqlSession session;
+	
 	
 	@Override
 	public List<Food> getFoodList(int bottleNo) {
 		// TODO Auto-generated method stub
-		return dao.selectList(session, bottleNo);
+		return dao.selectList(bottleNo);
 	}
 }

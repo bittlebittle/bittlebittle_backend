@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class TagType {
 
 	private int tagTypeNo;
-	private String tabTypeName;
+	private String tagTypeName;
 }

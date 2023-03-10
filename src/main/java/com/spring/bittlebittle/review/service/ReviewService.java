@@ -8,6 +8,8 @@ public interface ReviewService {
 
 	List<Review> getReviewList(int bottleNo);
 
+	Review getReview(int reviewNo);
+	
 	List<Review> addReview(Review review);
 
 	List<Review> updateReview(Review review);

@@ -6,12 +6,12 @@ import com.spring.bittlebittle.favorite.vo.Favorite;
 
 public interface FavoriteDao {
 
-	int insertOne(SqlSession session, Favorite favorite);
+	int insertOne(Favorite favorite);
 
-	int selectCnt(SqlSession session, int bottleNo);
+	int selectCnt(int bottleNo);
 
-	int selectOne(SqlSession session, Favorite favorite);
+	int selectOne(Favorite favorite);
 
-	int deleteOne(SqlSession session, Favorite favorite);
+	int deleteOne(Favorite favorite);
 
 }
