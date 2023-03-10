@@ -33,6 +33,14 @@ public class BottleController {
 	@Autowired
 	private FavoriteService fvservice;
 	
+  @GetMapping(value="/bottles")
+    public String selectAll() {
+
+        List<Bottle> selectAll = service.getAllBottles();
+
+        return "allBottle";
+    }
+  
 	@GetMapping(produces="application/json; charset=UTF-8")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		
@@ -76,6 +84,5 @@ public class BottleController {
 		// 아니면 checkFavorite 넘겨서 색 지울지 말지 결정하면 될듯
 		return favoriteCnt;
 	}
-	
-	
+
 }

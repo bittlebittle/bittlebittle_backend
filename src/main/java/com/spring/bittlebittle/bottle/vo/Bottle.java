@@ -1,7 +1,6 @@
 package com.spring.bittlebittle.bottle.vo;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bottle {
-	
+
 	private int bottleNo;
 	private String bottleName;
 	private String bottleContent;
@@ -20,5 +19,5 @@ public class Bottle {
 	private String imgUrl;
 	private String imgCusUrl;
 	private String status;
-	
+
 }

@@ -15,6 +15,11 @@ public class BottleServiceImpl implements BottleService{
 	@Autowired
 	private BottleDao dao;
 	
+  @Override
+    public List<Bottle> getAllBottles() {
+        return dao.selectAll();
+    }
+  
 	@Override
 	public Bottle getBottle(int bottleNo) {
 		

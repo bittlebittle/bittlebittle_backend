@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper
@@ -47,4 +48,9 @@
    </update>
 	-->
 	
+  
+   <select id="selectAll" resultMap="result">
+        SELECT bottleName
+        FROM bottle_tb
+    </select>
 </mapper>
