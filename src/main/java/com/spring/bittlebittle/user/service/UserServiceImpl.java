@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectList() {
-        return dao.selectList();
+        return dao.selectUsers();
     }
 
     @Override
