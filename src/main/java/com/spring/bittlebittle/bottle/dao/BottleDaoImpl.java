@@ -34,12 +34,6 @@ public class BottleDaoImpl implements BottleDao {
 	}
 	
 	@Override
-	public Bottle insertOne(Bottle newBottle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public int updateOne(Bottle editBottle) {
 		
 		return sqlSession.update("bottleMapper.updateOne", editBottle);

@@ -1,12 +1,11 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.user.dao.UserDao;
+import com.spring.bittlebittle.user.dao.UserDaoImpl;
 import com.spring.bittlebittle.user.vo.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class UserServiceImpl implements UserService {
 
     private Logger log = LogManager.getLogger("case3");
     @Autowired
-    private UserDao dao;
+    private UserDaoImpl dao;
 
     @Override
     public List<User> selectList() {
