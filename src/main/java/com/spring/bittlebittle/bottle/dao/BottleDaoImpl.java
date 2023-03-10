@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 
 @Repository
-public class BottleDaoImpl implements BottleDao{
+public class BottleDaoImpl implements BottleDao {
 
 	@Autowired
 	private SqlSession sqlSession;
@@ -36,5 +36,10 @@ public class BottleDaoImpl implements BottleDao{
 	public int updateOne(Bottle updateBottle) {
 		
 		return sqlSession.update("bottleMapper.updateOne", updateBottle);
+	}
+
+	@Override
+	public Bottle insertOne(Bottle newBottle) {
+		return null;
 	}
 }
