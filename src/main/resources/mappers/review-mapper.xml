@@ -6,9 +6,8 @@
 
 <mapper namespace="reviewMapper">
 
-<!-- 
    <resultMap id="result"
-      type="com.spring.bittlebittle.review.vo.Review">
+      type="review">
       <result property="reviewNo" column="REVIEW_NO_PK"/>
       <result property="userNo" column="USER_NO_FK"/>
       <result property="bottleNo" column="BOTTLE_NO_FK" />
@@ -59,5 +58,5 @@
          WHERE reviewNo=#{reviewNo}
       ]]>
 	</update>
--->
+
 </mapper>

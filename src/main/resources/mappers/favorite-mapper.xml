@@ -7,9 +7,8 @@
 <mapper namespace="favoriteMapper">
 
 
-   <!--
    <resultMap id="result"
-      type="com.spring.bittlebittle.favorite.vo.Favorite">
+      type="favorite">
       <result property="userNo" column="USER_NO_FK"/>
       <result property="bottleNo" column="BOTTLE_NO_FK"/>
    </resultMap>
@@ -44,5 +43,5 @@
          WHERE userNo=#{userNo} AND bottleNo=#{bottleNo}
       ]]>
    </update>
--->
+
 </mapper>

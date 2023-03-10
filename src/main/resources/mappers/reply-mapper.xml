@@ -6,9 +6,9 @@
 
 <mapper namespace="replyMapper">
 
-<!-- 
+
    <resultMap id="result"
-      type="com.spring.bittlebittle.review.vo.Review">
+      type="review">
       <result property="replyNo" column="REPLY_NO_PK"/>
       <result property="userNo" column="USER_NO_FK"/>
       <result property="reviewNo" column="REVIEW_NO_FK" />
@@ -47,6 +47,5 @@
          WHERE replyNo=#{replyNo}
       ]]>
    </update>
-   
--->
+
 </mapper>

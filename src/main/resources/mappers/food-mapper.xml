@@ -7,9 +7,9 @@
 <mapper namespace="foodMapper">
 
 
-   <!-- 
+
    <resultMap id="result"
-      type="com.spring.bittlebittle.food.vo.Food">
+      type="food">
       <result property="foodNo" column="FOOD_NO_PK"/>
       <result property="foodName" column="FOOD_NAME"/>
       <result property="imgUrl" column="IMG_URL" />
@@ -23,5 +23,5 @@
          WHERE bottleNo=#{bottleNo}
       ]]>
    </select>
--->
+
 </mapper>

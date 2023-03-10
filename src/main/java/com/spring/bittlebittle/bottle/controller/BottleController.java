@@ -34,9 +34,10 @@ public class BottleController {
 	private FavoriteService fvservice;
 	
   @GetMapping(value="/bottles")
+
     public String selectAll() {
 
-        List<Bottle> selectAll = service.getAllBottles();
+        List<Bottle> selectAll = bservice.getAllBottles();
 
         return "allBottle";
     }

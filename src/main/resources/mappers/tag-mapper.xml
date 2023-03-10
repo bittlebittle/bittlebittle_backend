@@ -6,9 +6,8 @@
 
 <mapper namespace="tagMapper">
 
-<!-- 
    <resultMap id="tag"
-      type="com.spring.bittlebittle.tag.vo.Tag">
+      type="tag">
       <result property="tagNo" column="TAG_NO_PK"/>
       <result property="keyTypeNo" column="TAG_TYPE_NO_FK"/>
       <result property="tagName" column="TAG_NAME" />
@@ -63,5 +62,4 @@
       ]]>
    </update>
 
--->
 </mapper>
