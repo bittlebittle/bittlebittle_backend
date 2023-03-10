@@ -27,7 +27,7 @@ public interface DaoInterface {
 //    // delete
 //    int delete(Object obj);
 	
-	@Select("select * from user where user_id = #{userId}")
+	
 	User getUserById(String userId);
 	
 	User getUserByPwd(int userPwd);
