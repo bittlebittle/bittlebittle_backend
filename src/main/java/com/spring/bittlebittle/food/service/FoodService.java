@@ -8,4 +8,6 @@ public interface FoodService {
 
 	List<Food> getFoods(int bottleNo);
 
+	List<Food> getAllFoods();
+
 }

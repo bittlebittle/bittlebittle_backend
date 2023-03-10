@@ -18,7 +18,13 @@ public class FoodServiceImpl implements FoodService{
 	
 	@Override
 	public List<Food> getFoods(int bottleNo) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectList(bottleNo);
+	}
+	
+	@Override
+	public List<Food> getAllFoods() {
+		
+		return dao.selectList();
 	}
 }

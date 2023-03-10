@@ -23,5 +23,12 @@
          WHERE bottleNo=#{bottleNo}
       ]]>
    </select>
+   
+    <select id="selectAllFoods" resultType="foodResultSet">
+       <![CDATA[   
+         SELECT *
+         FROM food_tb
+      ]]>
+   </select>
 -->
 </mapper>

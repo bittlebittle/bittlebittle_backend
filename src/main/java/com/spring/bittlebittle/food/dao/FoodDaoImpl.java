@@ -19,4 +19,10 @@ public class FoodDaoImpl implements FoodDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<Food> selectList() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("foodMapper.selectAllFoods");
+	}
 }

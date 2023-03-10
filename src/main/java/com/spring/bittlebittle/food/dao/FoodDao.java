@@ -10,4 +10,6 @@ public interface FoodDao {
 
 	List<Food> selectList(int bottleNo);
 
+	List<Food> selectList();
+
 }
