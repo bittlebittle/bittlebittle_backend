@@ -12,15 +12,15 @@
       <result property="userNo" column="USER_NO_FK"/>
       <result property="reviewNo" column="REVIEW_NO_FK" />
       <result property="replyContent" column="REPLY_CONTENT" />
-      <result property="createTime" column="CREATE_DATE" />
+      <result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="replyResultSet">
-       <![CDATA[   
-         SELECT *
+   <select id="selectList" parameterType="reply" resultMap="replyResultSet">
+       <![CDATA[
+         SELECT reply_no_pk, format(create_date, 'yyyy-mm-dd :HH:MM:ss')
          FROM reply_tb
-         WHERE REVIEW_NO_FK=#{reviewNo}
+         WHERE REVIEW_NO_FK = #{reviewNo}
       ]]>
    </select>
 

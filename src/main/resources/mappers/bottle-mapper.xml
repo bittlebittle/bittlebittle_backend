@@ -51,9 +51,9 @@
       ]]>
    </update>
 	-->
-  
-   <select id="selectAll" resultMap="result">
-        SELECT bottleName
+
+    <select id="selectAll" resultMap="result">
+        SELECT *
         FROM bottle_tb
     </select>
 </mapper>
