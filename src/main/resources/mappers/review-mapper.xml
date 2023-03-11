@@ -20,7 +20,7 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="reviewResultSet">
+   <select id="selectList" parameterType="Integer" resultMap="reviewResultSet">
        <![CDATA[   
          SELECT *
          FROM review_tb
@@ -29,7 +29,7 @@
    </select>
 
 
-	<select id="selectOne" parameterType="Integer" resultType="reviewResultSet">
+	<select id="selectOne" parameterType="Integer" resultMap="reviewResultSet">
        <![CDATA[   
          SELECT *
          FROM review_tb

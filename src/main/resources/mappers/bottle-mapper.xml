@@ -5,8 +5,7 @@
 
 <mapper namespace="bottleMapper">
 
-   <resultMap id="bottleResultSet"
-      type="bottle">
+   <resultMap id="bottleResultSet" type="bottle">
       <result property="bottleNo" column="BOTTLE_NO_PK"/>
       <result property="bottleName" column="BOTTLE_NAME"/>
       <result property="bottleContent" column="BOTTLE_CONTENT" />
@@ -18,7 +17,7 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectOne" parameterType="Integer" resultType="bottleResultSet">
+   <select id="selectOne" parameterType="Integer" resultMap="bottleResultSet">
        <![CDATA[   
          SELECT *
          FROM bottle_tb
@@ -52,7 +51,7 @@
    </update>
 	-->
 
-    <select id="selectAll" resultMap="result">
+    <select id="selectAll" resultMap="bottleResultSet">
         SELECT *
         FROM bottle_tb
     </select>

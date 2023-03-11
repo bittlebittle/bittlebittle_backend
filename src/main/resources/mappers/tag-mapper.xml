@@ -19,21 +19,21 @@
       <result property="tagTypeName" column="TAG_TYPE_NAME"/>
    </resultMap>
 
-   <select id="selectAllTagType" resultType="tagTypeResultSet">
+   <select id="selectAllTagType" resultMap="tagTypeResultSet">
        <![CDATA[   
          SELECT *
          FROM tagtype_tb
       ]]>
    </select>
 
-	<select id="selectAllTag" resultType="tagResultSet">
+	<select id="selectAllTag" resultMap="tagResultSet">
        <![CDATA[   
          SELECT *
          FROM tag_tb
       ]]>
    </select>
 
-	<select id="selectTag" parameterType="Integer" resultType="tagResultSet">
+	<select id="selectTag" parameterType="Integer" resultMap="tagResultSet">
        <![CDATA[   
          SELECT TAG_NO_PK,TAG_TYPE_NO_FK,TAG_NAME
          FROM bottle_tag_tb bt
