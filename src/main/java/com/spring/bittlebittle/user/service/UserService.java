@@ -1,93 +1,89 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.user.dao.JwtTokenUtil;
-import com.spring.bittlebittle.user.dao.UserDao;
-import com.spring.bittlebittle.user.vo.User;
-import com.spring.bittlebittle.user.dao.ApiResponse;
-import com.spring.bittlebittle.user.dao.CookieUtil;
-import com.spring.bittlebittle.utils.ServiceInterface;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import com.spring.bittlebittle.user.dao.UserDao;
+import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.utils.ServiceInterface;
 
 @Service
 public class UserService implements ServiceInterface {
 
     private Logger log = LogManager.getLogger("case3");
     
-    @Autowired
-    private UserDao dao;
+   
     
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private UserDao userDao;
     
+    
+
 	@Override
-	public String login(User user, boolean rememberMe) {
-		// TODO Auto-generated method stub
-		User user1 = dao.getUserById(user.getUserId());
-		
-		if(user1 == null) {
-			return null;
-		}
-		
-		if(!BCrypt.checkpw(user.getUserPwd(),user1.getUserPwd())) {
-			return null;
-		}
-		
-		String token = jwtTokenUtil.generateToken(user1.getUserId());
-		
-		if(rememberMe) {
-			jwtTokenUtil.setAutoLoginCookie(token);
-		}
-		
-		return token;
+	public boolean checkPassword(String userName, String userPwd) {
+		User user = userDao.getUserByUsername(userName);
+		if (user == null) {
+            return false;
+        } else {
+            return BCrypt.checkpw(userPwd, user.getUserPwd());
+        }
+
 	}
+
+	@Override
+    public boolean checkUserExists(String username) {
+        User user = userDao.getUserByUsername(username);
+        return user != null;
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
+    }
+
+    @Override
+    public List<User> getAllUsers(User user) {
+        return userDao.getAllUsers(user);
+    }
+
+    @Override
+    public void insertUser(User user) {
+        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
+        user.setUserPwd(userPwd);
+        userDao.insertUser(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
+        user.setUserPwd(userPwd);
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        userDao.deleteUser(userId);
+    }
+    
+    
+
+    
+    
+    
+    
+    
 	
-	@Override
-	public ApiResponse logout(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		jwtTokenUtil.removeAutoLoginCookie(response);
-		HttpSession session = request.getSession(false);
-		
-		if(session != null) {
-			session.invalidate();
-		}
-		return ApiResponse.OK;
-	}
-
-
-	@Override
-	public String getIdFromToken(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		String token = CookieUtil.getValue(request, JwtTokenUtil.COOKIE_NAME);
-		
-		if(token == null) {
-			return null;
-		}
-		return jwtTokenUtil.getuserNameFromToken(token);
-				
-	}
-
-
-	@Override
-	public boolean isAutoLogin(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		String token = CookieUtil.getValue(request, JwtTokenUtil.COOKIE_NAME);
-		
-		if(token==null) {
-			return false;
-		}
-		
-		return jwtTokenUtil.validateToken(token);
-	}
 
 //    @Override
 //    public List<Object> selectList(Object obj) {

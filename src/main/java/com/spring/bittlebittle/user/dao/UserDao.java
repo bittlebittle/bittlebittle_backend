@@ -17,33 +17,39 @@ public class UserDao implements DaoInterface {
     
     @Autowired
     private SqlSession sqlSession;
+
+    @Override
+    public User getUserById(String userId) {
+        return sqlSession.selectOne("getUserById", userId);
+    }
+
+    @Override
+    public User getUserByUsername(String userName) {
+        return sqlSession.selectOne("getUserByUsername", userName);
+    }
+
+    @Override   //???????
+    public List<User> getAllUsers(User user) {
+        return sqlSession.selectList("getAllUsers", user); 
+    }
+
+    @Override
+    public void insertUser(User user) {
+        sqlSession.insert("insertUser", user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        sqlSession.update("updateUser", user);
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        sqlSession.delete("deleteUser", userId);
+    }
+
     
-	@Override
-	public User getUserById(String userId) {
-		
-			return sqlSession.selectOne("getUserById", userId);
-		
-	}
-	@Override
-	public User getUserByPwd(int userPwd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void addUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void updateUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void deleteUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 //    @Override
 //    public List<Object> selectList(Object obj) {

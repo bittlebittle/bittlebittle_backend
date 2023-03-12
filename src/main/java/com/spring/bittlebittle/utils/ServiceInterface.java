@@ -2,16 +2,30 @@ package com.spring.bittlebittle.utils;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.bittlebittle.user.dao.ApiResponse;
 import com.spring.bittlebittle.user.vo.User;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 public interface ServiceInterface {
 
+	boolean checkPassword(String userId, String userPwd);
+    boolean checkUserExists(String userId);
+    User getUserById(String userId);
+    User getUserByUsername(String userName);
+    List<User> getAllUsers(User user);
+    void insertUser(User user);
+    void updateUser(User user);
+    void deleteUser(String userId);
+
+
+	
+	
+	
+	
+	
+	
 //    // selectList
 //    List<Object> selectList(Object obj);
 //
@@ -27,12 +41,5 @@ public interface ServiceInterface {
 //    // delete
 //    int delete(Object obj);
 	
-	String login(User user, boolean rememberMe);
 	
-	ApiResponse logout(HttpServletRequest request, HttpServletResponse response);
-	
-	boolean isAutoLogin(HttpServletRequest request);
-	
-	String getIdFromToken(HttpServletRequest request);
-
 }

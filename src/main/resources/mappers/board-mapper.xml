@@ -1,0 +1,29 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardMapper">
+    <select id="getBoardList" resultType="Board">
+        select * from board 
+    </select>
+
+    <select id="getBoard" parameterType="int" resultType="Board">
+        select * from board where board_no = #{boardNo}
+    </select>
+
+    <insert id="addBoard" parameterType="Board">
+        insert into board (user_no, board_title, create_date, board_content, status) values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent}, #{status})
+    </insert>
+
+    <update id="updateBoard" parameterType="Board">
+        update board set board_title = #{boardTitle}, board_content = #{boardContent} where board_no = #{boardNo}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        delete from board where board_no = #{boardNo}
+    </delete>
+
+    <select id="isAuthor" parameterType="map" resultType="Integer">
+        select count(*) from board where board_no = #{boardNo} and user_no = #{userNo}
+    </select>
+</mapper>

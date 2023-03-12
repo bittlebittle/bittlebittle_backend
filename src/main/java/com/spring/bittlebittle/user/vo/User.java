@@ -13,7 +13,7 @@ public class User {
     private String userId, userPwd, userName;
     private String userNickname;
     private String userMail;
-    private String phone;
+    private String userPhone;
     private String status;
     private String adminYn;
     
@@ -22,7 +22,7 @@ public class User {
 	}
 
 	public User(int userNo, String userId, String userPwd, String userName, String userNickname, String userMail,
-			String phone, String status, String adminYn) {
+			String userPhone, String status, String adminYn) {
 		super();
 		this.userNo = userNo;
 		this.userId = userId;
@@ -30,7 +30,7 @@ public class User {
 		this.userName = userName;
 		this.userNickname = userNickname;
 		this.userMail = userMail;
-		this.phone = phone;
+		this.userPhone = userPhone;
 		this.status = status;
 		this.adminYn = adminYn;
 	}
@@ -83,12 +83,12 @@ public class User {
 		this.userMail = userMail;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getuserPhone() {
+		return userPhone;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setuserPhone(String userPhone) {
+		this.userPhone = userPhone;
 	}
 
 	public String getStatus() {

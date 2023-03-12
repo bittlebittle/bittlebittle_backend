@@ -51,6 +51,13 @@
   <delete id="deleteUser" parameterType="User">
     DELETE FROM user_tb WHERE user_id = #{userId}
   </delete>
+  
+  <select id="getUserByCredentials" parameterType="map" resultType="User">
+  SELECT *
+  FROM users
+  WHERE user_id = #{userId} AND user_pwd = #{userPwd}
+</select>
+  
 
 
 
