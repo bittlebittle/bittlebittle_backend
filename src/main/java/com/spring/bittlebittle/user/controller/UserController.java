@@ -6,6 +6,7 @@ import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
+import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,12 @@ import java.util.Map;
 public class UserController {
 
     private Logger log = LogManager.getLogger("case3");
-
     @Autowired
     private UserService service;
-
+    @Autowired
+    private OAuthService oService;
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
     private Gson gson;
 
@@ -44,6 +44,12 @@ public class UserController {
         log.debug("user 전체 조회");
         return service.getUsers();
     }
+
+//    @GetMapping(value = "/accounts/auth/{socialLoginType}")
+//    public void socialLoginRedirect(@PathVariable(value = "socialLoginType") String socialLoginPath) throws IOException {
+//        SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
+//        oService.request(socialLoginType);
+//    }
 
     @GetMapping(value = "/{userNo}")
     public User getUser(@PathVariable int userNo, HttpEntity entity){
