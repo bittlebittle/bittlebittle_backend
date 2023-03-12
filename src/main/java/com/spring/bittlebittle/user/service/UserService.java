@@ -1,6 +1,7 @@
 package com.spring.bittlebittle.user.service;
 
 import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.user.vo.UserJwt;
 
 import java.util.List;
 
@@ -8,18 +9,30 @@ import java.util.List;
 public interface UserService {
 
     // selectList
-    List<User> selectList();
+    List<User> getUsers();
 
     // selectOne
-    User selectOne(User user);
+    User getUser(User user);
 
+    Boolean loginUser(User user);
     // insert
-    int insert(User user);
+    int registerUser(User user);
 
     // update
-    Object update(User user);
+    User editUser(User user);
 
     // delete
-    int delete(User user);
+    int removeUser(User user);
 
+    // Boolean registerJwtWithIdx(UserAuthentication userAuthentication);
+
+    UserJwt getUserJwt(UserJwt userJwt);
+
+    UserJwt createUserJwt(UserJwt userJwt);
+
+    UserJwt editUserJwt(UserJwt build);
+
+    UserJwt getUserJwtBySubject(UserJwt build);
+
+    int removeUserJwt(UserJwt userJwt);
 }

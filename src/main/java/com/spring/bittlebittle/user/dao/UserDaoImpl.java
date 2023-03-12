@@ -1,6 +1,7 @@
 package com.spring.bittlebittle.user.dao;
 
 import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.user.vo.UserJwt;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +29,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User selectUser(User user) {
-        return null;
+        return sqlSession.selectOne("userMapper.selectOne", user);
+    }
+
+    public User selectLoginUser(User user) {
+        return sqlSession.selectOne("userMapper.selectLoginUser", user);
     }
 
     @Override
@@ -44,5 +49,29 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int deleteUser(User user) {
         return 0;
+    }
+
+    @Override
+    public UserJwt selectUserJwt(UserJwt userJwt) {
+        return sqlSession.selectOne("userMapper.selectUserJwt", userJwt);
+    }
+
+    @Override
+    public UserJwt selectUserJwtBySubject(UserJwt userJwt) {
+        return sqlSession.selectOne("userMapper.selectUserJwtBySubject", userJwt);
+    }
+
+    public int insertJwtWithIdx(UserJwt userJwt) {
+        return sqlSession.insert("userMapper.insertJwtWithIdx", userJwt);
+    }
+
+    @Override
+    public int updateUserJwt(UserJwt userJwt) {
+        return sqlSession.update("userMapper.updateUserJwtWithIdx", userJwt);
+    }
+
+    @Override
+    public int deleteUserJwt(UserJwt userJwt) {
+        return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
     }
 }

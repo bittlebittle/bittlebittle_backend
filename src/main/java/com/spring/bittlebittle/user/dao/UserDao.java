@@ -1,9 +1,7 @@
 package com.spring.bittlebittle.user.dao;
 
-import com.spring.bittlebittle.tag.vo.BottleTag;
-import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
 import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.user.vo.UserJwt;
 
 import java.util.List;
 
@@ -21,4 +19,13 @@ public interface UserDao  {
 
     int deleteUser(User user);
 
+    UserJwt selectUserJwt(UserJwt userJwt);
+
+    int insertJwtWithIdx(UserJwt userJwt);
+
+    int updateUserJwt(UserJwt userJwt);
+
+    UserJwt selectUserJwtBySubject(UserJwt userJwt);
+
+    int deleteUserJwt(UserJwt userJwt);
 }

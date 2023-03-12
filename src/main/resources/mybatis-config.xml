@@ -21,6 +21,7 @@
         <typeAlias type="com.spring.bittlebittle.reply.vo.Reply" alias="reply" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.Tag" alias="tag" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.TagType" alias="tagType" />
+        <typeAlias type="com.spring.bittlebittle.user.vo.UserJwt" alias="userJwt" />
     </typeAliases>
 
     <!-- environment, mapper 설정 등이 모두 빠지게 된다. -->
