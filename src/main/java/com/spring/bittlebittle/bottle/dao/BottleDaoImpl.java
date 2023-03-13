@@ -50,9 +50,4 @@ public class BottleDaoImpl implements BottleDao {
 		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
 		
 	}
-
-	@Override
-	public Bottle insertOne(Bottle newBottle) {
-		return null;
-	}
 }

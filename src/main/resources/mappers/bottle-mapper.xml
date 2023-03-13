@@ -34,15 +34,26 @@
       ]]>
    </update>
    
-   <!--
+  
    <select id="selectRelated" parameterType="Integer" resultType="bottleResultSet">
        <![CDATA[   
-         SELECT *
-         FROM bottle_tb
-         WHERE BOTTLE_NO_PK=#{bottleNo}
+        SELECT b.bottle_no_pk
+		FROM bottle_tag_tb bt
+		INNER JOIN bottle_tb b
+		ON b.bottle_no_pk=bt.bottle_no_fk
+		WHERE tag_no_fk in (
+		SELECT tag_no_fk
+		FROM bottle_tb b
+		INNER JOIN bottle_tag_tb bt
+		ON b.bottle_no_pk=bt.bottle_no_fk
+		WHERE b.bottle_no_pk=#{bottleNo})
+		AND bt.bottle_no_fk != #{bottleNo}
+		GROUP BY bottle_no_fk
+		ORDER BY count(tag_no_fk) DESC
       ]]>
    </select>
    
+   <!--
     <update id="updateOne" parameterType="bottle">
        <![CDATA[   
          UPDATE bottle_tb

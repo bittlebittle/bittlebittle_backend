@@ -17,7 +17,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping("/api/bottles/{bottleNo}/reivews")
+@RequestMapping("/api/bottles/{bottleNo}/reivews", produces="application/json; charset=UTF-8")
 public class ReviewController {
 
 	
@@ -26,7 +26,7 @@ public class ReviewController {
 	@Autowired
 	private ReplyService rpservice;
 	
-	@GetMapping(produces="application/json; charset=UTF-8")
+	@GetMapping
 	public List<Review> getReviews(int bottleNo){
 		
 		List<Review> reviewList = rservice.getReviews(bottleNo);
@@ -34,7 +34,7 @@ public class ReviewController {
 		return reviewList;
 	}
 	
-	@GetMapping(value="/{reviewNo}", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/{reviewNo}")
 	public Map<String, Object> getReview(@PathVariable int reviewNo) {
 		
 		Review review = rservice.getReview(reviewNo);
@@ -48,7 +48,7 @@ public class ReviewController {
 	}
 	
 	
-	@PostMapping(produces="application/json; charset=UTF-8")
+	@PostMapping
 	public List<Review> addReview(Review review){
 		
 		List<Review> reviewList = rservice.addReview(review);
@@ -56,7 +56,7 @@ public class ReviewController {
 		return reviewList;
 	}
 	
-	@PostMapping(value="/set-data", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/set-data")
 	public List<Review> editReveiw(Review review){
 		
 		List<Review> reviewList = rservice.editReview(review);
@@ -64,7 +64,7 @@ public class ReviewController {
 		return reviewList;
 	}
 	
-	@GetMapping(value="/deletion", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/deletion")
 	public List<Review> deleteReview(Review review){
 		
 		List<Review> reviewList = rservice.removeReview(review);
@@ -72,7 +72,7 @@ public class ReviewController {
 		return reviewList;
 	}
 	
-	@PostMapping(value="/replies", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/replies")
 	public List<Reply> addReply(Reply reply){
 
 		List<Reply> replyList = rpservice.addReply(reply);
@@ -80,7 +80,7 @@ public class ReviewController {
 		return replyList;
 	}
 	
-	@PostMapping(value="/replies/set-data", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/replies/set-data")
 	public List<Reply> updateReply(Reply reply){
 		
 		List<Reply> replyList = rpservice.editReply(reply);
@@ -88,7 +88,7 @@ public class ReviewController {
 		return replyList;
 	}
 	
-	@GetMapping(value="/replies/deletion", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/replies/deletion")
 	public List<Reply> deleteReply(Reply reply){
 		List<Reply> replyList = rpservice.removeReply(reply);
 		

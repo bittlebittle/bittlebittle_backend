@@ -34,7 +34,6 @@ public class BottleController {
 	private FavoriteService fvservice;
 	
 
-
   @GetMapping(value="/bottles")
 
     public String selectAll() {
@@ -80,4 +79,5 @@ public class BottleController {
 		
 		return isFavorite;
 	}
+
 }

@@ -14,14 +14,14 @@ import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
 @RestController
-@RequestMapping(value="/api/admin/tags")
+@RequestMapping(value="/api/admin/tags", produces="application/json; charset=UTF-8")
 public class AdminTagController {
 
 	@Autowired
 	private TagService tservice;
 	
 	// 태그 창 들어갔을 때
-	@GetMapping(produces="application/json; charset=UTF-8")
+	@GetMapping
 	public Map<String, Object> getTag(){
 		
 		List<TagType> tagTypeList = tservice.getAllTagTypes();

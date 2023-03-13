@@ -13,7 +13,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping(value="/api/admin/reviews")
+@RequestMapping(value="/api/admin/reviews", produces="application/json; charset=UTF-8")
 public class AdminReviewController {
 
 	@Autowired
@@ -22,7 +22,7 @@ public class AdminReviewController {
 	private ReplyService rpservice;
 	
 	
-	@GetMapping(produces="application/json; charset=UTF-8")
+	@GetMapping
 	public List<Review> getReviewList(int bottleNo){
 		
 		List<Review> reviewList = rservice.getReviews(bottleNo);
@@ -31,7 +31,7 @@ public class AdminReviewController {
 		return reviewList;
 	}
 	
-	@GetMapping(value="/deletion", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/deletion")
 	public List<Review> removeReview(Review review){
 		
 		List<Review> reviewList = rservice.removeReview(review);
@@ -39,7 +39,7 @@ public class AdminReviewController {
 		return reviewList;
 	}
 	
-	@GetMapping(value="/replies/deletion", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/replies/deletion")
 	public List<Reply> removeReply(Reply reply){
 	
 		List<Reply> replyList = rpservice.removeReply(reply);
