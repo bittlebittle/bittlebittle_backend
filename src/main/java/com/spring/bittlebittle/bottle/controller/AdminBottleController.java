@@ -62,10 +62,12 @@ public class AdminBottleController {
 	@PostMapping(value="/addition")
 	public Bottle addBottle(Bottle newBottle, List<BottleTag> tagList) {
 		
-		Bottle bottle= bservice.addBottle(newBottle);
+		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
+		int count = bservice.addBottle(newBottle);
 		tservice.insertBottleTag(tagList);
 		
-		return bottle;
+		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
+		return null;
 	}
 	
 	// 수정창 들어갈때 

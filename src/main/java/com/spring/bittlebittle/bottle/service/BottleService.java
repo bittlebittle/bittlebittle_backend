@@ -13,7 +13,7 @@ public interface BottleService {
 
 	List<Bottle> getRelatedBottleList(int bottleNo);
 
-	Bottle addBottle(Bottle newBottle);
+	int addBottle(Bottle newBottle);
 
 	Bottle editBottle(Bottle updateBottle);
 

@@ -17,7 +17,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping("/api/bottles/{bottleNo}/reivews", produces="application/json; charset=UTF-8")
+@RequestMapping(value="/api/bottles/{bottleNo}/reivews", produces="application/json; charset=UTF-8")
 public class ReviewController {
 
 	

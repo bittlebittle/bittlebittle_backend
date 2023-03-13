@@ -36,7 +36,7 @@ public class BottleServiceImpl implements BottleService{
 
 	@Override
 	@Transactional
-	public Bottle addBottle(Bottle newBottle) {
+	public int addBottle(Bottle newBottle) {
 	
 		return dao.insertOne(newBottle);
 	}

@@ -16,7 +16,7 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="replyResultSet">
+   <select id="selectList" parameterType="Integer" resultMap="replyResultSet">
        <![CDATA[   
          SELECT *
          FROM reply_tb
@@ -24,14 +24,14 @@
       ]]>
    </select>
 
-	<update id="insertOne" parameterType="Reply">
+	<update id="insertOne" parameterType="reply">
        <![CDATA[   
          INSERT INTO reply_tb(USER_NO_FK, REVIEW_NO_FK, REPLY_CONTENT)
          VALUES(#{userNo}, #{reviewNo}, #{replyContent})
       ]]>
    </update>
    
-   <update id="updateOne" parameterType="Reply">
+   <update id="updateOne" parameterType="reply">
        <![CDATA[   
          UPDATE reply_tb
          SET REPLY_CONTENT=#{replyContent} AND CREATE_DATE=NOW()
@@ -39,7 +39,7 @@
       ]]>
    </update>
 
-  <update id="deleteOne" parameterType="Reply">
+  <update id="deleteOne" parameterType="reply">
        <![CDATA[   
          DELETE
          FROM reply_tb

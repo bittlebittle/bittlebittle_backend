@@ -14,7 +14,7 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultType="foodResultSet">
+   <select id="selectList" parameterType="Integer" resultMap="foodResultSet">
        <![CDATA[   
         SELECT f.food_no_pk
 		FROM food_tab_tb ft
@@ -33,7 +33,7 @@
    </select>
 
    
-    <select id="selectAllFoods" resultType="foodResultSet">
+    <select id="selectAllFoods" resultMap="foodResultSet">
        <![CDATA[   
          SELECT *
          FROM food_tb
