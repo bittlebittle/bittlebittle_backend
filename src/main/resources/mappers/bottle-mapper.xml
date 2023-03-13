@@ -11,6 +11,7 @@
       <result property="bottleName" column="BOTTLE_NAME"/>
       <result property="bottleContent" column="BOTTLE_CONTENT" />
       <result property="bottleBrand" column="BOTTLE_BRAND" />
+      <result property="bottleAbv" column="BOTTLE_ABV" />
       <result property="viewCnt" column="VIEW_CNT" />
       <result property="createDate" column="CREATE_DATE" jdbcType="TIME" javaType="String" />
       <result property="imgUrl" column="IMG_URL" />
@@ -62,15 +63,14 @@
       ]]>
    </update>
    
-   <!--
+  
     <update id="updateOne" parameterType="bottle">
        <![CDATA[   
          UPDATE bottle_tb
-         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, IMG_URL=#{imgUrl}
+         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, BOTTLE_ABV=#{bottleAbv}, IMG_URL=#{imgUrl}
          WHERE bottleNo=#{bottleNo}
       ]]>
    </update>
-	-->
   
    <select id="selectAll" resultMap="bottleResultSet">
         SELECT bottleName

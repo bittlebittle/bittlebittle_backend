@@ -89,7 +89,7 @@ public class AdminBottleController {
 	}
 	
 	// 수정완료할때
-	@PostMapping(value="/{bottleNo}/set-data", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/{bottleNo}/set-data")
 	public Bottle editBottle(Bottle editBottle, List<BottleTag> tagList) {
 		
 		Bottle bottle = bservice.editBottle(editBottle);
