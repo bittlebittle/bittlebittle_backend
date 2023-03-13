@@ -45,4 +45,9 @@ public class TagDaoImpl implements TagDao{
 		sqlSession.delete("tagMapper.insertBottleTag", tagList);
 		
 	}
+
+	@Override
+	public List<Tag> setAbvTag() {
+		sqlSession.selectList("tagMapepr.selectAllAbv");
+	}
 }

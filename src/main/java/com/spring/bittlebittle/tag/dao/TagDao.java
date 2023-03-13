@@ -1,10 +1,10 @@
 package com.spring.bittlebittle.tag.dao;
 
-import java.util.List;
-
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
+
+import java.util.List;
 
 public interface TagDao {
 
@@ -17,5 +17,7 @@ public interface TagDao {
 	void deleteBottleTag(int i);
 
 	void insertBottleTag(List<BottleTag> tagList);
+
+	List<Tag> setAbvTag();
 
 }

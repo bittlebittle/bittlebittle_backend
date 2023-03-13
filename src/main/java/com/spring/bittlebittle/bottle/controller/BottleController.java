@@ -34,25 +34,21 @@ public class BottleController {
 	@Autowired
 	private TagService tservice;
 	
-	@GetMapping
-	public List<Bottle> getBottles() {
-		List<Bottle> selectList = bservice.getBottles();
-		return selectList;
-	}
-
 //	@GetMapping
 //	public List<Bottle> getBottles() {
-//		// 도수, 맛 , 종류, 탄산, 나라, 상황
-//
 //		List<Bottle> selectList = bservice.getBottles();
-//		List<String> abvList = tservice;
-//
-//		List<String> tasteList = new ArrayList<>();
-//
-//
-//
 //		return selectList;
 //	}
+
+	@GetMapping
+	public List<Bottle> getBottles() {
+
+
+		List<Bottle> selectList = bservice.getBottles();
+		List<String> abvList = tservice.getAbvs;
+
+		return selectList;
+	}
 
 
 	@GetMapping(value="/{bottleNo}")
