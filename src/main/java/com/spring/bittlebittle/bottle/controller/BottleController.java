@@ -5,9 +5,8 @@ import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.food.vo.Food;
 import com.spring.bittlebittle.review.service.ReviewService;
-import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,13 +30,31 @@ public class BottleController {
 	private FoodService fservice;
 	@Autowired
 	private FavoriteService fvservice;
+
+	@Autowired
+	private TagService tservice;
 	
 	@GetMapping
 	public List<Bottle> getBottles() {
 		List<Bottle> selectList = bservice.getBottles();
 		return selectList;
 	}
-  
+
+//	@GetMapping
+//	public List<Bottle> getBottles() {
+//		// 도수, 맛 , 종류, 탄산, 나라, 상황
+//
+//		List<Bottle> selectList = bservice.getBottles();
+//		List<String> abvList = tservice;
+//
+//		List<String> tasteList = new ArrayList<>();
+//
+//
+//
+//		return selectList;
+//	}
+
+
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		

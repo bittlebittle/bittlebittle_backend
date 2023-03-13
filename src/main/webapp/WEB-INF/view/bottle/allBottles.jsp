@@ -223,9 +223,10 @@
               <span class="menu-tag bg-warning">Breakfast</span>
             </div>
 
+<%--<c:forEach var="bottle" items="${selectList}">--%>
             <div class="menu-info d-flex flex-wrap align-items-center">
 <%--              <h4 class="mb-0">Morning Fresh</h4>--%>
-              <h4 class="mb-0">${ bottleName }</h4>
+              <h4 class="mb-0">${ bottle.bottleName }</h4>
 
               <span class="price-tag bg-white shadow-lg ms-4"><small>$</small>12.50</span>
 
@@ -243,6 +244,7 @@
                 <p class="reviews-text mb-0 ms-4">102 Reviews</p>
               </div>
             </div>
+<%--</c:forEach>--%>
           </div>
         </div>
 
