@@ -19,7 +19,7 @@
       <result property="tagTypeName" column="TAG_TYPE_NAME"/>
    </resultMap>
 
-   <select id="selectAllTagType" resultType="tagTypeResultSet">
+   <select id="selectAllTagType" resultMap="tagTypeResultSet">
        <![CDATA[   
          SELECT *
          FROM tagtype_tb

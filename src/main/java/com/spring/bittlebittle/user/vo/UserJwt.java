@@ -6,12 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
+public class UserJwt {
 
+    private String userJwtIdx;
+    private String subject;
     private int userNo;
-    private String userId, userPwd, userName, nickname, email, phone, status, adminYn;
+    private String refreshToken;
 
 }

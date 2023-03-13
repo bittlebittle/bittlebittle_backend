@@ -1,13 +1,13 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-import java.util.List;
-
 import com.spring.bittlebittle.bottle.vo.Bottle;
+
+import java.util.List;
 
 public interface BottleService {
 
-  List<Bottle> getAllBottles();
+	List<Bottle> getBottles();
     
 	Bottle getBottle(int bottleNo);
 
@@ -16,6 +16,7 @@ public interface BottleService {
 	int addBottle(Bottle newBottle);
 
 	Bottle editBottle(Bottle updateBottle);
+
 
 
 }
