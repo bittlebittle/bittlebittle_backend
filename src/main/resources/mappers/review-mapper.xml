@@ -28,6 +28,7 @@
       ]]>
    </select>
 
+
 	<select id="selectOne" parameterType="Integer" resultMap="reviewResultSet">
        <![CDATA[   
          SELECT *
