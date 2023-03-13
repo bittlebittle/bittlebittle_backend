@@ -42,13 +42,13 @@ public class UserServiceImpl implements UserService {
         User loginUser = dao.selectLoginUser(user);
 
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
-        if(loginUser == null) {
+        if (loginUser == null) {
             log.debug("해당 아이디의 유저가 존재하지 않습니다.");
             return false;
         }
 
         // 만약 비밀번호가 일치하지 않는다면
-        if(!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
+        if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
             log.debug(passwordEncoder.encode(user.getUserPwd()));
             log.debug(user.getUserPwd());
             log.debug(loginUser.getUserPwd());
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserJwt createUserJwt(UserJwt userJwt) {
-        userJwt.setUserJwtIdx(passwordEncoder.encode(userJwt.getSubject()+key));
+        userJwt.setUserJwtIdx(passwordEncoder.encode(userJwt.getSubject() + key));
         dao.insertJwtWithIdx(userJwt);
         return dao.selectUserJwt(userJwt);
     }
@@ -105,4 +105,59 @@ public class UserServiceImpl implements UserService {
     public int removeUserJwt(UserJwt userJwt) {
         return dao.deleteUserJwt(userJwt);
     }
+
+    /*
+
+	@Override
+	public boolean checkPassword(String userName, String userPwd) {
+		User user = userDao.getUserByUsername(userName);
+		if (user == null) {
+            return false;
+        } else {
+            return BCrypt.checkpw(userPwd, user.getUserPwd());
+        }
+
+	}
+
+	@Override
+    public boolean checkUserExists(String username) {
+        User user = userDao.getUserByUsername(username);
+        return user != null;
+    }
+
+    @Override
+    public User getUserById(String userId) {
+        return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
+    }
+
+    @Override
+    public List<User> getAllUsers(User user) {
+        return userDao.getAllUsers(user);
+    }
+
+    @Override
+    public void insertUser(User user) {
+        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
+        user.setUserPwd(userPwd);
+        userDao.insertUser(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
+        user.setUserPwd(userPwd);
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        userDao.deleteUser(userId);
+    }
+
+     */
 }

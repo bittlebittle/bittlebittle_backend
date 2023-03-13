@@ -74,4 +74,38 @@ public class UserDaoImpl implements UserDao {
     public int deleteUserJwt(UserJwt userJwt) {
         return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
     }
+
+    /*
+
+    @Override
+    public User getUserById(String userId) {
+        return sqlSession.selectOne("getUserById", userId);
+    }
+
+    @Override
+    public User getUserByUsername(String userName) {
+        return sqlSession.selectOne("getUserByUsername", userName);
+    }
+
+    @Override   //???????
+    public List<User> getAllUsers(User user) {
+        return sqlSession.selectList("getAllUsers", user);
+    }
+
+    @Override
+    public void insertUser(User user) {
+        sqlSession.insert("insertUser", user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        sqlSession.update("updateUser", user);
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        sqlSession.delete("deleteUser", userId);
+    }
+
+     */
 }
