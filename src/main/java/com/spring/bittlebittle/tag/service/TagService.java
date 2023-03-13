@@ -1,6 +1,7 @@
 package com.spring.bittlebittle.tag.service;
 
 import com.spring.bittlebittle.tag.vo.BottleTag;
+import com.spring.bittlebittle.tag.vo.FoodTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
@@ -12,11 +13,34 @@ public interface TagService {
 
 	List<Tag> getAllTags();
 
-	List<Tag> getTags(int bottleNo);
+	List<Tag> getTagsByBottle(int bottleNo);
 
-	void editTag(int i, List<BottleTag> taglist);
+	void editBottleTag(int bottleNo, List<BottleTag> taglist);
 
-	void insertBottleTag(List<BottleTag> tagList);
+	void addBottleTag(List<BottleTag> tagList);
+
+	void removeBottleTag(int bottleNo);
+	
+	List<TagType> addTagType(String tagTypeName);
+
+	List<TagType> editTagType(TagType tagType);
+
+	List<TagType> removeTagType(int tagTypeNo);
+
+	List<Tag> addTag(Tag tag);
+
+	List<Tag> editTag(Tag tag);
+
+	List<Tag> removeTag(int tagNo);
+
+	void addFoodTag(List<FoodTag> foodTagList);
+
+	List<Tag> getTagsByFood(int foodNo);
+
+	void editFoodTag(int foodNo, List<FoodTag> foodTagList);
+
+	void removeFoodTag(int foodNo);
+
 
 
 }

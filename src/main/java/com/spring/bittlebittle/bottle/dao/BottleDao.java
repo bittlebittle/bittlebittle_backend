@@ -9,6 +9,7 @@ public interface BottleDao {
 
 
 	List<Bottle> selectList();
+	
 	Bottle selectOne(int bottleNo);
 
 	List<Bottle> selectRelatedBottleList(int bottleNo);
@@ -18,5 +19,10 @@ public interface BottleDao {
 	int insertOne(Bottle newBottle);
 
 	void editViewCnt(int bottleNo);
+	
+	void deleteOne(int bottleNo);
+
+	int selectLastBottleNo();
+	
 
 }

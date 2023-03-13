@@ -39,6 +39,7 @@
                 <value>classpath:mappers/review-mapper.xml</value>
                 <value>classpath:mappers/food-mapper.xml</value>
                 <value>classpath:mappers/favorite-mapper.xml</value>
+                <value>classpath:mappers/tag-mapper.xml</value>
                 <value>classpath:mappers/boardReply-mapper.xml</value>
             </list>
         </property>

@@ -54,9 +54,9 @@
 	
 	<update id="deleteOne" parameterType="review">
        <![CDATA[
-         DELETE
-         FROM review_tb
-         WHERE reviewNo=#{reviewNo}
+         UPDATE review_tb
+         SET STATUS='N'
+         WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
 	</update>
 

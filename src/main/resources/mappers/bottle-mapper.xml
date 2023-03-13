@@ -19,11 +19,9 @@
    </resultMap>
 
    <select id="selectOne" parameterType="Integer" resultMap="bottleResultSet">
-       <![CDATA[   
          SELECT *
          FROM bottle_tb
-         WHERE bottle_no_pk=#{bottleNo}
-      ]]>
+         WHERE BOTTLE_NO_PK=#{bottleNo}
    </select>
    
    <update id="updateViewCnt" parameterType="Integer">
@@ -55,19 +53,19 @@
       ]]>
    </select>
 
-   <update id="insertOne" parameterType="bottle">
-       <![CDATA[   
+   <insert id="insertOne" parameterType="bottle">
+    <![CDATA[   
          INSERT INTO bottle_tb(BOTTLE_NAME, BOTTLE_CONTENT, BOTTLE_BRAND, BOTTLE_ABV, IMG_URL)
          VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv}, #{imgUrl})
-      ]]>
-   </update>
+     ]]>
+   </insert>
    
   
     <update id="updateOne" parameterType="bottle">
        <![CDATA[   
          UPDATE bottle_tb
          SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, BOTTLE_ABV=#{bottleAbv}, IMG_URL=#{imgUrl}
-         WHERE bottleNo=#{bottleNo}
+         WHERE BOTTLE_NO_PK=#{bottleNo}
       ]]>
    </update>
 	
@@ -81,7 +79,7 @@
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
-    <select id="selectBottles" parameterType="bottle" resultMap="bottleResultMap">
+    <select id="selectBottles" parameterType="bottle" resultMap="bottleResultSet">
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
         GROUP_CONCAT(t.tag_name ORDER BY t.tag_name SEPARATOR ', ') AS tag_names
         FROM bottle_tb b
@@ -103,4 +101,18 @@
         HAVING COUNT(DISTINCT t.tag_name) = #{parameter.size()}
     </select>
 
+
+	<update id="deleteOne" parameterType="Integer">
+       <![CDATA[   
+         UPDATE bottle_tb
+         SET STATUS='N'
+         WHERE bottle_no_pk=#{bottleNo}
+      ]]>
+   </update>
+   
+     <select id="selectLastBottleNo" resultType="Integer">
+        SELECT MAX(bottle_no_pk)
+        FROM bottle_tb
+    </select>
+   
     </mapper>

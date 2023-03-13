@@ -1,11 +1,15 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +34,11 @@ public class AdminBottleController {
 	@Autowired
 	private TagService tservice;
 	
+	Logger log = LogManager.getLogger("case3");
+	
+	// 조회 (확인완료)
 	@GetMapping(value="/{bottleNo}")
-	public Map<String, Object> getBottle(int bottleNo) {
+	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
 		List<Review> reviewList = rservice.getReviews(bottleNo);
@@ -43,7 +50,7 @@ public class AdminBottleController {
 		return map;
 	}
 	
-	// 추가창 들어갈때
+	// 추가창 들어갈때(확인완료)
 	@GetMapping(value="/addition")
 	public Map<String, Object> getTags() {
 		
@@ -60,23 +67,35 @@ public class AdminBottleController {
 	
 	// 추가 완료할 때
 	@PostMapping(value="/addition")
-	public Bottle addBottle(Bottle newBottle, List<BottleTag> tagList) {
+	public Bottle addBottle(Bottle newBottle, List<Integer> tagNoList) {
 		
-		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
-		int count = bservice.addBottle(newBottle);
-		tservice.insertBottleTag(tagList);
+		int bottleNo = bservice.addBottle(newBottle);
 		
-		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
+		log.debug(bottleNo);
+		// 이거 찍히는 것까지 확인
+		
+		List<BottleTag> tagList = new ArrayList();
+		for(int tagNo : tagNoList) {
+			tagList.add(new BottleTag(tagNo, bottleNo));
+		}
+		
+		tservice.addBottleTag(tagList);
+		
+		
+		
+		// 확인용
 		return null;
 	}
 	
 	// 수정창 들어갈때 
 	@GetMapping(value="/{bottleNo}/set-data")
-	public Map<String, Object> getBottleInfo(int bottleNo) {
+	public Map<String, Object> getBottleInfo(@PathVariable int bottleNo) {
 		
+		Bottle editBottle = new Bottle();
+		editBottle.setBottleNo(bottleNo);
 		Bottle bottle = bservice.getBottle(bottleNo);
 		List<TagType> tagTypeList= tservice.getAllTagTypes();
-		List<Tag> bottleTagList = tservice.getTags(bottleNo);
+		List<Tag> bottleTagList = tservice.getTagsByBottle(bottleNo);
 		
 		// 태그 리스트도 보내야돼~
 		
@@ -89,13 +108,25 @@ public class AdminBottleController {
 	}
 	
 	// 수정완료할때
-	@PostMapping(value="/{bottleNo}/set-data")
+	@PostMapping(value="/set-data")
 	public Bottle editBottle(Bottle editBottle, List<BottleTag> tagList) {
 		
 		Bottle bottle = bservice.editBottle(editBottle);
-		tservice.editTag(editBottle.getBottleNo(), tagList);
+		tservice.editBottleTag(editBottle.getBottleNo(), tagList);
 		
 		return bottle;
 		
+	}
+	
+	// 삭제 (확인완료)
+	@GetMapping(value="/{bottleNo}/deletion")
+	public List<Bottle> removeBottle(@PathVariable int bottleNo){
+		
+		List<Bottle> bottleList = bservice.removeBottle(bottleNo);
+		
+		// 원래 없애야 하지만 DB 보존을 위해..
+		// tservice.removeBottleTag(bottleNo);
+		
+		return bottleList;
 	}
 }

@@ -15,8 +15,46 @@ public class FoodDaoImpl implements FoodDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<Food> selectList(int bottleNo) {
+	public List<Food> selectRelatedFoods(int bottleNo) {
+		
+		return sqlSession.selectList("foodMapper.selectRelated", bottleNo);
+	}
+	
+	@Override
+	public List<Food> selectAllFoods() {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList("foodMapper.selectAllFoods");
+	}
+	
+	@Override
+	public void insertOne(Food newFood) {
+		
+		sqlSession.insert("foodMapper.insertOne", newFood);
+		
+	}
+	
+	@Override
+	public Food selectOne(Food food) {
+		
+		return sqlSession.selectOne("foodMapper.selectOne", food);
+	}
+
+	@Override
+	public void updateOne(Food editFood) {
+
+		sqlSession.update("foodMapper.updateOne", editFood);
+		
+	}
+	
+	@Override
+	public void deleteOne(int foodNo) {
+		
+		sqlSession.delete("foodMapper.deleteOne", foodNo);
+	}
+	
+	@Override
+	public int selectLastFoodNo() {
+		
+		return sqlSession.selectOne("foodMapper.selectLastFoodNo");
 	}
 }
