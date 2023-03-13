@@ -30,7 +30,13 @@ public class BottleDaoImpl implements BottleDao {
 	@Override
 	public List<Bottle> selectRelatedBottleList(int bottleNo) {
 		
-		return sqlSession.selectList("bottleMappper.selectRelated", bottleNo);
+		return sqlSession.selectList("bottleMapper.selectRelated", bottleNo);
+	}
+	
+	@Override
+	public int insertOne(Bottle newBottle) {
+		
+		return sqlSession.insert("bottleMapper.insertOne", newBottle);
 	}
 	
 	@Override
@@ -44,10 +50,5 @@ public class BottleDaoImpl implements BottleDao {
 	
 		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
 		
-	}
-
-	@Override
-	public Bottle insertOne(Bottle newBottle) {
-		return null;
 	}
 }

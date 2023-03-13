@@ -52,12 +52,12 @@
    </update>
    
    
-   <update id="insertBottleTag">
+   <update id="insertBottleTag" parameterType="java.util.List">
        <![CDATA[   
-         INSERT INTO bottle_tag.tb
+         INSERT INTO bottle_tag.tb(tag_no_fk, bottle_no_fk)
          VALUES
          <foreach collection="tagList" item="item" separator=",">
-         (#{item.tagNo}, #{item.bottleNo})
+         	(#{item.tagNo}, #{item.bottleNo})
          </foreach>
       ]]>
    </update>

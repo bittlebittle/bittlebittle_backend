@@ -20,7 +20,7 @@ import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
 @RestController
-@RequestMapping(value="/api/admin/bottles")
+@RequestMapping(value="/api/admin/bottles", produces="application/json; charset=UTF-8")
 public class AdminBottleController {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class AdminBottleController {
 	@Autowired
 	private TagService tservice;
 	
-	@GetMapping(value="/{bottleNo}", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);
@@ -44,7 +44,7 @@ public class AdminBottleController {
 	}
 	
 	// 추가창 들어갈때
-	@GetMapping(value="/addition", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/addition")
 	public Map<String, Object> getTags() {
 		
 		// 태그 선택할 수 있도록 태그 선택지 불러오기
@@ -59,17 +59,19 @@ public class AdminBottleController {
 	}
 	
 	// 추가 완료할 때
-	@PostMapping(value="/addition", produces="application/json; charset=UTF-8")
+	@PostMapping(value="/addition")
 	public Bottle addBottle(Bottle newBottle, List<BottleTag> tagList) {
 		
-		Bottle bottle= bservice.addBottle(newBottle);
+		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
+		int count = bservice.addBottle(newBottle);
 		tservice.insertBottleTag(tagList);
 		
-		return bottle;
+		// 전체검색해오는 것 합친 뒤에 태그리스트를 받아오는걸로 수정하겠음
+		return null;
 	}
 	
 	// 수정창 들어갈때 
-	@GetMapping(value="/{bottleNo}/set-data", produces="application/json; charset=UTF-8")
+	@GetMapping(value="/{bottleNo}/set-data")
 	public Map<String, Object> getBottleInfo(int bottleNo) {
 		
 		Bottle bottle = bservice.getBottle(bottleNo);

@@ -15,7 +15,7 @@ public interface BottleDao {
 
 	int updateOne(Bottle updateBottle);
 
-	Bottle insertOne(Bottle newBottle);
+	int insertOne(Bottle newBottle);
 
 	void editViewCnt(int bottleNo);
 

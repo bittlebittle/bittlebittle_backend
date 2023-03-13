@@ -16,9 +16,10 @@
       <result property="status" column="STATUS" />
    </resultMap>
 
-   <select id="selectList" parameterType="reply" resultMap="replyResultSet">
-       <![CDATA[
-         SELECT reply_no_pk, format(create_date, 'yyyy-mm-dd :HH:MM:ss')
+
+   <select id="selectList" parameterType="Integer" resultMap="replyResultSet">
+       <![CDATA[   
+         SELECT *
          FROM reply_tb
          WHERE REVIEW_NO_FK = #{reviewNo}
       ]]>
