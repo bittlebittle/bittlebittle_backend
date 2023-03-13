@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
+import java.util.List;
+
 @Service
 public class FavoriteServiceImpl implements FavoriteService{
 
@@ -26,7 +28,7 @@ public class FavoriteServiceImpl implements FavoriteService{
 	}
 	
 	@Override
-	public int isFavorite(Favorite favorite) {
+	public List<Favorite> isFavorite(Favorite favorite) {
 		
 		return dao.selectOne(favorite);
 	}

@@ -46,8 +46,4 @@ public class TagDaoImpl implements TagDao{
 		
 	}
 
-	@Override
-	public List<Tag> setAbvTag() {
-		sqlSession.selectList("tagMapepr.selectAllAbv");
-	}
 }

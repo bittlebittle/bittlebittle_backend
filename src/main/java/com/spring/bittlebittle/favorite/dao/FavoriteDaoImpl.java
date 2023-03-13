@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
+import java.util.List;
+
 @Repository
 public class FavoriteDaoImpl implements FavoriteDao{
 
@@ -25,7 +27,7 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	}
 	
 	@Override
-	public int selectOne(Favorite favorite) {
+	public List<Favorite> selectOne(Favorite favorite) {
 		
 		return sqlSession.selectOne("favoriteMapper.selectOne", favorite);
 	}

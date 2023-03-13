@@ -16,11 +16,34 @@ public class BottleDaoImpl implements BottleDao {
 	private SqlSession sqlSession;
 
     @Override
-    public List<Bottle> selectList() {
+    public List<Bottle> selectList(String keyword) {
 
-		return sqlSession.selectList("bottleMapper.selectAll");
+		return sqlSession.selectList("bottleMapper.selectAll", keyword);
     }
-  
+
+	@Override
+	public List<Bottle> selectNewList() {
+
+		return sqlSession.selectList("bottleMapper.selectNewBottles");
+	}
+
+	@Override
+	public List<Bottle> selectBestList() {
+		return sqlSession.selectList("bottleMapper.selectBestBottles");
+	}
+
+	@Override
+	public List<Bottle> selectRelatedFavoriteList() {
+		return sqlSession.selectList("bottleMapper.selectBestBottles");
+	}
+
+
+
+//	@Override
+//	public List<Bottle> selectSearchBottlesList(String keyword) {
+//		return sqlSession.selectList("bottleMapper.selectAll", keyword);
+//	}
+
 	@Override
 	public Bottle selectOne(int bottleNo) {
 		
@@ -51,4 +74,11 @@ public class BottleDaoImpl implements BottleDao {
 		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
 		
 	}
+
+	@Override
+	public List<Bottle> selectMainList() {
+
+		return sqlSession.selectList("bottleMapper.selectMainBottles");
+	}
+
 }

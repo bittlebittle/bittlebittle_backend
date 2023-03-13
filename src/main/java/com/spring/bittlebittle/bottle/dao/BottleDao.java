@@ -8,7 +8,18 @@ import java.util.List;
 public interface BottleDao {
 
 
-	List<Bottle> selectList();
+	List<Bottle> selectList(String keyword);
+
+	List<Bottle> selectMainList();
+
+	List<Bottle> selectNewList();
+
+	List<Bottle> selectBestList();
+
+	List<Bottle> selectRelatedFavoriteList();
+
+//	List<Bottle> selectSearchBottlesList(String keyword);
+
 	Bottle selectOne(int bottleNo);
 
 	List<Bottle> selectRelatedBottleList(int bottleNo);
@@ -18,5 +29,6 @@ public interface BottleDao {
 	int insertOne(Bottle newBottle);
 
 	void editViewCnt(int bottleNo);
+
 
 }

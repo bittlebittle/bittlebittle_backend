@@ -48,11 +48,6 @@ public class TagServiceImpl implements TagService{
 		
 	}
 
-	@Override
-	public List<Tag> getAbvs() {
-
-		dao.setAbvTag();
-	}
 
 
 }

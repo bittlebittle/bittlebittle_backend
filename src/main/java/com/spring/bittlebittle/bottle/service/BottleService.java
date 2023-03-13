@@ -7,7 +7,10 @@ import java.util.List;
 
 public interface BottleService {
 
-	List<Bottle> getBottles();
+	// 검색,키워드 조회하는 리스트
+	List<Bottle> getBottles(String keyword);
+
+//	List<Bottle> getSearchBottleList(String keyword);
     
 	Bottle getBottle(int bottleNo);
 
@@ -17,6 +20,14 @@ public interface BottleService {
 
 	Bottle editBottle(Bottle updateBottle);
 
+	// 로그인하면 나오는 메인 리스트
+	List<Bottle> getMainBottles();
+
+	// New 리스트
+	List<Bottle> getNewBottles();
 
 
+	List<Bottle> getBestBottles();
+
+	List<Bottle> getRelatedFavoriteList();
 }
