@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.tag.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BottleTag {
+public class TagList {
 
-	private int tagNo;
-	private int bottleNo;
+	private List<Tag> tags;
 }

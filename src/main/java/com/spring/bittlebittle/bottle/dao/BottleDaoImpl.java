@@ -51,4 +51,17 @@ public class BottleDaoImpl implements BottleDao {
 		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
 		
 	}
+	
+	@Override
+	public void deleteOne(int bottleNo) {
+		
+		sqlSession.delete("bottleMapper.deleteOne", bottleNo);
+		
+	}
+	
+	@Override
+	public int selectLastBottleNo() {
+		
+		return sqlSession.selectOne("bottleMapper.selectLastBottleNo");
+	}
 }

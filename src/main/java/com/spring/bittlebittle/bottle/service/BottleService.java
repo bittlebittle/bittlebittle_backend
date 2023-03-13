@@ -17,6 +17,8 @@ public interface BottleService {
 
 	Bottle editBottle(Bottle updateBottle);
 
+	List<Bottle> removeBottle(int bottleNo);
+
 
 
 }

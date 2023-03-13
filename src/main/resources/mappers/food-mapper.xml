@@ -14,10 +14,10 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
    </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultMap="foodResultSet">
+   <select id="selectRelated" parameterType="Integer" resultMap="foodResultSet">
        <![CDATA[   
         SELECT f.food_no_pk
-		FROM food_tab_tb ft
+		FROM food_tag_tb ft
 		INNER JOIN food_tb f
 		ON f.food_no_pk=ft.food_no_fk
 		WHERE tag_no_fk in (
@@ -40,4 +40,37 @@
       ]]>
    </select>
 
+	<select id="selectOne" parameterType="food" resultMap="foodResultSet">
+         SELECT *
+         FROM food_tb
+         WHERE FOOD_NO_PK=#{foodNo}
+   </select>
+   
+   <insert id="insertOne" parameterType="food">
+       <![CDATA[   
+         INSERT INTO food_tb(FOOD_NAME, IMG_URL)
+         VALUES(#{foodName}, #{imgUrl})
+      ]]>
+   </insert>
+   
+   <update id="updateOne" parameterType="food">
+       <![CDATA[   
+         UPDATE food_tb
+         SET FOOD_NAME=#{foodName}, IMG_URL=#{imgUrl}
+         WHERE FOOD_NO_PK=#{foodNo}
+      ]]>
+   </update>
+   
+   <delete id="deleteOne" parameterType="Integer">
+       <![CDATA[   
+         DELETE
+         FROM food_tb
+         WHERE FOOD_NO_PK=#{foodNo}
+      ]]>
+   </delete>
+   
+   <select id="selectLastFoodNo" resultType="Integer">
+         SELECT MAX(FOOD_NO_PK)
+         FROM food_tb
+   </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.favorite.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,19 +17,13 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	@Override
 	public int insertOne(Favorite favorite) {
 		
-		return sqlSession.insert("favoriteMapper", favorite);
+		return sqlSession.insert("favoriteMapper.insertOne", favorite);
 	}
 	
 	@Override
-	public int selectCnt(int bottleNo) {
+	public List<Favorite> selectOne(Favorite favorite) {
 		
-		return sqlSession.selectOne("favoriteMapper.selectCnt", bottleNo);
-	}
-	
-	@Override
-	public int selectOne(Favorite favorite) {
-		
-		return sqlSession.selectOne("favoriteMapper.selectOne", favorite);
+		return sqlSession.selectList("favoriteMapper.selectOne", favorite);
 	}
 	
 	

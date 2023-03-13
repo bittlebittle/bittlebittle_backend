@@ -1,8 +1,6 @@
 package com.spring.bittlebittle.tag.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,49 +10,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
 @RestController
-@RequestMapping(value="/api/admin/tags", produces="application/json; charset=UTF-8")
-public class AdminTagController {
+@RequestMapping(value="/api/admin/tagtypes", produces="application/json; charset=UTF-8")
+public class AdminTagTypeController {
 
 	@Autowired
 	private TagService tservice;
 	
-	// 태그 창 들어갔을 때
+	// 조회
 	@GetMapping
-	public List<Tag> getTag(){
+	public List<TagType> getTagTypes(){
 		
-		List<Tag> tagList = tservice.getAllTags();
+		List<TagType> tagTypeList = tservice.getAllTagTypes();
 		
-		return tagList;
+		return tagTypeList;
 	}
+	
 	// 작성
 	@PostMapping
-	public List<Tag> addTagType(Tag tag){
+	public List<TagType> addTagType(String tagTypeName){
 		
-		List<Tag> tagList = tservice.addTag(tag);
+		List<TagType> tagTypeList = tservice.addTagType(tagTypeName);
 		
-		return tagList;
+		return tagTypeList;
 	}
 	
 	// 수정
 	@PostMapping(value="/set-data")
-	public List<Tag> editTag(Tag tag){
+	public List<TagType> editTagType(TagType tagType){
 		
-		List<Tag> tagList = tservice.editTag(tag);
+		List<TagType> tagTypeList = tservice.editTagType(tagType);
 		
-		return tagList;
+		return tagTypeList;
 	}
 	
 	// 삭제
-	@GetMapping(value="/{tagNo}/deletion")
-	public List<Tag> removeTagType(@PathVariable int tagNo){
+	@GetMapping(value="/{tagTypeNo}/deletion")
+	public List<TagType> removeTagType(@PathVariable int tagTypeNo){
 		
-		List<Tag> tagList = tservice.removeTag(tagNo);
+		List<TagType> tagTypeList = tservice.removeTagType(tagTypeNo);
 		
-		return tagList;
+		return tagTypeList;
 		
 	}
 	

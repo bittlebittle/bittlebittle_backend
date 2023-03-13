@@ -3,6 +3,7 @@ package com.spring.bittlebittle.tag.dao;
 import java.util.List;
 
 import com.spring.bittlebittle.tag.vo.BottleTag;
+import com.spring.bittlebittle.tag.vo.FoodTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
@@ -12,10 +13,29 @@ public interface TagDao {
 
 	List<Tag> selectAllTag();
 
-	List<Tag> selectTag(int bottleNo);
+	List<Tag> selectTagByBottle(int bottleNo);
 
 	void deleteBottleTag(int i);
 
 	void insertBottleTag(List<BottleTag> tagList);
+
+	void insertTagType(String tagTypeName);
+
+	void updateTagType(TagType tagType);
+
+	void deleteTagType(int tagTypeNo);
+
+	void insertTag(Tag tag);
+
+	void updateTag(Tag tag);
+
+	void deleteTag(int tagNo);
+
+	void insertFoodTag(List<FoodTag> foodTagList);
+
+	List<Tag> selectTagByFood(int foodNo);
+
+	void deleteFoodTag(int foodNo);
+
 
 }
