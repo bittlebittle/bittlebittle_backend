@@ -14,6 +14,7 @@ public class Bottle {
 	private String bottleName;
 	private String bottleContent;
 	private String bottleBrand;
+	private double bottleAbv;
 	private int viewCnt;
 	private String createDate;
 	private String imgUrl;

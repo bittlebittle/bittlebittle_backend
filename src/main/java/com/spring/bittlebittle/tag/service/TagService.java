@@ -1,10 +1,10 @@
 package com.spring.bittlebittle.tag.service;
 
-import java.util.List;
-
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
+
+import java.util.List;
 
 public interface TagService {
 
@@ -17,5 +17,6 @@ public interface TagService {
 	void editTag(int i, List<BottleTag> taglist);
 
 	void insertBottleTag(List<BottleTag> tagList);
+
 
 }
