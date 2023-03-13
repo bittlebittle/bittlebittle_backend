@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface BoardDao {
 
-
     List<Board> getBoardList();
     Board getBoard(int boardNo);
     void addBoard(Board board);
