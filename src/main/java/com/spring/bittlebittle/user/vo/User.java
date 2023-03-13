@@ -83,11 +83,11 @@ public class User {
 		this.userMail = userMail;
 	}
 
-	public String getuserPhone() {
+	public String getUserPhone() {
 		return userPhone;
 	}
 
-	public void setuserPhone(String userPhone) {
+	public void setUserPhone(String userPhone) {
 		this.userPhone = userPhone;
 	}
 
@@ -106,6 +106,8 @@ public class User {
 	public void setAdminYn(String adminYn) {
 		this.adminYn = adminYn;
 	}
+    
+    
     
     
 
