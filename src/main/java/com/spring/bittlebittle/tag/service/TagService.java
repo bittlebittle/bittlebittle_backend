@@ -18,5 +18,7 @@ public interface TagService {
 
 	void insertBottleTag(List<BottleTag> tagList);
 
+	List<Tag> getAbvs();
+
 
 }
