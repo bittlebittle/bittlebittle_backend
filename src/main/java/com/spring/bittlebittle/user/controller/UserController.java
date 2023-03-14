@@ -62,6 +62,7 @@ public class UserController {
                                         .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
                                         .build()
                 )){
+
             // 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
             return user;

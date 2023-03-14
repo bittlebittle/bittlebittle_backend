@@ -61,9 +61,9 @@ public class BottleController {
 		Bottle bottle = bservice.getBottle(bottleNo);
 		
 		List<Bottle> relatedBottleList = bservice.getRelatedBottleList(bottleNo);
-		List<Review> reviewList = rservice.getReviews(bottleNo);
-		List<Food> foodList = fservice.getFoods(bottleNo);
-		
+//		List<Review> reviewList = rservice.getReviews(bottleNo);
+//		List<Food> foodList = fservice.getFoods(bottleNo);
+//
 		// userNo -> session 등록되면 session에서 빼오는 걸로 할것
 		
 		int userNo = 1;
@@ -76,8 +76,8 @@ public class BottleController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", bottle);
 		map.put("relatedBottleList", relatedBottleList);
-		map.put("reviewList", reviewList);
-		map.put("foodList",foodList);
+//		map.put("reviewList", reviewList);
+//		map.put("foodList",foodList);
 		map.put("isFavorite", isFavorite);
 		
 		return map;

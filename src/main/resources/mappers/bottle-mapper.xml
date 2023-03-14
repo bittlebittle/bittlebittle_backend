@@ -80,7 +80,7 @@
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
-    <select id="selectBottles" parameterType="bottle" resultMap="bottleResultMap">
+    <select id="selectBottles" parameterType="bottle" resultMap="bottleResultSet">
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
         GROUP_CONCAT(t.tag_name ORDER BY t.tag_name SEPARATOR ', ') AS tag_names
         FROM bottle_tb b
