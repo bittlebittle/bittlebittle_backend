@@ -47,9 +47,9 @@ public class TagDaoImpl implements TagDao{
 	}
 	
 	@Override
-	public void insertBottleTag(List<BottleTag> tagList) {
+	public void insertBottleTag(List<BottleTag> bottleTagList) {
 		
-		sqlSession.delete("tagMapper.insertBottleTag", tagList);
+		sqlSession.delete("tagMapper.insertBottleTag", bottleTagList);
 		
 	}
 	
