@@ -2,10 +2,13 @@ package com.spring.bittlebittle.tag.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +22,9 @@ public class AdminTagTypeController {
 	@Autowired
 	private TagService tservice;
 	
-	// 조회
+	Logger log = LogManager.getLogger("case3");
+	
+	// 조회 (확인완료)
 	@GetMapping
 	public List<TagType> getTagTypes(){
 		
@@ -28,25 +33,29 @@ public class AdminTagTypeController {
 		return tagTypeList;
 	}
 	
-	// 작성
+	// 작성 (확인완료)
 	@PostMapping
-	public List<TagType> addTagType(String tagTypeName){
+	public List<TagType> addTagType(@RequestBody String tagTypeName){
+												// 재료 이렇게만 써야됨	
+		
+		log.debug(tagTypeName);
 		
 		List<TagType> tagTypeList = tservice.addTagType(tagTypeName);
 		
 		return tagTypeList;
 	}
 	
-	// 수정
+	// 수정 (확인완료)
 	@PostMapping(value="/set-data")
-	public List<TagType> editTagType(TagType tagType){
+	public List<TagType> editTagType(@RequestBody TagType tagType){
+										//tagTypeNo, tagTypeName
 		
 		List<TagType> tagTypeList = tservice.editTagType(tagType);
 		
 		return tagTypeList;
 	}
 	
-	// 삭제
+	// 삭제 (확인완료)
 	@GetMapping(value="/{tagTypeNo}/deletion")
 	public List<TagType> removeTagType(@PathVariable int tagTypeNo){
 		

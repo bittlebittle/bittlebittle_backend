@@ -29,7 +29,7 @@ public class FavoriteServiceImpl implements FavoriteService{
 	@Override
 	public List<Favorite> isFavorite(Favorite favorite) {
 		
-		return dao.selectOne(favorite);
+		return dao.selectList(favorite);
 	}
 	
 	@Override

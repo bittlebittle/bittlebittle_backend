@@ -119,7 +119,7 @@ public class BottleServiceImpl implements BottleService {
 		List<Bottle> relatedBottleList = bdao.selectRelatedBottleList(bottleNo);
 		List<Review> reviewList = rdao.selectList(bottleNo);
 		List<Food> foodList = fdao.selectRelatedFoods(bottleNo);
-		List<Favorite> favoriteList = fvdao.selectOne(favorite);
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
 	
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", bottle);

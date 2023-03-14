@@ -44,7 +44,7 @@
 		FROM bottle_tb b
 		INNER JOIN bottle_tag_tb bt
 		ON b.bottle_no_pk=bt.bottle_no_fk
-		WHERE b.bottle_no_pk=#{bottleNo})
+		WHERE b.bottle_no_pk=#{bottleNo}) AND b.STATUS = 'Y'
 		AND bt.bottle_no_fk != #{bottleNo}
 		GROUP BY bottle_no_fk
 		ORDER BY count(tag_no_fk) DESC

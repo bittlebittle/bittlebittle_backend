@@ -15,6 +15,8 @@ public interface ReplyDao {
 
 	int updateOne(Reply reply);
 
-	int deleteOne(Reply reply);
+	int deleteOne(int replyNo);
+
+	void deleteByReview(int reviewNo);
 
 }
