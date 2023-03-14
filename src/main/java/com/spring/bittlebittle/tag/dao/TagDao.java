@@ -18,6 +18,4 @@ public interface TagDao {
 
 	void insertBottleTag(List<BottleTag> tagList);
 
-	List<Tag> setAbvTag();
-
 }

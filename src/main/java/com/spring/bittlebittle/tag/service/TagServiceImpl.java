@@ -47,13 +47,4 @@ public class TagServiceImpl implements TagService{
 		dao.insertBottleTag(tagList);
 		
 	}
-
-	@Override
-	public List<Tag> getAbvs() {
-
-		dao.setAbvTag();
-	}
-
-
-
 }

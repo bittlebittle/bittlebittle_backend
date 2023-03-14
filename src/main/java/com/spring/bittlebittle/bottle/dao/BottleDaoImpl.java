@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class BottleDaoImpl implements BottleDao {
@@ -15,11 +16,19 @@ public class BottleDaoImpl implements BottleDao {
 	@Autowired
 	private SqlSession sqlSession;
 
-    @Override
-    public List<Bottle> selectList(String keyword) {
 
-		return sqlSession.selectList("bottleMapper.selectAll", keyword);
-    }
+	@Override
+	public List<Bottle> selectAllBottles(Map<String, String> param) {
+		return sqlSession.selectList("bottleMapper.selectAll", param);
+	}
+
+
+// 매퍼 작성해야함
+//	@Override
+//	public List<Bottle> selectMainList() {
+//		return sqlSession.selectList();
+//	}
+
 
 	@Override
 	public List<Bottle> selectNewList() {
@@ -34,7 +43,7 @@ public class BottleDaoImpl implements BottleDao {
 
 	@Override
 	public List<Bottle> selectRelatedFavoriteList() {
-		return sqlSession.selectList("bottleMapper.selectBestBottles");
+		return sqlSession.selectList("bottleMapper.selectRelatedFavorite");
 	}
 
 
@@ -74,11 +83,4 @@ public class BottleDaoImpl implements BottleDao {
 		sqlSession.update("bottleMapper.updateViewCnt", bottleNo);
 		
 	}
-
-	@Override
-	public List<Bottle> selectMainList() {
-
-		return sqlSession.selectList("bottleMapper.selectMainBottles");
-	}
-
 }

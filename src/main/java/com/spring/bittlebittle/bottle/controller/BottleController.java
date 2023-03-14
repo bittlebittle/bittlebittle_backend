@@ -9,10 +9,13 @@ import com.spring.bittlebittle.food.vo.Food;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,28 +44,31 @@ public class BottleController {
 //		return selectList;
 //	}
 
-	@GetMapping
-	public Map<String, Object> getBottles(String keyword) {
+	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
+	public Map<String, Object> getBottles(String keyword, String sorted) {
 
-		int userNo = 1;
-		Favorite favorite = new Favorite();
-		favorite.setUserNo(userNo);
+		Logger log = LogManager.getLogger("case3");
 
-		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
-		List<Bottle> selectList = bservice.getBottles(keyword);
-		List<TagType> tagTypeList = tservice.getAllTagTypes();
-		List<Tag> tagList = tservice.getAllTags();
+		Map<String, String> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("sorted", sorted);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("bottle", selectList);
-		map.put("TagType", tagTypeList);
-		map.put("Tag", tagList);
-		map.put("Favorite", favoriteList);
+		log.debug("keyword" + keyword);
+		log.debug("sorted" + sorted);
+//		String keyword = param.get("keyword");
+//		String sorted = param.get("sorted");
+
+//		param.put("keyword", keyword);
+//		param.put("sorted", sorted);
+
+//		String keyword = param.put("keyword");
+//		String sorted = param.get("sorted");
+		Map<String, Object> map = bservice.getBottles(param);
 
 		return map;
 	}
 
-	@GetMapping
+	@GetMapping(params = "sorted = new")
 	public List<Bottle> getNewBottles(){
 
 		List<Bottle> bottlenewList = bservice.getNewBottles();
@@ -70,7 +76,7 @@ public class BottleController {
 		return  bottlenewList;
 	}
 
-	@GetMapping
+	@GetMapping(params = "sorted = best")
 	public List<Bottle> getBestBottles(){
 
 		List<Bottle> bottlebestList = bservice.getBestBottles();
@@ -78,14 +84,13 @@ public class BottleController {
 		return  bottlebestList;
 	}
 
-	@GetMapping
+	@GetMapping(params = "sorted = relatedFavorite")
 	public List<Bottle> getRelatedFavoriteBottles(){
 
 		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
 
 		return  bottleFavoriteList;
 	}
-
 
 
 	@GetMapping
@@ -97,11 +102,15 @@ public class BottleController {
 
 		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
 		List<Bottle> bottleNewList = bservice.getNewBottles();
+		List<Bottle> bottleBestList = bservice.getBestBottles();
+		List<Bottle> bottleRelatedeFavoriteList = bservice.getRelatedFavorite();
 
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("bottle", bottleNewList);
-		map.put("Favorite", favoriteList);
+		map.put("newBottle", bottleNewList);
+		map.put("bestBottle", bottleBestList);
+		map.put("relatedFavorite", bottleRelatedeFavoriteList);
+		map.put("favorite", favoriteList);
 
 		return map;
 	}

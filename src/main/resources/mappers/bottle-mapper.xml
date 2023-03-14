@@ -83,33 +83,29 @@
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
-    <select id="selectAll" parameterType="bottle" resultMap="bottleResultSet">
+    <select id="selectAll" parameterType="java.util.Map" resultMap="bottleResultSet">
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
         GROUP_CONCAT(t.tag_name ORDER BY t.tag_name SEPARATOR ', ') AS tag_names
         FROM bottle_tb b
         JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
         JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
         <where>
---         b.bottle_name IS NOT NULL
---         1=1
-            <if test="tag_name != null" >
-                AND t.tag_name IN
-                <foreach collection="파라미터가 들어가야함" item="tag_name" separator="," open="(" close=")">
-                    #{tag_name}
+            <if test="tagNo != null" >
+                t.tag_no_pk IN
+                <foreach collection="selectList" item="tagNo" separator="," open="(" close=")">
+                    #{tagNo}
                 </foreach>
             </if>
-
             <if test="keyword != null">
-                AND bottle_name LIKE CONCAT('%', #{keyword}, '%')
+                AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
         GROUP BY b.bottle_no_pk
-        HAVING COUNT(DISTINCT t.tag_name) = #{parameter.size()}
     </select>
 
     <!-- NEW 리스트  -->
-    <select id="selectNewBottles" resultMap="bottleResultMap">
-        SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
+    <select id="selectNewBottles" resultMap="bottleResultSet">
+        SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_co ntent, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
@@ -118,7 +114,7 @@
     </select>
 
     <!-- BEST 리스트  -->
-    <select id="selectBestBottles" resultMap="bottleResultMap">
+    <select id="selectBestBottles" resultMap="bottleResultSet">
         SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
@@ -128,8 +124,13 @@
     </select>
 
     <!-- 찜하기기반 리스트  -->
-    <select id="selectFavoriteBottles" resultMap="bottleResultMap">
-
+    <select id="selectRelatedFavorite" resultMap="bottleResultSet">
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk
+        FROM bottle_tb b
+                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+                 JOIN favorite_tb f ON f.bottle_no_fk = bt.bottle_no_fk
+        WHERE bt.tag_no_fk = #{bt.tag_no_fk}
+        order by b.bottle_no_pk desc;
 
     </select>
 
