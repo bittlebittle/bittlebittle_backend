@@ -1,10 +1,12 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-import com.spring.bittlebittle.bottle.vo.Bottle;
-
 import java.util.List;
 import java.util.Map;
+
+import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleInfo;
+
 
 public interface BottleService {
 
@@ -13,13 +15,19 @@ public interface BottleService {
 
 //	List<Bottle> getSearchBottleList(String keyword);
     
-	Bottle getBottle(int bottleNo);
+	Map<String, Object> getBottle(int bottleNo);
+
+	Map<String, Object> getBottleByAdmin(int bottleNo);
 
 	List<Bottle> getRelatedBottleList(int bottleNo);
 
-	int addBottle(Bottle newBottle);
 
-	Bottle editBottle(Bottle updateBottle);
+	Map<String, Object> editBottle(BottleInfo editBottle);
+
+	List<Bottle> removeBottle(int bottleNo);
+
+	List<Bottle> addBottle(BottleInfo bottle);
+
 
 	// 로그인하면 나오는 메인 리스트
 //	List<Bottle> getMainBottles();

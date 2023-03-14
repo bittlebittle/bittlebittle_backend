@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.favorite.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +22,8 @@ public class FavoriteServiceImpl implements FavoriteService{
 	@Transactional
 	public int addFavorite(Favorite favorite) {
 		
-		dao.insertOne(favorite);
 		
-		int favoriteCnt = dao.selectCnt(favorite.getBottleNo());
-		
-		return favoriteCnt;
+		return dao.insertOne(favorite);
 	}
 	
 	@Override

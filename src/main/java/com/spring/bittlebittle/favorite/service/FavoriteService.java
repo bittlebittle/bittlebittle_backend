@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.favorite.service;
 
+import java.util.List;
+
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
 import java.util.List;
