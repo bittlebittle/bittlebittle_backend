@@ -109,4 +109,5 @@ public class TagDaoImpl implements TagDao{
 		sqlSession.delete("tagMapper.deleteFoodTag", foodNo);
 		
 	}
+
 }

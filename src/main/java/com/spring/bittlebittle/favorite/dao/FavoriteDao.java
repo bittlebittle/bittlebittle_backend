@@ -1,10 +1,11 @@
 package com.spring.bittlebittle.favorite.dao;
 
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
 import com.spring.bittlebittle.favorite.vo.Favorite;
+
+import java.util.List;
 
 public interface FavoriteDao {
 

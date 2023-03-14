@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
+import java.util.List;
+
 @Service
 public class FavoriteServiceImpl implements FavoriteService{
 
