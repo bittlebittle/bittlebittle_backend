@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.spring.bittlebittle.food.vo.Food;
+import com.spring.bittlebittle.food.vo.FoodInfo;
 
 public interface FoodDao {
 
@@ -12,11 +13,11 @@ public interface FoodDao {
 
 	List<Food> selectAllFoods();
 
-	void insertOne(Food newFood);
+	void insertOne(FoodInfo newFood);
 
-	Food selectOne(Food newFood);
+	Food selectOne(int foodNo);
 
-	void updateOne(Food editFood);
+	void updateOne(FoodInfo editFood);
 
 	void deleteOne(int foodNo);
 

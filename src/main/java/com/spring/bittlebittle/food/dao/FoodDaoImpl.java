@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bittlebittle.food.vo.Food;
+import com.spring.bittlebittle.food.vo.FoodInfo;
 
 @Repository
 public class FoodDaoImpl implements FoodDao{
@@ -27,20 +28,20 @@ public class FoodDaoImpl implements FoodDao{
 	}
 	
 	@Override
-	public void insertOne(Food newFood) {
+	public void insertOne(FoodInfo newFood) {
 		
 		sqlSession.insert("foodMapper.insertOne", newFood);
 		
 	}
 	
 	@Override
-	public Food selectOne(Food food) {
+	public Food selectOne(int foodNo) {
 		
-		return sqlSession.selectOne("foodMapper.selectOne", food);
+		return sqlSession.selectOne("foodMapper.selectOne", foodNo);
 	}
 
 	@Override
-	public void updateOne(Food editFood) {
+	public void updateOne(FoodInfo editFood) {
 
 		sqlSession.update("foodMapper.updateOne", editFood);
 		

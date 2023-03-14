@@ -40,20 +40,20 @@
       ]]>
    </select>
 
-	<select id="selectOne" parameterType="food" resultMap="foodResultSet">
+	<select id="selectOne" parameterType="Integer" resultMap="foodResultSet">
          SELECT *
          FROM food_tb
          WHERE FOOD_NO_PK=#{foodNo}
    </select>
    
-   <insert id="insertOne" parameterType="food">
+   <insert id="insertOne" parameterType="foodInfo">
        <![CDATA[   
          INSERT INTO food_tb(FOOD_NAME, IMG_URL)
          VALUES(#{foodName}, #{imgUrl})
       ]]>
    </insert>
    
-   <update id="updateOne" parameterType="food">
+   <update id="updateOne" parameterType="foodInfo">
        <![CDATA[   
          UPDATE food_tb
          SET FOOD_NAME=#{foodName}, IMG_URL=#{imgUrl}

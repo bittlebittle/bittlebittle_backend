@@ -64,31 +64,13 @@ public class BottleController {
 
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
+
 		
-		Bottle bottle = bservice.getBottle(bottleNo);
+		Map<String, Object> map = bservice.getBottle(bottleNo);
 		
-		List<Bottle> relatedBottleList = bservice.getRelatedBottleList(bottleNo);
-		List<Review> reviewList = rservice.getReviews(bottleNo);
-		List<Food> foodList = fservice.getRelatedFoods(bottleNo);
-		
-		// userNo -> session 등록되면 session에서 빼오는 걸로 할것
-		
-		int userNo = 1;
-		
-		Favorite favorite = new Favorite(userNo, bottleNo);
-		
-		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
-		// not null 이면 찜되어있는 것.
-	
-		Map<String, Object> map = new HashMap<>();
-		map.put("bottle", bottle);
-		map.put("relatedBottleList", relatedBottleList);
-		map.put("reviewList", reviewList);
-		map.put("foodList",foodList);
-		map.put("isFavorite", favoriteList);
 		
 		return map;
-	}
+	} 
 	
 	// favorite 클릭했을 때
 	@GetMapping(value="/{bottleNo}/favorite")

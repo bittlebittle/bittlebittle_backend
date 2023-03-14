@@ -15,9 +15,9 @@ public interface TagDao {
 
 	List<Tag> selectTagByBottle(int bottleNo);
 
-	void deleteBottleTag(int i);
+	void deleteBottleTag(int bottleNo);
 
-	void insertBottleTag(List<BottleTag> tagList);
+	void insertBottleTag(List<BottleTag> bottleTagList);
 
 	void insertTagType(String tagTypeName);
 

@@ -38,14 +38,14 @@
          SELECT TAG_NO_PK,TAG_TYPE_NO_FK,TAG_NAME
          FROM bottle_tag_tb bt
          INNER JOIN tag_tb t
-         ON bt.bottle_tag_fk=t.tag_no_pk
+         ON bt.TAG_NO_FK=t.tag_no_pk
          WHERE bottle_no_fk = #{bottleNo}
       ]]>
    </select>
    
    <delete id="deleteBottleTag" parameterType="Integer">
        <![CDATA[   
-         DELETE *
+         DELETE
          FROM bottle_tag_tb
          WHERE bottle_no_fk=#{bottleNo}
       ]]>
@@ -55,7 +55,7 @@
    <insert id="insertBottleTag" parameterType="java.util.List">
          INSERT INTO bottle_tag_tb(tag_no_fk, bottle_no_fk)
          VALUES
-         <foreach collection="tagList" item="item" separator=",">
+         <foreach collection="list" item="item" separator=",">
          	(#{item.tagNo}, #{item.bottleNo})
          </foreach>
    </insert>
@@ -77,7 +77,7 @@
    
    <delete id="deleteTagType" parameterType="tagType">
        <![CDATA[   
-         DELETE *
+         DELETE
          FROM bottle_tag_tb
          WHERE TAG_TYPE_NO_PK=#{tagTypeNo}
       ]]>
@@ -100,7 +100,7 @@
    
    <delete id="deleteTag" parameterType="Integer">
        <![CDATA[   
-         DELETE *
+         DELETE
          FROM tag_tb
          WHERE TAG_NO_PK=#{tagNo}
       ]]>
@@ -109,7 +109,7 @@
    <insert id="insertFoodTag" parameterType="java.util.List">
          INSERT INTO food_tag_tb(tag_no_fk, food_no_fk)
          VALUES
-         <foreach collection="foodTagList" item="item" separator=",">
+         <foreach collection="list" item="item" separator=",">
          	(#{item.tagNo}, #{item.foodNo})
          </foreach>
    </insert>
@@ -119,14 +119,14 @@
          SELECT TAG_NO_PK,TAG_TYPE_NO_FK,TAG_NAME
          FROM food_tag_tb ft
          INNER JOIN tag_tb t
-         ON ft.food_tag_fk=t.tag_no_pk
+         ON ft.tag_no_fk=t.tag_no_pk
          WHERE food_no_fk = #{foodNo}
       ]]>
    </select>
    
    <delete id="deleteFoodTag" parameterType="Integer">
        <![CDATA[   
-         DELETE *
+         DELETE
          FROM food_tag_tb
          WHERE food_no_fk=#{foodNo}
       ]]>

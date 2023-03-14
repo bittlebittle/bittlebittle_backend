@@ -1,5 +1,8 @@
 package com.spring.bittlebittle.bottle.vo;
 
+import java.util.List;
+
+import com.spring.bittlebittle.tag.vo.Tag;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Bottle {
+public class BottleInfo {
 
 	private int bottleNo;
 	private String bottleName;
@@ -22,5 +25,5 @@ public class Bottle {
 	private String imgUrl;
 	private String imgCusUrl;
 	private String status;
-
+	private int[] tagNoList;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagList {
+public class TagNoList {
 
-	private List<Tag> tags;
+	private List<Integer> tags;
 }

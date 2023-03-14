@@ -53,7 +53,7 @@
       ]]>
    </select>
 
-   <insert id="insertOne" parameterType="bottle">
+   <insert id="insertOne" parameterType="bottleInfo">
     <![CDATA[   
          INSERT INTO bottle_tb(BOTTLE_NAME, BOTTLE_CONTENT, BOTTLE_BRAND, BOTTLE_ABV, IMG_URL)
          VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv}, #{imgUrl})

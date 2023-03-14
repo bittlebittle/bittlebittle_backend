@@ -1,8 +1,10 @@
 package com.spring.bittlebittle.food.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.spring.bittlebittle.food.vo.Food;
+import com.spring.bittlebittle.food.vo.FoodInfo;
 
 public interface FoodService {
 
@@ -10,11 +12,11 @@ public interface FoodService {
 
 	List<Food> getAllFoods();
 
-	int addFood(Food newFood);
+	Map<String, Object> addFood(FoodInfo newFood);
 
-	Food getFood(Food food);
+	Map<String, Object> getFood(int foodNo);
 
-	List<Food> editFood(Food editFood);
+	Map<String, Object> editFood(FoodInfo editFood);
 
 	List<Food> removeFood(int foodNo);
 
