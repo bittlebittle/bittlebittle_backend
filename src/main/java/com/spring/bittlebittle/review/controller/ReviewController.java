@@ -1,13 +1,15 @@
 package com.spring.bittlebittle.review.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +19,7 @@ import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 
 @RestController
-@RequestMapping(value="/api/bottles/{bottleNo}/reivews", produces="application/json; charset=UTF-8")
+@RequestMapping(value="/api/bottles/{bottleNo}/reviews", produces="application/json; charset=UTF-8")
 public class ReviewController {
 
 	
@@ -26,71 +28,106 @@ public class ReviewController {
 	@Autowired
 	private ReplyService rpservice;
 	
+	Logger log = LogManager.getLogger("case3");
+	
+	
+	// 상품별리뷰리스트조회 (확인완료)
 	@GetMapping
-	public List<Review> getReviews(int bottleNo){
+	public List<Review> getReviews(@PathVariable int bottleNo){
 		
 		List<Review> reviewList = rservice.getReviews(bottleNo);
 		
 		return reviewList;
 	}
 	
+	// 개별리뷰조회 (확인완료)
 	@GetMapping(value="/{reviewNo}")
 	public Map<String, Object> getReview(@PathVariable int reviewNo) {
 		
-		Review review = rservice.getReview(reviewNo);
-		List<Reply> replyList= rpservice.getReplies(reviewNo);
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("review", review);
-		map.put("replyList", replyList);
+		Map<String, Object> map = rservice.getReview(reviewNo);
 		
 		return map;
 	}
 	
-	
+	// 리뷰등록 (확인완료)
 	@PostMapping
-	public List<Review> addReview(Review review){
+	public List<Review> addReview(@PathVariable int bottleNo, 
+			@RequestBody Review review){
+		
+		int userNo=1;
+		
+		review.setUserNo(userNo);
+		review.setBottleNo(bottleNo);
 		
 		List<Review> reviewList = rservice.addReview(review);
 		
 		return reviewList;
 	}
 	
+	// 리뷰수정 (확인완료)
 	@PostMapping(value="/set-data")
-	public List<Review> editReveiw(Review review){
+	public List<Review> editReveiw(@PathVariable int bottleNo, @RequestBody Review review){
+																			// reviewNo도 데이터로 보내줘야함
+		
+		review.setBottleNo(bottleNo);
+		
+		log.debug(review);
 		
 		List<Review> reviewList = rservice.editReview(review);
 		
 		return reviewList;
 	}
 	
-	@GetMapping(value="/deletion")
-	public List<Review> deleteReview(Review review){
+	// 리뷰삭제 (확인완료)
+	@GetMapping(value="/{reviewNo}/deletion")
+	public List<Review> deleteReview(@PathVariable int bottleNo, @PathVariable int reviewNo){
 		
-		List<Review> reviewList = rservice.removeReview(review);
+		List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
 		
 		return reviewList;
 	}
 	
-	@PostMapping(value="/replies")
-	public List<Reply> addReply(Reply reply){
-
+	// 리뷰댓글조회 (확인완료)
+	@GetMapping(value="/{reviewNo}/replies")
+	public List<Reply> getReplies(@PathVariable int reviewNo){
+		
+		List<Reply> replyList = rpservice.getReplies(reviewNo);
+		
+		return replyList;
+	}
+	
+	// 리뷰댓글작성 (확인완료)
+	@PostMapping(value="/{reviewNo}/replies")
+	public List<Reply> addReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+																		// replyContent
+		int userNo = 1;
+		
+		reply.setReviewNo(reviewNo);
+		reply.setUserNo(userNo);
+		
 		List<Reply> replyList = rpservice.addReply(reply);
 		
 		return replyList;
 	}
 	
-	@PostMapping(value="/replies/set-data")
-	public List<Reply> updateReply(Reply reply){
+	// 리뷰댓글수정 (확인완료)
+	@PostMapping(value="/{reviewNo}/replies/set-data")
+	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+												// replyNo, replyContent
+		
+		reply.setReviewNo(reviewNo);
 		
 		List<Reply> replyList = rpservice.editReply(reply);
 		
 		return replyList;
 	}
 	
-	@GetMapping(value="/replies/deletion")
-	public List<Reply> deleteReply(Reply reply){
-		List<Reply> replyList = rpservice.removeReply(reply);
+	// 리뷰댓글삭제 (확인완료)
+	@GetMapping(value="/{reviewNo}/replies/{replyNo}/deletion")
+	public List<Reply> deleteReply(@PathVariable int reviewNo,
+			@PathVariable int replyNo){
+		List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
 		
 		return replyList;
 	}

@@ -46,11 +46,11 @@ public class ReplyServiceImpl implements ReplyService{
 	
 	@Override
 	@Transactional
-	public List<Reply> removeReply(Reply reply) {
+	public List<Reply> removeReply(int reviewNo, int replyNo) {
 		
-		dao.deleteOne(reply);
+		dao.deleteOne(replyNo);
 		
-		List<Reply> list = dao.selectList(reply.getReviewNo());
+		List<Reply> list = dao.selectList(reviewNo);
 		
 		return list;
 	}
