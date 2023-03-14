@@ -125,6 +125,7 @@ public class TagServiceImpl implements TagService{
 	}
 
 	@Override
+	@Transactional
 	public void editFoodTag(int foodNo, List<FoodTag> foodTagList) {
 
 		dao.deleteFoodTag(foodNo);
@@ -133,6 +134,7 @@ public class TagServiceImpl implements TagService{
 	}
 	
 	@Override
+	@Transactional
 	public void removeFoodTag(int foodNo) {
 		
 		dao.deleteFoodTag(foodNo);

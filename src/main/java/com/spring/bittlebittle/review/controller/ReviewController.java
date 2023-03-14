@@ -79,33 +79,55 @@ public class ReviewController {
 		return reviewList;
 	}
 	
-	@GetMapping(value="/deletion")
-	public List<Review> deleteReview(Review review){
+	// 리뷰삭제 (확인완료)
+	@GetMapping(value="/{reviewNo}/deletion")
+	public List<Review> deleteReview(@PathVariable int bottleNo, @PathVariable int reviewNo){
 		
-		List<Review> reviewList = rservice.removeReview(review);
+		List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
 		
 		return reviewList;
 	}
 	
-	@PostMapping(value="/replies")
-	public List<Reply> addReply(Reply reply){
-
+	// 리뷰댓글조회 (확인완료)
+	@GetMapping(value="/{reviewNo}/replies")
+	public List<Reply> getReplies(@PathVariable int reviewNo){
+		
+		List<Reply> replyList = rpservice.getReplies(reviewNo);
+		
+		return replyList;
+	}
+	
+	// 리뷰댓글작성 (확인완료)
+	@PostMapping(value="/{reviewNo}/replies")
+	public List<Reply> addReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+																		// replyContent
+		int userNo = 1;
+		
+		reply.setReviewNo(reviewNo);
+		reply.setUserNo(userNo);
+		
 		List<Reply> replyList = rpservice.addReply(reply);
 		
 		return replyList;
 	}
 	
-	@PostMapping(value="/replies/set-data")
-	public List<Reply> updateReply(Reply reply){
+	// 리뷰댓글수정 (확인완료)
+	@PostMapping(value="/{reviewNo}/replies/set-data")
+	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+												// replyNo, replyContent
+		
+		reply.setReviewNo(reviewNo);
 		
 		List<Reply> replyList = rpservice.editReply(reply);
 		
 		return replyList;
 	}
 	
-	@GetMapping(value="/replies/deletion")
-	public List<Reply> deleteReply(Reply reply){
-		List<Reply> replyList = rpservice.removeReply(reply);
+	// 리뷰댓글삭제 (확인완료)
+	@GetMapping(value="/{reviewNo}/replies/{replyNo}/deletion")
+	public List<Reply> deleteReply(@PathVariable int reviewNo,
+			@PathVariable int replyNo){
+		List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
 		
 		return replyList;
 	}

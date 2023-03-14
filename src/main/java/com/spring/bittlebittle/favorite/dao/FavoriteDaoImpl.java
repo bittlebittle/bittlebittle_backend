@@ -21,7 +21,7 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	}
 	
 	@Override
-	public List<Favorite> selectOne(Favorite favorite) {
+	public List<Favorite> selectList(Favorite favorite) {
 		
 		return sqlSession.selectList("favoriteMapper.selectOne", favorite);
 	}
