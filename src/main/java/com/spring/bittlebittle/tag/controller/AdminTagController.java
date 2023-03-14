@@ -1,17 +1,13 @@
 package com.spring.bittlebittle.tag.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.spring.bittlebittle.tag.service.TagService;
+import com.spring.bittlebittle.tag.vo.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/admin/tags", produces="application/json; charset=UTF-8")
@@ -22,15 +18,10 @@ public class AdminTagController {
 	
 	// 태그 창 들어갔을 때
 	@GetMapping
-	public Map<String, Object> getTag(){
-		
-		List<TagType> tagTypeList = tservice.getAllTagTypes();
+	public List<Tag>  getTag(){
+
 		List<Tag> tagList = tservice.getAllTags();
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("tagTypeList", tagTypeList);
-		map.put("tagList", tagList);
-		
-		return map;
+		return tagList;
 	}
 }

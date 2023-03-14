@@ -20,17 +20,13 @@ public class FavoriteServiceImpl implements FavoriteService{
 	@Transactional
 	public int addFavorite(Favorite favorite) {
 		
-		dao.insertOne(favorite);
-		
-		int favoriteCnt = dao.selectCnt(favorite.getBottleNo());
-		
-		return favoriteCnt;
+		return dao.insertOne(favorite);
 	}
 	
 	@Override
 	public List<Favorite> isFavorite(Favorite favorite) {
 		
-		return dao.selectOne(favorite);
+		return dao.selectList(favorite);
 	}
 	
 	@Override

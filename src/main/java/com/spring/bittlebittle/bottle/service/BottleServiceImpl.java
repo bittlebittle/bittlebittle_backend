@@ -39,14 +39,26 @@ public class BottleServiceImpl implements BottleService {
     @Override
     public Map<String, Object> getBottles(Map<String, String> param) {
 
+		String sorted = param.get("sorted");
+		String orderby = "";
+		switch (sorted) {
+			case "new" : orderby="b.create_date desc, b.bottle_no_pk desc"; break;
+			case "best" : orderby= "order by grade desc, b.create_date desc;"; break;
+			case "relatedFavorite" : orderby="ORDER BY b.bottle_no_pk desc;"; break;
+			default: new Exception("잘못된 입력값");
+		}
+
+		param.put("orderby", orderby);
+
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
-		List<Favorite> favoriteList = fvdao.selectOne(favorite);
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(param);
 		List<TagType> tagTypeList = tdao.selectAllTagType();
 		List<Tag> tagList = tdao.selectAllTag();
+
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);

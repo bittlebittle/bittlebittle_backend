@@ -22,7 +22,7 @@
    <select id="selectAllTagType" resultMap="tagTypeResultSet">
        <![CDATA[   
          SELECT *
-         FROM tagtype_tb
+         FROM tag_type_tb
       ]]>
    </select>
 

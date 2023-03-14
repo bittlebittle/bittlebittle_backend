@@ -37,17 +37,14 @@ public class BottleController {
 
 	@Autowired
 	private TagService tservice;
-	
-//	@GetMapping
-//	public List<Bottle> getBottles() {
-//		List<Bottle> selectList = bservice.getBottles();
-//		return selectList;
-//	}
 
+
+	Logger log = LogManager.getLogger("case3");
+
+	// 리스트, 키워드는 확인 완료
+	// 태그 선택은 확인 해야함
 	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
 	public Map<String, Object> getBottles(String keyword, String sorted) {
-
-		Logger log = LogManager.getLogger("case3");
 
 		Map<String, String> param = new HashMap<>();
 		param.put("keyword", keyword);
@@ -55,14 +52,7 @@ public class BottleController {
 
 		log.debug("keyword" + keyword);
 		log.debug("sorted" + sorted);
-//		String keyword = param.get("keyword");
-//		String sorted = param.get("sorted");
 
-//		param.put("keyword", keyword);
-//		param.put("sorted", sorted);
-
-//		String keyword = param.put("keyword");
-//		String sorted = param.get("sorted");
 		Map<String, Object> map = bservice.getBottles(param);
 
 		return map;
@@ -92,7 +82,7 @@ public class BottleController {
 		return  bottleFavoriteList;
 	}
 
-
+	// 확인 완료
 	@GetMapping
 	public Map<String, Object> getMainBottles() {
 

@@ -8,9 +8,7 @@ public interface FavoriteDao {
 
 	int insertOne(Favorite favorite);
 
-	int selectCnt(int bottleNo);
-
-	List<Favorite> selectOne(Favorite favorite);
+	List<Favorite> selectList(Favorite favorite);
 
 	int deleteOne(Favorite favorite);
 

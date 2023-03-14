@@ -38,11 +38,13 @@ public class BottleDaoImpl implements BottleDao {
 
 	@Override
 	public List<Bottle> selectBestList() {
+
 		return sqlSession.selectList("bottleMapper.selectBestBottles");
 	}
 
 	@Override
 	public List<Bottle> selectRelatedFavoriteList() {
+
 		return sqlSession.selectList("bottleMapper.selectRelatedFavorite");
 	}
 
