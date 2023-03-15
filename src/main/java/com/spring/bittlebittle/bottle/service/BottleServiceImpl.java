@@ -4,6 +4,7 @@ package com.spring.bittlebittle.bottle.service;
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.dao.FoodDao;
@@ -14,7 +15,6 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,44 +43,46 @@ public class BottleServiceImpl implements BottleService {
 
 	// 전체 리스트
     @Override
-    public Map<String, Object> getBottles(Map<String, String> param) {
+    public Map<String, Object> getBottles(BottleSearch bottleSearch) {
 
-
-		String sorted = param.get("sorted");
-		String orderby = "";
-		switch (sorted) {
-			case "new" : orderby="b.create_date desc, b.bottle_no_pk desc"; break;
-			case "best" : orderby= "order by grade desc, b.create_date desc;"; break;
-			case "relatedFavorite" : orderby="ORDER BY b.bottle_no_pk desc;"; break;
-			default: new Exception("잘못된 입력값");
-		}
-
-		param.put("orderby", orderby);
+		//String sorted = param.get("sorted");
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
-		List<Bottle> allBottles = bdao.selectAllBottles(param);
-		List<TagType> tagTypeList = tdao.selectAllTagType();
-		List<Tag> tagList = tdao.selectAllTag();
+		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
 
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
-		map.put("TagType", tagTypeList);
-		map.put("Tag", tagList);
 		map.put("Favorite", favoriteList);
 
 		return map;
     }
 	// 메인 리스트
-//	@Override
-//	public List<Bottle> getMainBottles( ) {
-//		return bdao.selectMainList();
-//
-//	}
+	@Override
+	public Map<String, Object> getMainBottles( ) {
+
+		int userNo = 1;
+		Favorite favorite = new Favorite();
+		favorite.setUserNo(userNo);
+
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
+		List<Bottle> bottleNewList = bdao.selectNewList();
+		List<Bottle> bottleBestList = bdao.selectBestList();
+		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("newBottle", bottleNewList);
+		map.put("bestBottle", bottleBestList);
+		map.put("relatedFavorite", bottleRelatedeFavoriteList);
+		map.put("favorite", favoriteList);
+
+		return map;
+	}
+
 	// New 리스트
 	@Override
 	public List<Bottle> getNewBottles() {
@@ -98,14 +100,6 @@ public class BottleServiceImpl implements BottleService {
 	public List<Bottle> getRelatedFavorite() {
 		return bdao.selectRelatedFavoriteList();
 	}
-
-
-	// 키워드 검색
-//	@Override
-//	public List<Bottle> getSearchBottleList(String keyword) {
-//		return dao.selectSearchBottlesList(keyword);
-//	}
-
 
 	@Override
 	@Transactional
