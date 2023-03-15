@@ -2,6 +2,7 @@ package com.spring.bittlebittle.tag.service;
 
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
+import com.spring.bittlebittle.tag.vo.FoodTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,22 +30,113 @@ public class TagServiceImpl implements TagService{
 	}
 	
 	@Override
-	public List<Tag> getTags(int bottleNo) {
+	public List<Tag> getTagsByBottle(int bottleNo) {
 		
-		return dao.selectTag(bottleNo);
+		return dao.selectTagByBottle(bottleNo);
 	}
 	
 	@Override
 	@Transactional
-	public void editTag(int i, List<BottleTag> tagList) {
+	public void editBottleTag(int bottleNo, List<BottleTag> tagList) {
 		
-		dao.deleteBottleTag(i);
+		dao.deleteBottleTag(bottleNo);
 		dao.insertBottleTag(tagList);
 		
 	}
 	@Override
-	public void insertBottleTag(List<BottleTag> tagList) {
+	@Transactional
+	public void addBottleTag(List<BottleTag> tagList) {
 		dao.insertBottleTag(tagList);
 		
 	}
+	
+	@Override
+	@Transactional
+	public void removeBottleTag(int bottleNo) {
+		
+		dao.deleteBottleTag(bottleNo);
+		
+	}
+	
+	@Override
+	@Transactional
+	public List<TagType> addTagType(String tagTypeName) {
+		dao.insertTagType(tagTypeName);
+		
+		return dao.selectAllTagType();
+	}
+	
+	@Override
+	@Transactional
+	public List<TagType> editTagType(TagType tagType) {
+		
+		dao.updateTagType(tagType);
+		
+		return dao.selectAllTagType();
+	}
+	
+	@Override
+	@Transactional
+	public List<TagType> removeTagType(int tagTypeNo) {
+
+		dao.deleteTagType(tagTypeNo);
+		
+		return dao.selectAllTagType();
+	}
+	
+	@Override
+	@Transactional
+	public List<Tag> addTag(Tag tag) {
+		
+		dao.insertTag(tag);
+
+		return dao.selectAllTag();
+	}
+
+	@Override
+	@Transactional
+	public List<Tag> editTag(Tag tag) {
+		
+		dao.updateTag(tag);
+		
+		return dao.selectAllTag();
+	}
+	
+	@Override
+	@Transactional
+	public List<Tag> removeTag(int tagNo) {
+
+		dao.deleteTag(tagNo);
+		return dao.selectAllTag();
+	}
+	
+	@Override
+	@Transactional
+	public void addFoodTag(List<FoodTag> foodTagList) {
+		
+		dao.insertFoodTag(foodTagList);
+		
+	}
+	
+	@Override
+	public List<Tag> getTagsByFood(int foodNo) {
+		
+		return dao.selectTagByFood(foodNo);
+	}
+
+	@Override
+	public void editFoodTag(int foodNo, List<FoodTag> foodTagList) {
+
+		dao.deleteFoodTag(foodNo);
+		dao.insertFoodTag(foodTagList);
+		
+	}
+	
+	@Override
+	public void removeFoodTag(int foodNo) {
+		
+		dao.deleteFoodTag(foodNo);
+		
+	}
+
 }

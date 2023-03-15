@@ -42,8 +42,8 @@
 
   <update id="deleteOne" parameterType="reply">
        <![CDATA[   
-         DELETE
-         FROM reply_tb
+         UPDATE reply_tb
+         SET STATUS = 'N'
          WHERE REPLY_NO_PK=#{replyNo}
       ]]>
    </update>

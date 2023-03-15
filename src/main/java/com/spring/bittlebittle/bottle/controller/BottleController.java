@@ -5,9 +5,7 @@ import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.food.vo.Food;
 import com.spring.bittlebittle.review.service.ReviewService;
-import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.service.TagService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
@@ -109,38 +108,40 @@ public class BottleController {
 
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
-		
-		Bottle bottle = bservice.getBottle(bottleNo);
-		
-		List<Bottle> relatedBottleList = bservice.getRelatedBottleList(bottleNo);
-		List<Review> reviewList = rservice.getReviews(bottleNo);
-		List<Food> foodList = fservice.getFoods(bottleNo);
-		
-		// userNo -> session 등록되면 session에서 빼오는 걸로 할것
-		
-		int userNo = 1;
-		
-		Favorite favorite = new Favorite(userNo, bottleNo);
 
-		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
-		// 1이면 찜이 되어있는 것, 0이면 찜이 안 되어있는 것.
-	
-		Map<String, Object> map = new HashMap<>();
-		map.put("bottle", bottle);
-		map.put("relatedBottleList", relatedBottleList);
-		map.put("reviewList", reviewList);
-		map.put("foodList",foodList);
-		map.put("isFavorite", favoriteList);
+		
+		Map<String, Object> map = bservice.getBottle(bottleNo);
+		
 		
 		return map;
-	}
+	} 
 	
+	// favorite 클릭했을 때
 	@GetMapping(value="/{bottleNo}/favorite")
-	public List<Favorite> isFavorite(Favorite favorite) {
+	public List<Favorite> isFavorite(@PathVariable int bottleNo) {
+		
+		
+		// userNo -> session 등록되면 session에서 빼오는 것으로 할 것 
+		int userNo = 1;
+		
+
+		Favorite favorite = new Favorite(userNo, bottleNo);
+
 		
 		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
+		
+		
+		if(favoriteList.isEmpty()) {
+			fvservice.addFavorite(favorite);
+		} else {
+			fvservice.removeFavorite(favorite);
+		}
+		
+		
+		List<Favorite> newFavoriteList = fvservice.isFavorite(favorite);
+		
+		return newFavoriteList;
 
-		return favoriteList;
 	}
 
 
