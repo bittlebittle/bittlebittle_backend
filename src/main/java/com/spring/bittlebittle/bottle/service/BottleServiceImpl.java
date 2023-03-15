@@ -29,6 +29,8 @@ import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
+
 
 @Service
 public class BottleServiceImpl implements BottleService {
@@ -46,19 +48,22 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private FavoriteDao fvdao;
 
+	private Logger log = getLogger("case3");
+
+
 	// 전체 리스트
     @Override
     public Map<String, Object> getBottles(Map<String, String> param) {
 
 	
-	Logger log = LogManager.getLogger("case3");
+	Logger log = getLogger("case3");
 
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
-		List<Favorite> favoriteList = fvdao.selectOne(favorite);
+//		List<Favorite> favoriteList = fvdao.selectOne(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(param);
 		List<TagType> tagTypeList = tdao.selectAllTagType();
 		List<Tag> tagList = tdao.selectAllTag();
@@ -67,7 +72,7 @@ public class BottleServiceImpl implements BottleService {
 		map.put("bottle", allBottles);
 		map.put("TagType", tagTypeList);
 		map.put("Tag", tagList);
-		map.put("Favorite", favoriteList);
+//		map.put("Favorite", favoriteList);
 
 		return map;
     }
