@@ -99,7 +99,9 @@
                 order by grade desc, b.bottle_no_pk desc
             </when>
 <!--
+
             <when test='sorted=="relatedFavorite"'>—>
+
                 AND ORDER BY b.bottle_no_pk desc;—>
             </when>
 -->
@@ -107,7 +109,6 @@
                 order by b.create_date desc, b.bottle_no_pk desc
             </otherwise>
         </choose>
-        
     </select>
 
     <!-- NEW 리스트  -->

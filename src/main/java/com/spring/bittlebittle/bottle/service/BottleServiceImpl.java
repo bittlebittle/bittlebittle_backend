@@ -26,6 +26,9 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -50,15 +53,12 @@ public class BottleServiceImpl implements BottleService {
     @Override
     public Map<String, Object> getBottles(BottleSearch bottleSearch) {
 
-
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
-		
-		log.debug(allBottles);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
@@ -67,11 +67,27 @@ public class BottleServiceImpl implements BottleService {
 		return map;
     }
 	// 메인 리스트
-//	@Override
-//	public List<Bottle> getMainBottles( ) {
-//		return bdao.selectMainList();
-//
-//	}
+	@Override
+	public Map<String, Object> getMainBottles( ) {
+
+		int userNo = 1;
+		Favorite favorite = new Favorite();
+		favorite.setUserNo(userNo);
+
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
+		List<Bottle> bottleNewList = bdao.selectNewList();
+		List<Bottle> bottleBestList = bdao.selectBestList();
+		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("newBottle", bottleNewList);
+		map.put("bestBottle", bottleBestList);
+		map.put("relatedFavorite", bottleRelatedeFavoriteList);
+		map.put("favorite", favoriteList);
+
+		return map;
+	}
+
 	// New 리스트
 	@Override
 	public List<Bottle> getNewBottles() {
@@ -89,14 +105,6 @@ public class BottleServiceImpl implements BottleService {
 	public List<Bottle> getRelatedFavorite() {
 		return bdao.selectRelatedFavoriteList();
 	}
-
-
-	// 키워드 검색
-//	@Override
-//	public List<Bottle> getSearchBottleList(String keyword) {
-//		return dao.selectSearchBottlesList(keyword);
-//	}
-
 
 	@Override
 	@Transactional

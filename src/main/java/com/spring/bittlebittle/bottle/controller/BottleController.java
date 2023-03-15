@@ -3,7 +3,6 @@ package com.spring.bittlebittle.bottle.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,18 @@ import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
-
+import com.spring.bittlebittle.bottle.service.BottleService;
+import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
+import com.spring.bittlebittle.favorite.service.FavoriteService;
+import com.spring.bittlebittle.favorite.vo.Favorite;
+import com.spring.bittlebittle.food.service.FoodService;
+import com.spring.bittlebittle.review.service.ReviewService;
+import com.spring.bittlebittle.tag.service.TagService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -48,7 +58,6 @@ public class BottleController {
 	// 태그 선택은 확인 해야함
 	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
 	public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
-
 
 		Map<String, Object> map = bservice.getBottles(bottleSearch);
 
@@ -83,21 +92,7 @@ public class BottleController {
 	@GetMapping
 	public Map<String, Object> getMainBottles() {
 
-		int userNo = 1;
-		Favorite favorite = new Favorite();
-		favorite.setUserNo(userNo);
-
-		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
-		List<Bottle> bottleNewList = bservice.getNewBottles();
-		List<Bottle> bottleBestList = bservice.getBestBottles();
-		List<Bottle> bottleRelatedeFavoriteList = bservice.getRelatedFavorite();
-
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("newBottle", bottleNewList);
-		map.put("bestBottle", bottleBestList);
-		map.put("relatedFavorite", bottleRelatedeFavoriteList);
-		map.put("favorite", favoriteList);
+		Map<String, Object> map = bservice.getMainBottles();
 
 		return map;
 	}
