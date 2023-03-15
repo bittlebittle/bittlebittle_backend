@@ -85,7 +85,7 @@
                     #{tagNo}
                 </foreach>
                 GROUP BY b.bottle_no_pk
-                HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
+        		HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
             </if>
             <if test="keyword != null">
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
@@ -99,15 +99,16 @@
                 order by grade desc, b.bottle_no_pk desc
             </when>
 <!--
-            <when test="sorted==relatedFavorite">—>
+
+            <when test='sorted=="relatedFavorite"'>—>
+
                 AND ORDER BY b.bottle_no_pk desc;—>
             </when>
 -->
             <otherwise>
-                order by b.create_date desc
+                order by b.create_date desc, b.bottle_no_pk desc
             </otherwise>
         </choose>
-        GROUP BY b.bottle_no_pk
     </select>
 
     <!-- NEW 리스트  -->

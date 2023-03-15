@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BottleSearch {
 
-    private String keyword;
-    private String sorted;
-    private int[] tagNoList;
-}
+	private String keyword;
+	private String sorted;
+	private int[] tagNoList;
+  
+  }

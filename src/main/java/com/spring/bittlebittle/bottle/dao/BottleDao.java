@@ -4,11 +4,10 @@ package com.spring.bittlebittle.bottle.dao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
-
 import java.util.List;
 
-public interface BottleDao {
 
+public interface BottleDao {
 
 	List<Bottle> selectAllBottles(BottleSearch bottleSearch);
 

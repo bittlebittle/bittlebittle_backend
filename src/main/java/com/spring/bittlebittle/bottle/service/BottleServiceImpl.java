@@ -1,6 +1,17 @@
 package com.spring.bittlebittle.bottle.service;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
@@ -19,11 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 
 @Service
 public class BottleServiceImpl implements BottleService {
@@ -41,11 +47,11 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private FavoriteDao fvdao;
 
+	Logger log = LogManager.getLogger("case3");
+	
 	// 전체 리스트
     @Override
     public Map<String, Object> getBottles(BottleSearch bottleSearch) {
-
-		//String sorted = param.get("sorted");
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
@@ -53,7 +59,6 @@ public class BottleServiceImpl implements BottleService {
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
-
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
