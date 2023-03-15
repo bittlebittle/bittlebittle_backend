@@ -1,5 +1,9 @@
 package com.spring.bittlebittle.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.bittlebittle.board.service.BoardServiceImpl;
 import com.spring.bittlebittle.board.vo.Board;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 //import com.spring.bittlebittle.NotAuthorizedException;
 
@@ -44,7 +51,8 @@ public class BoardController {
     }
 
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> addBoard(@RequestBody Board board) {
+    public ResponseEntity<Board> addBoard(@RequestBody  Board board) {
+
         boardService.addBoard(board);
         return new ResponseEntity<>(board, HttpStatus.CREATED);
     }
@@ -69,4 +77,5 @@ public class BoardController {
 //            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 //        }
     }
+
 }

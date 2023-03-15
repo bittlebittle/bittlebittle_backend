@@ -25,8 +25,8 @@ public class BoardDaoImpl implements BoardDao{
         return sqlSession.selectOne("BoardMapper.getBoard", boardNo);
     }
 
-    public void addBoard(Board board) {
-        sqlSession.insert("BoardMapper.addBoard", board);
+    public int addBoard(Board board) {
+        return sqlSession.insert("BoardMapper.addBoard", board);
     }
 
     public void updateBoard(Board board) {
