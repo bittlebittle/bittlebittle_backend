@@ -140,4 +140,5 @@ public class TagServiceImpl implements TagService{
 		dao.deleteFoodTag(foodNo);
 		
 	}
+
 }

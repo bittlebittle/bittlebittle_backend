@@ -1,9 +1,12 @@
 package com.spring.bittlebittle.bottle.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.spring.bittlebittle.bottle.service.BottleService;
+import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.favorite.service.FavoriteService;
+import com.spring.bittlebittle.favorite.vo.Favorite;
+import com.spring.bittlebittle.food.service.FoodService;
+import com.spring.bittlebittle.review.service.ReviewService;
+import com.spring.bittlebittle.tag.service.TagService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
-import com.spring.bittlebittle.favorite.service.FavoriteService;
-import com.spring.bittlebittle.favorite.vo.Favorite;
-import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.food.vo.Food;
-import com.spring.bittlebittle.review.service.ReviewService;
-import com.spring.bittlebittle.review.vo.Review;
-import com.spring.bittlebittle.tag.service.TagService;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
@@ -38,28 +36,74 @@ public class BottleController {
 
 	@Autowired
 	private TagService tservice;
-	
+
+
 	Logger log = LogManager.getLogger("case3");
-	
-	@GetMapping
-	public List<Bottle> getBottles() {
-		List<Bottle> selectList = bservice.getBottles();
-		return selectList;
+
+	// 리스트, 키워드는 확인 완료
+	// 태그 선택은 확인 해야함
+	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
+	public Map<String, Object> getBottles(String keyword, String sorted) {
+
+		Map<String, String> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("sorted", sorted);
+
+		log.debug("keyword" + keyword);
+		log.debug("sorted" + sorted);
+
+		Map<String, Object> map = bservice.getBottles(param);
+
+		return map;
 	}
 
-//	@GetMapping
-//	public List<Bottle> getBottles() {
-//		// 도수, 맛 , 종류, 탄산, 나라, 상황
-//
-//		List<Bottle> selectList = bservice.getBottles();
-//		List<String> abvList = tservice;
-//
-//		List<String> tasteList = new ArrayList<>();
-//
-//
-//
-//		return selectList;
-//	}
+	@GetMapping(params = "sorted = new")
+	public List<Bottle> getNewBottles(){
+
+		List<Bottle> bottlenewList = bservice.getNewBottles();
+
+		return  bottlenewList;
+	}
+
+	@GetMapping(params = "sorted = best")
+	public List<Bottle> getBestBottles(){
+
+		List<Bottle> bottlebestList = bservice.getBestBottles();
+
+		return  bottlebestList;
+	}
+
+	@GetMapping(params = "sorted = relatedFavorite")
+	public List<Bottle> getRelatedFavoriteBottles(){
+
+		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
+
+		return  bottleFavoriteList;
+	}
+
+	// 확인 완료
+	@GetMapping
+	public Map<String, Object> getMainBottles() {
+
+		int userNo = 1;
+		Favorite favorite = new Favorite();
+		favorite.setUserNo(userNo);
+
+		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
+		List<Bottle> bottleNewList = bservice.getNewBottles();
+		List<Bottle> bottleBestList = bservice.getBestBottles();
+		List<Bottle> bottleRelatedeFavoriteList = bservice.getRelatedFavorite();
+
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("newBottle", bottleNewList);
+		map.put("bestBottle", bottleBestList);
+		map.put("relatedFavorite", bottleRelatedeFavoriteList);
+		map.put("favorite", favoriteList);
+
+		return map;
+	}
+
 
 	
 	// 개별조회 (확인완료)
@@ -83,6 +127,7 @@ public class BottleController {
 		
 
 		Favorite favorite = new Favorite(userNo, bottleNo);
+
 		
 		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
 		
@@ -97,6 +142,9 @@ public class BottleController {
 		List<Favorite> newFavoriteList = fvservice.isFavorite(favorite);
 		
 		return newFavoriteList;
+
 	}
+
+
 
 }

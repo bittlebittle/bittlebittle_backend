@@ -10,7 +10,10 @@ import com.spring.bittlebittle.bottle.vo.BottleInfo;
 
 public interface BottleService {
 
-	List<Bottle> getBottles();
+	// 검색,키워드 조회하는 리스트
+	Map<String, Object> getBottles(Map<String, String> param);
+
+//	List<Bottle> getSearchBottleList(String keyword);
     
 	Map<String, Object> getBottle(int bottleNo);
 
@@ -26,6 +29,15 @@ public interface BottleService {
 	List<Bottle> addBottle(BottleInfo bottle);
 
 
+	// 로그인하면 나오는 메인 리스트
+//	List<Bottle> getMainBottles();
 
+	// New 리스트
+	List<Bottle> getNewBottles();
 
+	// Best 리스트
+	List<Bottle> getBestBottles();
+
+	// 찜하기 관련 리스트
+	List<Bottle> getRelatedFavorite();
 }

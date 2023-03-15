@@ -42,6 +42,7 @@
                 <value>classpath:mappers/favorite-mapper.xml</value>
                 <value>classpath:mappers/tag-mapper.xml</value>
                 <value>classpath:mappers/boardReply-mapper.xml</value>
+                <value>classpath:mappers/tag-mapper.xml</value>
             </list>
         </property>
     </bean>

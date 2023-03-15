@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
+import java.util.List;
+
 @Repository
 public class FavoriteDaoImpl implements FavoriteDao{
 
@@ -16,8 +18,9 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	
 	@Override
 	public int insertOne(Favorite favorite) {
-		
+
 		return sqlSession.insert("favoriteMapper.insertOne", favorite);
+
 	}
 	
 	@Override
