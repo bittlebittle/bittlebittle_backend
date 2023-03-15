@@ -6,12 +6,13 @@ import java.util.Map;
 
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 
 public interface BottleDao {
 
 
 //	List<Bottle> selectAllBottles(String keyword, String sorted);
-	List<Bottle> selectAllBottles(Map<String, String> param);
+	List<Bottle> selectAllBottles(BottleSearch bottleSearch);
 
 //	List<Bottle> selectMainList();
 

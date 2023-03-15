@@ -45,23 +45,23 @@ public class AdminBottleController {
 		return map;
 	}
 	
-	// 추가창 들어갈때(확인완료)
-	@GetMapping(value="/addition")
-	public Map<String, Object> getTags() {
-		
-		// 태그 선택할 수 있도록 태그 선택지 불러오기
-		List<TagType> tagTypeList = tservice.getAllTagTypes();
-		List<Tag> tagList = tservice.getAllTags();
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("tagTypeList", tagTypeList);
-		map.put("tagList", tagList);
-		
-		return map;
-	}
+//	// 추가창 들어갈때(확인완료)
+//	@GetMapping(value="/addition")
+//	public Map<String, Object> getTags() {
+//		
+//		// 태그 선택할 수 있도록 태그 선택지 불러오기
+//		List<TagType> tagTypeList = tservice.getAllTagTypes();
+//		List<Tag> tagList = tservice.getAllTags();
+//		
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("tagTypeList", tagTypeList);
+//		map.put("tagList", tagList);
+//		
+//		return map;
+//	}
 	
 	// 추가 완료할 때(확인완료)
-	@PostMapping(value="/addition")
+	@PostMapping
 	public Bottle addBottle(@RequestBody BottleInfo bottle) {
 		
 		List<Bottle> bottleList = bservice.addBottle(bottle);

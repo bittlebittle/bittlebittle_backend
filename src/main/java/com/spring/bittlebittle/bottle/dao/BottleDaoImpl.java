@@ -3,6 +3,8 @@ package com.spring.bittlebittle.bottle.dao;
 
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,8 +22,8 @@ public class BottleDaoImpl implements BottleDao {
 
 
 	@Override
-	public List<Bottle> selectAllBottles(Map<String, String> param) {
-		return sqlSession.selectList("bottleMapper.selectAll", param);
+	public List<Bottle> selectAllBottles(BottleSearch bottleSearch) {
+		return sqlSession.selectList("bottleMapper.selectAll", bottleSearch);
 	}
 
 

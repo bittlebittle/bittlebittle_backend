@@ -1,9 +1,21 @@
 package com.spring.bittlebittle.bottle.service;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.dao.FoodDao;
@@ -14,15 +26,6 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -41,36 +44,24 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private FavoriteDao fvdao;
 
+	Logger log = LogManager.getLogger("case3");
+	
 	// 전체 리스트
     @Override
-    public Map<String, Object> getBottles(Map<String, String> param) {
+    public Map<String, Object> getBottles(BottleSearch bottleSearch) {
 
-
-		String sorted = param.get("sorted");
-		String orderby = "";
-		switch (sorted) {
-			case "new" : orderby="b.create_date desc, b.bottle_no_pk desc"; break;
-			case "best" : orderby= "order by grade desc, b.create_date desc;"; break;
-			case "relatedFavorite" : orderby="ORDER BY b.bottle_no_pk desc;"; break;
-			default: new Exception("잘못된 입력값");
-		}
-
-		param.put("orderby", orderby);
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
-		List<Bottle> allBottles = bdao.selectAllBottles(param);
-		List<TagType> tagTypeList = tdao.selectAllTagType();
-		List<Tag> tagList = tdao.selectAllTag();
-
+		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
+		
+		log.debug(allBottles);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
-		map.put("TagType", tagTypeList);
-		map.put("Tag", tagList);
 		map.put("Favorite", favoriteList);
 
 		return map;

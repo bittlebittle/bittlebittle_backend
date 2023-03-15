@@ -114,7 +114,7 @@ public class ReviewController {
 	// 리뷰댓글수정 (확인완료)
 	@PostMapping(value="/{reviewNo}/replies/set-data")
 	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
-												// replyNo, replyContent
+																// replyNo, replyContent
 		
 		reply.setReviewNo(reviewNo);
 		

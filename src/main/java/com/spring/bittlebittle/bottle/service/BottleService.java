@@ -6,12 +6,13 @@ import java.util.Map;
 
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 
 
 public interface BottleService {
 
 	// 검색,키워드 조회하는 리스트
-	Map<String, Object> getBottles(Map<String, String> param);
+	Map<String, Object> getBottles(BottleSearch bottleSearch);
 
 //	List<Bottle> getSearchBottleList(String keyword);
     
