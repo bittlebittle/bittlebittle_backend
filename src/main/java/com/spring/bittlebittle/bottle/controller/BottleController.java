@@ -105,7 +105,8 @@ public class BottleController {
 	}
 
 
-
+	
+	// 개별조회 (확인완료)
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
@@ -116,7 +117,7 @@ public class BottleController {
 		return map;
 	} 
 	
-	// favorite 클릭했을 때
+	// favorite 클릭했을 때 (확인완료)
 	@GetMapping(value="/{bottleNo}/favorite")
 	public List<Favorite> isFavorite(@PathVariable int bottleNo) {
 		

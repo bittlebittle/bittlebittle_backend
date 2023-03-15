@@ -36,8 +36,15 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 	
 	@Override
-	public int deleteOne(Reply reply) {
+	public int deleteOne(int replyNo) {
 		
-		return sqlSession.delete("replyMapper.deleteOne", reply);
+		return sqlSession.delete("replyMapper.deleteOne", replyNo);
+	}
+
+	@Override
+	public void deleteByReview(int reviewNo) {
+		
+		sqlSession.delete("replyMapper.deleteByReview", reviewNo);
+		
 	}
 }

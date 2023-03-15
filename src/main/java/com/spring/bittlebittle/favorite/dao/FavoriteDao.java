@@ -11,7 +11,6 @@ public interface FavoriteDao {
 
 	List<Favorite> selectList(Favorite favorite);
 
-
 	int deleteOne(Favorite favorite);
 
 }

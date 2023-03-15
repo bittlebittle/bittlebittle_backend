@@ -62,8 +62,8 @@
 
 	<insert id="insertTagType" parameterType="String">
        <![CDATA[   
-         INSERT INTO tag_type_tb
-         VALUES TAG_TYPE_NAME=#{tagTypeName}
+         INSERT INTO tag_type_tb(TAG_TYPE_NAME)
+         VALUES (#{tagTypeName})
       ]]>
    </insert>
 
@@ -78,7 +78,7 @@
    <delete id="deleteTagType" parameterType="tagType">
        <![CDATA[   
          DELETE
-         FROM bottle_tag_tb
+         FROM tag_type_tb
          WHERE TAG_TYPE_NO_PK=#{tagTypeNo}
       ]]>
    </delete>
@@ -86,14 +86,14 @@
    <insert id="insertTag" parameterType="tag">
        <![CDATA[   
          INSERT INTO tag_tb(TAG_TYPE_NO_FK, TAG_NAME)
-         VALUES (#{tagTypeNo}, #{tagName})
+         VALUES (#{keyTypeNo}, #{tagName})
       ]]>
    </insert>
    
    <update id="updateTag" parameterType="tag">
        <![CDATA[   
          UPDATE tag_tb
-         SET TAG_NAME=#{tagName}, TAG_TYPE_NO_FK=#{tagTypeNo}
+         SET TAG_NAME=#{tagName}, TAG_TYPE_NO_FK=#{keyTypeNo}
          WHERE TAG_NO_PK=#{tagNo}
       ]]>
    </update>

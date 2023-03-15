@@ -40,8 +40,9 @@ public class ReviewDaoImpl implements ReviewDao{
 	}
 	
 	@Override
-	public int deleteOne(Review review) {
+	public int deleteOne(int reviewNo) {
 		
-		return sqlSession.delete("reviewMapper.deleteOne", review);
+		return sqlSession.delete("reviewMapper.deleteOne", reviewNo);
 	}
+	
 }
