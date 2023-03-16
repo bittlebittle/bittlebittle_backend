@@ -2,6 +2,8 @@ package com.spring.bittlebittle.board.controller;
 
 import java.util.List;
 
+import com.spring.bittlebittle.board.service.BoardReplyService;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.spring.bittlebittle.board.service.BoardReplyService;
-import com.spring.bittlebittle.board.vo.BoardReply;
 
 @RestController
 @RequestMapping("/reviews/{reviewNo}")
