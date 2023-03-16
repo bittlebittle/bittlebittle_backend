@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.spring.bittlebittle.board.service.BoardService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,14 +33,20 @@ import javax.servlet.http.HttpServletRequest;
 //import com.spring.bittlebittle.NotAuthorizedException;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("api/boards")
 public class BoardController {
     @Autowired
-    private BoardServiceImpl boardService;
+    private BoardService boardService;
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    private Logger log = LogManager.getLogger("case3");
+
+
+    @GetMapping(produces = "application/json; charset=utf-8")
     public List<Board> boardList() {
-        return boardService.getBoardList();
+        log.debug("12321312");
+        List<Board> list = boardService.getBoardList();
+        log.debug(list);
+        return list;
     }
 
     @GetMapping(value = "/{boardNo}", produces = MediaType.APPLICATION_JSON_VALUE)
