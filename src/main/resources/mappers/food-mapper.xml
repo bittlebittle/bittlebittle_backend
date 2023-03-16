@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="foodMapper">
+
+
+   <resultMap id="foodResultSet"
+      type="food">
+      <result property="foodNo" column="FOOD_NO_PK"/>
+      <result property="foodName" column="FOOD_NAME"/>
+      <result property="imgUrl" column="IMG_URL" />
+      <result property="imgCusUrl" column="IMG_CUS_URL" />
+   </resultMap>
+
+   <select id="selectList" parameterType="Integer" resultMap="foodResultSet">
+       <![CDATA[   
+        SELECT f.food_no_pk
+		FROM food_tab_tb ft
+		INNER JOIN food_tb f
+		ON f.food_no_pk=ft.food_no_fk
+		WHERE tag_no_fk in (
+		SELECT tag_no_fk
+		FROM food_tb f
+		INNER JOIN food_tag_tb ft
+		ON f.food_no_pk=ft.food_no_fk
+		WHERE f.food_no_pk=#{bottleNo})
+		AND ft.food_no_fk != #{bottleNo}
+		GROUP BY food_no_fk
+		ORDER BY count(tag_no_fk) DESC
+      ]]>
+   </select>
+
+   
+    <select id="selectAllFoods" resultMap="foodResultSet">
+       <![CDATA[   
+         SELECT *
+         FROM food_tb
+      ]]>
+   </select>
+
+</mapper>

@@ -1,24 +1,52 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ReplyMapper">
-<select id="getReplyList" parameterType="int" resultType="Reply">
-    select * from reply where review_no = #{reviewNo}
-</select>
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<select id="getReply" parameterType="int" resultType="Reply">
-    select * from reply where reply_no = #{replyNo}
-</select>
+<mapper namespace="replyMapper">
 
-<insert id="addReply" parameterType="Reply">
-    insert into reply (user_no, review_no, reply_content, create_date) values (#{userNo}, #{reviewNo}, #{replyContent}, #{createDate})
-</insert>
+   <resultMap id="replyResultSet"
+      type="reply">
+      <result property="replyNo" column="REPLY_NO_PK"/>
+      <result property="userNo" column="USER_NO_FK"/>
+      <result property="reviewNo" column="REVIEW_NO_FK" />
+      <result property="replyContent" column="REPLY_CONTENT" />
+      <result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
+      <result property="status" column="STATUS" />
+   </resultMap>
 
-<update id="updateReply" parameterType="Reply">
-    update reply set reply_content = #{replyContent} where reply_no = #{replyNo} and user_no = #{userNo}
-</update>
 
-<delete id="deleteReply" parameterType="map">
-    delete from reply where reply_no = #{replyNo} and user_no = #{userNo}
-</delete>
+   <select id="selectList" parameterType="Integer" resultMap="replyResultSet">
+       <![CDATA[   
+         SELECT *
+         FROM reply_tb
+         WHERE REPLY_NO_PK = #{replyNo}
+      ]]>
+   </select>
+
+	<update id="insertOne" parameterType="reply">
+       <![CDATA[   
+         INSERT INTO reply_tb(USER_NO_FK, REPLY_NO_PK, REPLY_CONTENT)
+         VALUES(#{userNo}, #{replyNo}, #{replyContent})
+      ]]>
+   </update>
+   
+   <update id="updateOne" parameterType="reply">
+       <![CDATA[   
+         UPDATE reply_tb
+         SET REPLY_CONTENT=#{replyContent}
+         WHERE REPLY_NO_PK=#{replyNo}
+      ]]>
+   </update>
+
+  <update id="deleteOne" parameterType="reply">
+       <![CDATA[   
+         UPDATE reply_tb
+         SET STATUS=#{status}
+         WHERE REPLY_NO_PK=#{replyNo}
+      ]]>
+   </update>
+
 </mapper>

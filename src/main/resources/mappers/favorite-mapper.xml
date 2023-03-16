@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="favoriteMapper">
+
+    <resultMap id="favoriteResultSet" type="favorite">
+        <result property="userNo" column="USER_NO_FK"/>
+        <result property="bottleNo" column="BOTTLE_NO_FK"/>
+    </resultMap>
+
+   <select id="selectCnt" parameterType="Integer" resultType="Integer">
+       <![CDATA[   
+         SELECT count(*)
+         FROM favorite_tb
+         WHERE BOTTLE_NO_FK=#{bottleNo}
+      ]]>
+   </select>
+
+	<update id="insertFavorite" parameterType="favorite">
+       <![CDATA[   
+         INSERT favorite_tb(USER_NO_FK, BOTTLE_NO_FK)
+         VALUES(#{userNo},#{bottleNo})
+      ]]>
+   </update>
+   
+   <select id="selectOne" parameterType="favorite" resultType="Integer">
+       <![CDATA[   
+         SELECT count(*)
+         FROM favorite_tb
+         WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
+      ]]>
+   </select>
+   
+   <update id="deleteOne" parameterType="favorite">
+       <![CDATA[   
+         DELETE
+         FROM favorite_tb
+         WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
+      ]]>
+   </update>
+
+</mapper>

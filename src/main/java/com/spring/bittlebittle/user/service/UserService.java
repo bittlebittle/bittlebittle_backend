@@ -13,102 +13,49 @@ import com.spring.bittlebittle.user.dao.UserDao;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.utils.ServiceInterface;
 
-@Service
-public class UserService implements ServiceInterface {
+import com.spring.bittlebittle.user.vo.User;
+import com.spring.bittlebittle.user.vo.UserJwt;
 
-    private Logger log = LogManager.getLogger("case3");
-    
-   
-    
-    @Autowired
-    private UserDao userDao;
-    
-    
+import java.util.List;
 
-	@Override
-	public boolean checkPassword(String userName, String userPwd) {
-		User user = userDao.getUserByUsername(userName);
-		if (user == null) {
-            return false;
-        } else {
-            return BCrypt.checkpw(userPwd, user.getUserPwd());
-        }
+public interface UserService {
 
-	}
+	// selectList
+	List<User> getUsers();
 
-	@Override
-    public boolean checkUserExists(String username) {
-        User user = userDao.getUserByUsername(username);
-        return user != null;
-    }
+	// selectOne
+	User getUser(User user);
 
-    @Override
-    public User getUserById(String userId) {
-        return userDao.getUserById(userId);
-    }
+	User selectUser(User user);
 
-    @Override
-    public User getUserByUsername(String username) {
-        return userDao.getUserByUsername(username);
-    }
+	Boolean loginUser(User user);
 
-    @Override
-    public List<User> getAllUsers(User user) {
-        return userDao.getAllUsers(user);
-    }
+	// insert
+	int registerUser(User user);
 
-    @Override
-    public void insertUser(User user) {
-        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
-        user.setUserPwd(userPwd);
-        userDao.insertUser(user);
-    }
+	// update
+	int updateUser(User user);
 
-    @Override
-    public void updateUser(User user) {
-        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
-        user.setUserPwd(userPwd);
-        userDao.updateUser(user);
-    }
+	// delete
+	int deleteUser(User user);
 
-    @Override
-    public void deleteUser(String userId) {
-        userDao.deleteUser(userId);
-    }
-    
-    
+	// Boolean registerJwtWithIdx(UserAuthentication userAuthentication);
 
-    
-    
-    
-    
-    
-	
+	UserJwt getUserJwt(UserJwt userJwt);
 
-//    @Override
-//    public List<Object> selectList(Object obj) {
-//        return null;
-//    }
-//
-//    @Override
-//    public Object selectOne(Object obj) {
-//        return null;
-//    }
-//
-//    @Override
-//    public int insert(Object obj) {
-//        return 0;
-//    }
-//
-//    @Override
-//    public Object update(Object obj) {
-//        return null;
-//    }
-//
-//    @Override
-//    public int delete(Object obj) {
-//        return 0;
-//    }
-    
-    
+	UserJwt createUserJwt(UserJwt userJwt);
+
+	UserJwt editUserJwt(UserJwt build);
+
+	UserJwt getUserJwtBySubject(UserJwt build);
+
+	int removeUserJwt(UserJwt userJwt);
+
+//////////////////////
+// 아래는 tag 관련
+
+	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
 }

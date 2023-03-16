@@ -1,7 +1,7 @@
 package com.spring.bittlebittle.board.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,20 +18,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.bittlebittle.board.service.BoardService;
+import com.spring.bittlebittle.board.service.BoardServiceImpl;
 import com.spring.bittlebittle.board.vo.Board;
 
-import com.spring.bittlebittle.NotAuthorizedException;
+
+//import com.spring.bittlebittle.NotAuthorizedException;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/freeboard")
 public class BoardController {
     @Autowired
-    private BoardService boardService;
+    private BoardServiceImpl boardService;
 
+    //자유게시판 조회
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Board> boardList() {
         return boardService.getBoardList();
     }
+
 
     @GetMapping(value = "/{boardNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Board> boardDetail(@PathVariable int boardNo) {
@@ -43,32 +47,32 @@ public class BoardController {
         }
     }
 
+
+    //자유게시판 입력(추가)
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Board> addBoard(@RequestBody Board board) {
         boardService.addBoard(board);
-        return new ResponseEntity<Board>(board, HttpStatus.CREATED);
+        return new ResponseEntity<>(board, HttpStatus.CREATED);
     }
-
+    //자유게시판 수정
     @PutMapping(value = "/{boardNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Board> updateBoard(@PathVariable int boardNo, @RequestBody Board board) {
         board.setBoardNo(boardNo);
-        try {
-            boardService.updateBoard(board);
-            return new ResponseEntity<Board>(board, HttpStatus.OK);
-        } catch (NotAuthorizedException e) {
-            return new ResponseEntity<Board>(HttpStatus.FORBIDDEN);
-        }
-    }
 
+        boardService.updateBoard(board);
+        return new ResponseEntity<>(board, HttpStatus.OK);
+
+    }
+    //자유게시판 삭제
     @DeleteMapping(value = "/{boardNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> deleteBoard(@PathVariable int boardNo, @RequestParam int userNo) {
-        try {
+//        try {
             boardService.deleteBoard(boardNo, userNo);
-            return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
-        } catch (NotAuthorizedException e) {
-            return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } catch (NotAuthorizedException e) {
+//            return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
+//        } catch (NoSuchElementException e) {
+//            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+//        }
     }
 }

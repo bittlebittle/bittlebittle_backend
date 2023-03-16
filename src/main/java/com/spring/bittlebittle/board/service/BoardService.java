@@ -10,40 +10,16 @@ import com.spring.bittlebittle.board.dao.BoardDao;
 import com.spring.bittlebittle.board.vo.Board;
 import com.spring.bittlebittle.NotAuthorizedException;
 
+import com.spring.bittlebittle.board.vo.Board;
 
-@Service
-@Transactional
-public class BoardService {
-    @Autowired
-    private BoardDao boardDao;
+import java.util.List;
 
-    public List<Board> getBoardList() {
-        return boardDao.getBoardList();
-    }
+public interface BoardService {
 
-    public Board getBoard(int boardNo) {
-        return boardDao.getBoard(boardNo);
-    }
+    List<Board> getBoardList();
+    Board getBoard(int boardNo);
+    void addBoard(Board board);
+    void updateBoard(Board board);
+    void deleteBoard(int boardNo, int userNo);
 
-    public void addBoard(Board board) {
-        boardDao.addBoard(board);
-    }
-
-    public void updateBoard(Board board) throws NotAuthorizedException {
-        int boardNo = board.getBoardNo();
-        int userNo = board.getUserNo();
-        if (boardDao.isAuthor(boardNo, userNo)) {
-            boardDao.updateBoard(board);
-        } else {
-            throw new NotAuthorizedException();
-        }
-    }
-
-    public void deleteBoard(int boardNo, int userNo) throws NotAuthorizedException {
-        if (boardDao.isAuthor(boardNo, userNo)) {
-            boardDao.deleteBoard(boardNo);
-        } else {
-            throw new NotAuthorizedException();
-        }
-    }
 }
