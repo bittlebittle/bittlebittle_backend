@@ -98,6 +98,12 @@ public class UserDaoImpl implements UserDao {
 	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
 	}
 
+	//아이디중복확인
+	@Override
+	public User findByUserId(String userId) {
+		return sqlSession.selectOne("userMapper.findByUserId", userId);
+	}
+
 //	@Override
 //	public String getTagName(int tagNo) throws Exception {
 //		// TODO Auto-generated method stub

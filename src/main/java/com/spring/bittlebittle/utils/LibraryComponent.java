@@ -1,13 +1,12 @@
 package com.spring.bittlebittle.utils;
 
-import com.google.gson.Gson;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< HEAD
-=======
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
->>>>>>> a7588ba ('init')
+
+import com.google.gson.Gson;
 
 @Configuration
 public class LibraryComponent {
@@ -17,20 +16,16 @@ public class LibraryComponent {
         return new Gson();
     }
 
-<<<<<<< HEAD
-   
-=======
-    // 수동으로 Bean 을 Application context에 등록 하려면,
-    // Bean 으로 등록하려는 메소드에 @Bean 어노테이션을 붙여주고,
-    // @Bean 어노테이션이 존재하는 클래스에 @Configuration 어노테이션을 붙인다.
-    // getBean 의라는 bean 메소드의 id 는 메소드 이름이다.
+    // �닔�룞�쑝濡� Bean �쓣 Application context�뿉 �벑濡� �븯�젮硫�,
+    // Bean �쑝濡� �벑濡앺븯�젮�뒗 硫붿냼�뱶�뿉 @Bean �뼱�끂�뀒�씠�뀡�쓣 遺숈뿬二쇨퀬,
+    // @Bean �뼱�끂�뀒�씠�뀡�씠 議댁옱�븯�뒗 �겢�옒�뒪�뿉 @Configuration �뼱�끂�뀒�씠�뀡�쓣 遺숈씤�떎.
+    // getBean �쓽�씪�뒗 bean 硫붿냼�뱶�쓽 id �뒗 硫붿냼�뱶 �씠由꾩씠�떎.
 
 
-    // 비밀번호 암호화
+    // 鍮꾨�踰덊샇 �븫�샇�솕
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
->>>>>>> a7588ba ('init')
 
 }

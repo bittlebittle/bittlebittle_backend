@@ -10,6 +10,7 @@
       <result property="bottleName" column="BOTTLE_NAME"/>
       <result property="bottleContent" column="BOTTLE_CONTENT" />
       <result property="bottleBrand" column="BOTTLE_BRAND" />
+       <result property="bottleAbv" column="BOTTLE_ABV" />
       <result property="viewCnt" column="VIEW_CNT" />
       <result property="createDate" column="CREATE_DATE" jdbcType="TIME" javaType="String" />
       <result property="imgUrl" column="IMG_URL" />
@@ -18,11 +19,9 @@
    </resultMap>
 
    <select id="selectOne" parameterType="Integer" resultMap="bottleResultSet">
-       <![CDATA[   
          SELECT *
          FROM bottle_tb
-         WHERE bottle_no_pk=#{bottleNo}
-      ]]>
+         WHERE BOTTLE_NO_PK=#{bottleNo}
    </select>
    
    <update id="updateViewCnt" parameterType="Integer">
@@ -45,7 +44,7 @@
 		FROM bottle_tb b
 		INNER JOIN bottle_tag_tb bt
 		ON b.bottle_no_pk=bt.bottle_no_fk
-		WHERE b.bottle_no_pk=#{bottleNo})
+		WHERE b.bottle_no_pk=#{bottleNo}) AND b.STATUS = 'Y'
 		AND bt.bottle_no_fk != #{bottleNo}
 		GROUP BY bottle_no_fk
 		ORDER BY count(tag_no_fk) DESC
@@ -54,52 +53,109 @@
       ]]>
    </select>
 
-   <update id="insertOne" parameterType="bottle">
-       <![CDATA[   
+   <insert id="insertOne" parameterType="bottleInfo">
+    <![CDATA[   
          INSERT INTO bottle_tb(BOTTLE_NAME, BOTTLE_CONTENT, BOTTLE_BRAND, BOTTLE_ABV, IMG_URL)
          VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv}, #{imgUrl})
-      ]]>
-   </update>
+     ]]>
+   </insert>
    
-   <!--
+  
     <update id="updateOne" parameterType="bottle">
        <![CDATA[   
          UPDATE bottle_tb
-         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, IMG_URL=#{imgUrl}
-         WHERE bottleNo=#{bottleNo}
+         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, BOTTLE_ABV=#{bottleAbv}, IMG_URL=#{imgUrl}
+         WHERE BOTTLE_NO_PK=#{bottleNo}
       ]]>
    </update>
-	-->
-    <select id="selectAll" resultType="bottle" resultMap="bottleResultSet">
-        SELECT bottle_name
-        FROM bottle_tb
-        <if test="keyword != null">
-            WHERE bottle_name LIKE CONCAT('%', #{Keyword},' %')
-        </if>
-    </select>
+
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
-    <select id="selectBottles" parameterType="bottle" resultMap="bottleResultMap">
+    <select id="selectAll" parameterType="bottleSearch" resultMap="bottleResultSet">
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
-        GROUP_CONCAT(t.tag_name ORDER BY t.tag_name SEPARATOR ', ') AS tag_names
+        GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no
         FROM bottle_tb b
         JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
         JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
-        WHERE b.bottle_name IS NOT NULL
-        <if test="tag_name != null" >
-            AND t.tag_name IN
-            <foreach collection="String" item="tag_name" separator="," open="(" close=")">
-                #{tag_name}
-            </foreach>
-        </if>
-
-        <if test="keyword != null">
-            AND bottle_name LIKE CONCAT('%', #{keyword}, '%')
-        </if>
-
+        <where>
+            <if test="tagNoList != null" >
+                t.tag_no_pk IN
+                <foreach collection="tagNoList" item="tagNo" separator="," open="(" close=")">
+                    #{tagNo}
+                </foreach>
+        		HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
+            </if>
+            <if test="keyword != null">
+                AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
         GROUP BY b.bottle_no_pk
-        HAVING COUNT(DISTINCT t.tag_name) = #{parameter.size()}
+        <choose>
+            <when test='sorted=="new"'>
+                order by b.create_date desc, b.bottle_no_pk desc
+            </when>
+            <when test='sorted=="best"'>
+                order by grade desc, b.bottle_no_pk desc
+            </when>
+<!--
+
+            <when test='sorted=="relatedFavorite"'>—>
+
+                AND ORDER BY b.bottle_no_pk desc;—>
+            </when>
+-->
+            <otherwise>
+                order by b.create_date desc, b.bottle_no_pk desc
+            </otherwise>
+        </choose>
     </select>
 
-    </mapper>
+    <!-- NEW 리스트  -->
+    <select id="selectNewBottles" resultMap="bottleResultSet">
+        SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
+        FROM bottle_tb b
+                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+                 JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
+        WHERE ut.USER_NO_FK = #{ut.userNo}
+        order by b.create_date desc, b.bottle_no_pk desc;
+    </select>
+
+    <!-- BEST 리스트  -->
+    <select id="selectBestBottles" resultMap="bottleResultSet">
+        SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
+        FROM bottle_tb b
+                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+                 JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
+                 left outer join review_tb r on b.bottle_no_pk = r.bottle_no_fk
+        WHERE ut.USER_NO_FK = #{ut.userNo}
+        group by b.bottle_no_pk, bt.tag_no_fk
+        order by grade desc, b.create_date desc;
+    </select>
+
+    <!-- 찜하기기반 리스트  -->
+    <select id="selectRelatedFavorite" resultMap="bottleResultSet">
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk
+        FROM bottle_tb b
+                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+                 JOIN favorite_tb f ON f.bottle_no_fk = bt.bottle_no_fk
+        WHERE bt.tag_no_fk = #{bt.tagNo}
+        ORDER BY b.bottle_no_pk desc;
+
+    </select>
+
+
+	<update id="deleteOne" parameterType="Integer">
+       <![CDATA[   
+         UPDATE bottle_tb
+         SET STATUS='N'
+         WHERE bottle_no_pk=#{bottleNo}
+      ]]>
+   </update>
+   
+     <select id="selectLastBottleNo" resultType="Integer">
+        SELECT MAX(bottle_no_pk)
+        FROM bottle_tb
+    </select>
+
+</mapper>

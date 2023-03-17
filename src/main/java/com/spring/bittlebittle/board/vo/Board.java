@@ -15,6 +15,7 @@ public class Board {
 	private String createDate;
 	private String boardContent;
 	private String status;
+	private String nickname;
 	
 	
 }

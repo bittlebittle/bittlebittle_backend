@@ -20,8 +20,8 @@ public class BoardReplyDaoImpl implements BoardReplyDao{
 //        return sqlSession.selectList("ReplyMapper.getReplyList", reviewNo);
 //    }
 
-    public List<BoardReply> getReplyList(int replyNo) {
-        return sqlSession.selectOne("boardReplyMapper.getReplyList", replyNo);
+    public List<BoardReply> getReplyList(int boardNo) {
+        return sqlSession.selectList("boardReplyMapper.getReplyList", boardNo);
     }
 
     public void addReply(BoardReply reply, int userNo, String nickname) {

@@ -16,8 +16,8 @@ public class ReplyService {
     @Autowired
     private ReplyDao replyDao;
 
-    public List<Reply> getReplyList(int reviewNo) {
-        return replyDao.getReplyList(reviewNo);
+    public List<Reply> getReplyList(int replyNo) {
+        return replyDao.getReplyList(replyNo);
     }
 
     public void addReply(Reply reply) {

@@ -14,23 +14,54 @@ public class BoardReply {
 	private String nickname;
 //	private int reviewNo;
 	private String createDate;
+	 private String replyContent;
+	 private String status;
+	
 	
 	
 	public BoardReply() {
 		// TODO Auto-generated constructor stub
 	}
 	
+
 	
-	
-	
-	public BoardReply(int replyNo, int userNo, String createDate) {
+
+	public BoardReply(int replyNo, int userNo, String nickname, String createDate, String replyContent, String status) {
 		super();
 		this.replyNo = replyNo;
 		this.userNo = userNo;
+		this.nickname = nickname;
 		this.createDate = createDate;
+		this.replyContent = replyContent;
+		this.status = status;
+	}
+
+	
+
+
+
+	public String getStatus() {
+		return status;
 	}
 
 
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+
+
+	public String getReplyContent() {
+		return replyContent;
+	}
+
+
+	public void setReplyContent(String replyContent) {
+		this.replyContent = replyContent;
+	}
 
 
 	public String getNickname() {
@@ -40,9 +71,6 @@ public class BoardReply {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-
-
-
 
 	public int getReplyNo() {
 		return replyNo;
@@ -62,7 +90,7 @@ public class BoardReply {
 //	public void setReviewNo(int reviewNo) {
 //		this.reviewNo = reviewNo;
 //	}
-	public String getCreatDate() {
+	public Object getCreatDate() {
 		return createDate;
 	}
 	public void setCreatDate(String creatDate) {

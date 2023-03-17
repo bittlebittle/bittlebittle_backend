@@ -12,18 +12,20 @@
    -->  
 
     <resultMap id="replyResultSet" type="boardReply">
-        <result property="replyNo" column="REPLY_NO_PK"/>
+        <result property="replyNo" column="FBR_NO_PK"/>
         <result property="userNo" column="USER_NO_FK"/>
-        <result property="replyContent" column="REPLY_CONTENT"/>
+        <result property="replyContent" column="FBR_CONTENT"/>
         <result property="status" column="STATUS"/>
         <result property="nickname" column="NICKNAME"/>
     </resultMap>
 
-    <select id="getReplyList" parameterType="int" resultType="boardReply">
+    <select id="getReplyList" parameterType="int" resultMap="replyResultSet">
           <![CDATA[
-        SELECT *
-        FROM reply_tb
-        WHERE REPLY_NO_PK = #{replyNo}
+         SELECT *
+        FROM free_board_reply_tb fbr
+        join user_tb u
+        on fbr.USER_NO_FK = u.USER_NO_PK
+        WHERE BOARD_NO_FK = #{boardNo}
         ]]>
     </select>
 
@@ -49,12 +51,12 @@
         ]]>
     </update>
     
-    <update id="addReply" parameterType="Map">
-        <![CDATA[
-        INSERT INTO reply_tb(USER_NO_FK, REPLY_NO_PK, REPLY_CONTENT, NICKNAME)
-        VALUES(#{reply.userNo}, #{reply.replyNo}, #{reply.replyContent}, #{nickname})
-        ]]>
-    </update>
+   <update id="addReply" parameterType="Map">
+    INSERT INTO free_board_reply_tb(USER_NO_FK, FBR_NO_PK, FBR_CONTENT, NICKNAME)
+    SELECT u.user_no_pk, #{replyNo}, #{replyContent}, u.nickname
+    FROM user_tb u
+    WHERE u.user_no_pk = #{userNo}
+</update>
     
     <select id="isAuthor" parameterType="map" resultType="Integer">
         select count(*) from board where board_no = #{replyNo} and user_no = #{userNo}

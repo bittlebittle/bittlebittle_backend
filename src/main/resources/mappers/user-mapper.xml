@@ -30,7 +30,7 @@
 
 	<insert id="registerUser" parameterType="User">
 		INSERT INTO user_table
-		(userNo, userId, userPwd, userName, nickname, email,
+		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
 		phone)
 		VALUES (#{userNo}, #{userId}, #{userPwd}, #{userName},
 		#{nickname},
@@ -39,7 +39,7 @@
 
 	<insert id="adminRegister" parameterType="User">
 		INSERT INTO user_table
-		(userNo, userId, userPwd, userName, nickname, email,
+		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
 		phone, status,
 		adminYn)
 		VALUES (#{userNo}, #{userId}, #{userPwd}, #{userName},
@@ -83,7 +83,7 @@
 		resultMap="userResultSet">
 		select *
 		from USER_TB
-		where user_no = #{userNo};
+		where user_no_pk = #{userNo};
 	</select>
 
 	<select id="selectUserJwt" parameterType="userJwt"
@@ -144,8 +144,8 @@
 		UPDATE user_tb SET user_id
 		= #{userId}, user_pwd = #{userPwd},
 		"user_name" = #{userName}, nickname
-		= #{userNickname}, email = #{userMail},phone
-		= #{userPhone}
+		= #{nickname}, email = #{mail},phone
+		= #{phone}
 		WHERE
 		user_id = #{userId}
 	</update>
@@ -154,6 +154,12 @@
 		UPDATE user_tb SET status
 		= "y" WHERE user_no = #{userNo}
 	</update>
+	
+	
+	<select id="findByUserId" parameterType="User"
+		resultMap="userResultSet">
+        SELECT * FROM user_tb WHERE user_id = #{userId}
+    </select>
 
 
 	<!-- <insert id="insert" parameterType="user"> INSERT INTO USER VALUES (#{userId}) 

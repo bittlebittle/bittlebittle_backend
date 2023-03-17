@@ -25,13 +25,13 @@ import com.spring.bittlebittle.board.vo.Board;
 //import com.spring.bittlebittle.NotAuthorizedException;
 
 @RestController
-@RequestMapping("/freeboard")
+@RequestMapping("api/boards")
 public class BoardController {
     @Autowired
     private BoardServiceImpl boardService;
 
     //자유게시판 조회
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Board> boardList() {
         return boardService.getBoardList();
     }

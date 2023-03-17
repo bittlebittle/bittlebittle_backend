@@ -59,7 +59,7 @@ public class UserController {
 	private Gson gson;
 
 	// 회원가입
-	@PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
 	public void registerUser(@RequestBody User user) {
 		service.registerUser(user);
 	}
@@ -196,7 +196,27 @@ public class UserController {
 //	    public void deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
 //	        service.deleteUserTags(userNo, tagNoList);
 //	    }
+    
+    
+    //이메일인증, 아이디 중복확인
+    
+    @PostMapping(value="/check-duplicate" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> checkDuplicate(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        boolean isDuplicate = service.isUsernameDuplicate(userId);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+        return ResponseEntity.ok(response);
+    }
 	
+    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        boolean success = service.sendEmailAuth(email);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("success", success);
+        return ResponseEntity.ok(response);
+    }
 	
 	
 	

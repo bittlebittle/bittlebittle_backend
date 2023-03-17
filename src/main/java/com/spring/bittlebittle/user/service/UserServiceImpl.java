@@ -8,11 +8,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+    private JavaMailSender javaMailSender;
 
 	@Value("${secretKey}")
 	private String key;
@@ -40,24 +47,24 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Boolean loginUser(User user) {
-		// login �떆 �궗�슜�븯�뒗 id 留� 媛�吏�怨� �씪�떒 db 瑜� 遺덈윭�삩 �뮘
+		// login 占쎈뻻 占쎄텢占쎌뒠占쎈릭占쎈뮉 id 筌랃옙 揶쏉옙筌욑옙�⑨옙 占쎌뵬占쎈뼊 db �몴占� �겫�뜄�쑎占쎌궔 占쎈츟
 		User loginUser = dao.selectLoginUser(user);
 
-		// 留뚯빟 �쑀�� �븘�씠�뵒媛� �씪移� �븯吏� �븡�쑝硫� db �뿉 議고쉶媛� �븞�맆 寃껋씠怨�,
+		// 筌띾슣鍮� 占쎌�占쏙옙 占쎈툡占쎌뵠占쎈탵揶쏉옙 占쎌뵬燁삼옙 占쎈릭筌욑옙 占쎈륫占쎌몵筌롳옙 db 占쎈퓠 鈺곌퀬�돳揶쏉옙 占쎈툧占쎈쭍 野껉퍔�뵠�⑨옙,
 		if (loginUser == null) {
-			log.debug("�빐�떦 �븘�씠�뵒�쓽 �쑀��媛� 議댁옱�븯吏� �븡�뒿�땲�떎.");
+			log.debug("占쎈퉸占쎈뼣 占쎈툡占쎌뵠占쎈탵占쎌벥 占쎌�占쏙옙揶쏉옙 鈺곕똻�삺占쎈릭筌욑옙 占쎈륫占쎈뮸占쎈빍占쎈뼄.");
 			return false;
 		}
 
-		// 留뚯빟 鍮꾨�踰덊샇媛� �씪移섑븯吏� �븡�뒗�떎硫�
+		// 筌띾슣鍮� �뜮袁⑨옙甕곕뜇�깈揶쏉옙 占쎌뵬燁살꼹釉�筌욑옙 占쎈륫占쎈뮉占쎈뼄筌롳옙
 		if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
 			log.debug(passwordEncoder.encode(user.getUserPwd()));
 			log.debug(user.getUserPwd());
 			log.debug(loginUser.getUserPwd());
-			log.debug("鍮꾨�踰덊샇媛� �씪移섑븯吏� �븞�뒿�땲�떎.");
+			log.debug("�뜮袁⑨옙甕곕뜇�깈揶쏉옙 占쎌뵬燁살꼹釉�筌욑옙 占쎈툧占쎈뮸占쎈빍占쎈뼄.");
 			return false;
 		}
-		log.debug("濡쒓렇�씤�뿉 �꽦怨듯뻽�뒿�땲�떎.");
+		log.debug("嚥≪뮄�젃占쎌뵥占쎈퓠 占쎄쉐�⑤벏六쏙옙�뮸占쎈빍占쎈뼄.");
 		return true;
 	}
 
@@ -114,7 +121,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 //////////////////////
-//아래는 tag 관련
+//�븘�옒�뒗 tag 愿��젴
 
 	@Override
 	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
@@ -129,6 +136,34 @@ public class UserServiceImpl implements UserService {
 		
 
 	}
+
+	//아이디 중복확인, 이메일인증
+	@Override
+	public boolean isUsernameDuplicate(String userId) {
+		User user = dao.findByUserId(userId);
+        return user != null;
+	}
+
+	@Override
+	public boolean sendEmailAuth(String email) {
+		SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("이메일 인증 코드");
+//        message.setText("인증 코드: 123456"); // 실제로는 무작위로 생성한 인증 코드를 사용해야 합니다.
+        
+        Random random = new Random();
+        int authCode = random.nextInt(900000) + 100000; // 100000부터 999999까지의 랜덤한 6자리 수 생성
+        message.setText("인증 코드: " + authCode);
+
+        try {
+            javaMailSender.send(message);
+            return true;
+        } catch (MailException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
 
 	/*
 	 * 

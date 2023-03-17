@@ -58,4 +58,10 @@ public interface UserService {
 
 	void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
+	//이메일인증, 아이디중복확인
+	
+	boolean isUsernameDuplicate(String userId);
+
+	boolean sendEmailAuth(String email);
+
 }

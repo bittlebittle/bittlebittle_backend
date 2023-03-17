@@ -20,8 +20,8 @@ public class BoardReplyServiceImpl implements BoardReplyService{
     private UserDao userDao;
 
     @Override
-    public List<BoardReply> getReplyList(int replyNo) {
-        return dao.getReplyList(replyNo);
+    public List<BoardReply> getReplyList(int boardNo) {
+        return dao.getReplyList(boardNo);
     }
 
     @Override

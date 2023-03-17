@@ -1,9 +1,6 @@
 package com.spring.bittlebittle.user.dao;
 
-<<<<<<< HEAD
-public class AdminUserDao {
 
-=======
 import java.util.List;
 
 import com.spring.bittlebittle.user.vo.User;
@@ -40,5 +37,5 @@ public interface AdminUserDao {
     int deleteUserJwt(UserJwt userJwt);
     
     User selectLoginUser(User user);
->>>>>>> a7588ba ('init')
+
 }

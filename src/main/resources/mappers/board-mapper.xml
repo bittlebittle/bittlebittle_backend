@@ -4,33 +4,76 @@
 
 <mapper namespace="BoardMapper">
 
-    <select id="getBoardList" resultType="board">
-        select * from board 
+
+	<resultMap id="boardResultSet" type="board">
+		<result property="boardNo" column="board_no_pk" />
+		<result property="userNo" column="user_no_fk" />
+		<result property="boardTitle" column="board_title" />
+		<result property="boardContent" column="board_content" />
+		<result property="nickname" column="nickname" />
+		<result property="createDate" column="create_date" />
+		<result property="status" column="status" />
+	</resultMap>
+
+
+	<!-- <select id="getBoardList" resultType="board"> select * from board </select> -->
+
+	 <select id="getBoardList" parameterType="int" resultMap="boardResultSet">
+        select *
+        from free_board_tb fb
+            join user_tb u
+            on fb.user_no_fk = u.user_no_pk
     </select>
 
-    <select id="getBoard" parameterType="int" resultType="board">
-        select * from board where board_no = #{boardNo}
+    <select id="getBoard" parameterType="int" resultMap="boardResultSet">
+        select *
+        from free_board_tb fb
+         join user_tb u
+          on fb.user_no_fk = u.user_no_pk
+        where board_no_pk = #{boardNo}
     </select>
 
-    <insert id="addBoard" parameterType="board">
-        insert into board (user_no, board_title, create_date, board_content) values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent})
-    </insert>
-    
-      <insert id="adminAddboard" parameterType="board">
-        insert into board (user_no, board_title, create_date, board_content, status) values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent}, #{status})
-    </insert>
 
-    <update id="updateBoard" parameterType="board">
-        update board set board_title = #{boardTitle}, board_content = #{boardContent} where board_no = #{boardNo}
-    </update>
 
-    <update id="deleteBoard" parameterType="int">
-        update board
-        set status = 'N'
-        where board_no = #{boardNo}
-    </update>
+	<insert id="addBoard" parameterType="board">
+		insert into free_board_tb (
+		user_no_FK, board_title, board_content, status)
+		values (
+		#{userNo}, #{boardTitle}, #{boardContent}, #{status})
+	</insert>
 
-    <select id="isAuthor" parameterType="map" resultType="Integer">
-        select count(*) from board where board_no = #{boardNo} and user_no = #{userNo}
-    </select>
+
+	<insert id="adminAddboard" parameterType="board">
+		insert into board (user_no, board_title, create_date, board_content, status)
+		values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent},
+		#{status})
+	</insert>
+
+	<update id="updateBoard" parameterType="board">
+		update free_board_tb
+		<set>
+			<if test="boardTitle != null and boardTitle != ''">
+				board_title = #{boardTitle}
+			</if>
+			<if test="boardContent != null and boardContent != ''">
+				, board_content = #{boardContent}
+			</if>
+		</set>
+		where board_no = #{boardNo}
+	</update>
+
+
+	<update id="deleteBoard" parameterType="int">
+		update free_board_tb
+		set status = 'N'
+		where board_no = #{boardNo}
+	</update>
+
+	<select id="isAuthor" parameterType="map" resultType="Integer">
+		select count(*)
+		from free_board_tbv
+		where board_no = #{boardNo}
+		and user_no = #{userNo}
+	</select>
+
 </mapper>

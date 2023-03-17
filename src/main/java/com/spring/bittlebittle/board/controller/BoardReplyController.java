@@ -25,58 +25,53 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/reply")
+@RequestMapping("reply")
 public class BoardReplyController {
     @Autowired
     private BoardReplyService service;
 
-//    //´ñ±Û Á¶È¸
-//    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public List<BoardReply> replyList(@PathVariable int replyNo) {
-//        return service.getReplyList(replyNo);
-//    }
-//    //´ñ±ÛÀÔ·Â
-//    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void addReply(@PathVariable int replyNo, @RequestBody BoardReply reply) {
-//        reply.setReplyNo(replyNo);
-//        service.addReply(reply);
-//    }
-//    //´ñ±Û¼öÁ¤
-//    @PutMapping(value = "/{replyNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void updateReply(@PathVariable int replyNo,@RequestBody BoardReply reply) {
-////        boardReply.setReviewNo(reviewNo);
-//        reply.setReplyNo(replyNo);
-//        service.updateReply(reply);
-//    }
-//    //´ñ±Û»èÁ¦
-//    @DeleteMapping(value = "/{replyNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    public void deleteReply(@PathVariable int replyNo, @RequestParam int userNo) {
-//        service.deleteReply(replyNo, userNo);
-//
-//    }
-    
     // ´ñ±Û ¸ñ·Ï Á¶È¸
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<BoardReply>> getReplyList(@RequestParam int boardNo) {
+    	System.out.println(boardNo);
         List<BoardReply> replyList = service.getReplyList(boardNo);
+        System.out.println(replyList.get(0));
         return ResponseEntity.ok(replyList);
     }
 
-    // ´ñ±Û ÀÛ¼º
-    @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+//    // ´ñ±Û ÀÛ¼º
+//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Map<String, Object>> addReply(@RequestBody BoardReply reply,
+//                                                         @RequestParam int boardNo,
+//                                                         @AuthenticationPrincipal User user) {
+//        Map<String, Object> resultMap = new HashMap<>();
+//        String nickname = user.getNickname();
+//        int userNo = user.getUserNo();
+//        service.addReply(reply, userNo, nickname);
+//        resultMap.put("status", "success");
+//        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+//    }
+
+    
+ // ´ñ±Û ÀÛ¼º
+    @PostMapping(value = "/api/boards/{boardNo}/addReply", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> addReply(@RequestBody BoardReply reply,
-                                                         @RequestParam int boardNo,
+                                                         @PathVariable int boardNo,
                                                          @AuthenticationPrincipal User user) {
         Map<String, Object> resultMap = new HashMap<>();
         String nickname = user.getNickname();
         int userNo = user.getUserNo();
         service.addReply(reply, userNo, nickname);
         resultMap.put("status", "success");
+        resultMap.put("nickname", nickname);
+        resultMap.put("createDate", reply.getCreatDate());
+        		
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
-
+    
+    
     // ´ñ±Û ¼öÁ¤
-    @PutMapping(value = "/{replyNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{replyNo}/set-data", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> updateReply(@PathVariable int replyNo,
                                                             @RequestBody BoardReply reply,
                                                             @AuthenticationPrincipal User user) {
@@ -93,7 +88,7 @@ public class BoardReplyController {
     }
 
     // ´ñ±Û »èÁ¦
-    @DeleteMapping(value = "/{replyNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{replyNo}/delestion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> deleteReply(@PathVariable int replyNo,
                                                             @AuthenticationPrincipal User user) {
         Map<String, Object> resultMap = new HashMap<>();

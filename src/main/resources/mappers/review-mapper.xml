@@ -24,7 +24,7 @@
        <![CDATA[   
          SELECT *
          FROM review_tb
-         WHERE BOTTLE_NO_FK=#{bottleNo}
+         WHERE BOTTLE_NO_FK=#{bottleNo} AND STATUS='Y'
       ]]>
    </select>
 
@@ -33,7 +33,7 @@
        <![CDATA[   
          SELECT *
          FROM review_tb
-         WHERE REVIEW_NO_PK=#{reviewNo}
+         WHERE REVIEW_NO_PK=#{reviewNo} AND STATUS='Y'
       ]]>
    </select>
 	
@@ -46,17 +46,17 @@
 	
 	<update id="updateOne" parameterType="review">
        <![CDATA[
-         UPDATE review
+         UPDATE review_tb
          SET GRADE=#{grade}, REVIEW_TITLE=#{reviewTitle}, REVIEW_CONTENT=#{reviewContent}, IMG_URL=#{imgUrl}
          WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
 	</update>
 	
-	<update id="deleteOne" parameterType="review">
+	<update id="deleteOne" parameterType="Integer">
        <![CDATA[
-         DELETE
-         FROM review_tb
-         WHERE reviewNo=#{reviewNo}
+         UPDATE review_tb
+         SET STATUS='N'
+         WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
 	</update>
 
