@@ -14,8 +14,8 @@ public class BoardReplyDaoImpl implements BoardReplyDao{
     @Autowired
     private SqlSession sqlSession;
 
-    public List<BoardReply> getReplyList(int reviewNo) {
-        return sqlSession.selectList("ReplyMapper.getReplyList", reviewNo);
+    public List<BoardReply> getReplyList(int boardNo) {
+        return sqlSession.selectList("ReplyMapper.getReplyList", boardNo);
     }
 
     public BoardReply getReply(int replyNo) {

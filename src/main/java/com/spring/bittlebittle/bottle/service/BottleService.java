@@ -1,17 +1,18 @@
 package com.spring.bittlebittle.bottle.service;
 
 
+import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import java.util.List;
 import java.util.Map;
 
-import com.spring.bittlebittle.bottle.vo.Bottle;
-import com.spring.bittlebittle.bottle.vo.BottleInfo;
 
 
 public interface BottleService {
 
 	// 검색,키워드 조회하는 리스트
-	Map<String, Object> getBottles(Map<String, String> param);
+	Map<String, Object> getBottles(BottleSearch bottleSearch);
 
 //	List<Bottle> getSearchBottleList(String keyword);
     
@@ -30,7 +31,7 @@ public interface BottleService {
 
 
 	// 로그인하면 나오는 메인 리스트
-//	List<Bottle> getMainBottles();
+	Map<String, Object> getMainBottles();
 
 	// New 리스트
 	List<Bottle> getNewBottles();
