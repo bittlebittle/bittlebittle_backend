@@ -140,10 +140,12 @@ public class BottleServiceImpl implements BottleService {
 		
 		Bottle bottle = bdao.selectOne(bottleNo);
 		List<Tag> tagListByBottle = tdao.selectTagByBottle(bottleNo);
+		List<Review> reviewList = rdao.selectList(bottleNo);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", bottle);
 		map.put("tagListByBottle", tagListByBottle);
+		map.put("reviewList", reviewList);
 		
 		return map;
 
@@ -171,7 +173,9 @@ public class BottleServiceImpl implements BottleService {
 		
 		tdao.insertBottleTag(bottleTagList);
 		
-		return null;
+		List<Bottle> bottleList = bdao.selectAllBottles(null);
+		
+		return bottleList;
 
 	}
 	
@@ -208,7 +212,9 @@ public class BottleServiceImpl implements BottleService {
 		bdao.deleteOne(bottleNo);
 		
 		// 완료되면 리스트불러오는 것 추가
-		return null;
+		List<Bottle> bottleList = bdao.selectAllBottles(null);
+		
+		return bottleList;
 	}
 
 }

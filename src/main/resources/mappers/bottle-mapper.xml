@@ -35,7 +35,7 @@
 
    <select id="selectRelated" parameterType="Integer" resultMap="bottleResultSet">
        <![CDATA[   
-        SELECT BOTTLE_NAME, IMG_URL
+        SELECT BOTTLE_NO_PK, BOTTLE_NAME, IMG_URL
 		FROM bottle_tag_tb bt
 		INNER JOIN bottle_tb b
 		ON b.bottle_no_pk=bt.bottle_no_fk
@@ -84,13 +84,13 @@
                 <foreach collection="tagNoList" item="tagNo" separator="," open="(" close=")">
                     #{tagNo}
                 </foreach>
-                GROUP BY b.bottle_no_pk
         		HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
             </if>
             <if test="keyword != null">
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
+         GROUP BY b.bottle_no_pk
         <choose>
             <when test='sorted=="new"'>
                 order by b.create_date desc, b.bottle_no_pk desc
