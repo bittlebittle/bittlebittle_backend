@@ -13,7 +13,6 @@ public interface BoardReplyService {
 
     void updateReply(BoardReply boardReply);
 
-
-    void deleteReply(int replyNo, int userNo);
+    void deleteReply(int replyNo);
 
 }

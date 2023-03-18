@@ -39,26 +39,9 @@ public class JwtUtil {
     @Autowired
     private UserService service;
 
-//    public String createJwt(String subject, Long expTime) {
-//
-//        if(expTime <= 0) {
-//            throw new RuntimeException("만료 시간이 0보다 커야 한다");
-//        }
-//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-//        byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRETKEY);
-//        Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
-//        String token = Jwts.builder()
-//                .setSubject(subject)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPTIME))
-//                .signWith(signingKey)
-//                .compact();
-//
-//        return token;
-//    }
-
     public String createAccessJwt(String subject) {
         if(ACCESS_TOKEN_EXPTIME <= 0) {
+
             throw new RuntimeException("만료 시간이 0보다 커야 한다");
         }
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

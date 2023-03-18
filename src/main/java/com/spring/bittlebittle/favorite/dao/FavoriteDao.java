@@ -1,8 +1,5 @@
 package com.spring.bittlebittle.favorite.dao;
 
-
-import org.apache.ibatis.session.SqlSession;
-
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
 import java.util.List;

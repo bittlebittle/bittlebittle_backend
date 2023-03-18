@@ -1,27 +1,20 @@
 package com.spring.bittlebittle.food.controller;
 
+import com.spring.bittlebittle.food.service.FoodService;
+import com.spring.bittlebittle.food.vo.Food;
+import com.spring.bittlebittle.food.vo.FoodInfo;
+import com.spring.bittlebittle.tag.service.TagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.food.vo.Food;
-import com.spring.bittlebittle.food.vo.FoodInfo;
-import com.spring.bittlebittle.tag.service.TagService;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value="/api/admin/foods", produces="application/json; charset=UTF-8")

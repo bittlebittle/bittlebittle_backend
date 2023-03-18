@@ -1,17 +1,15 @@
 package com.spring.bittlebittle.bottle.dao;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
+import java.util.List;
+
 
 public interface BottleDao {
 
-
-//	List<Bottle> selectAllBottles(String keyword, String sorted);
-	List<Bottle> selectAllBottles(Map<String, String> param);
+	List<Bottle> selectAllBottles(BottleSearch bottleSearch);
 
 //	List<Bottle> selectMainList();
 
@@ -20,8 +18,6 @@ public interface BottleDao {
 	List<Bottle> selectBestList();
 
 	List<Bottle> selectRelatedFavoriteList();
-
-//	List<Bottle> selectSearchBottlesList(String keyword);
 
 	Bottle selectOne(int bottleNo);
 

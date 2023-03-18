@@ -15,7 +15,6 @@
     <typeAliases>       
         <typeAlias type="com.spring.bittlebittle.user.vo.User" alias="user" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.Bottle" alias="bottle" />
-        <typeAlias type="com.spring.bittlebittle.bottle.vo.Bottle" alias="bottleInfo" />
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="food" />
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="foodInfo" />
@@ -23,6 +22,11 @@
         <typeAlias type="com.spring.bittlebittle.reply.vo.Reply" alias="reply" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.Tag" alias="tag" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.TagType" alias="tagType" />
+
+        <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleInfo" alias="bottleInfo" />
+        <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleSearch" alias="bottleSearch" />
+        <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
+
         <typeAlias type="com.spring.bittlebittle.user.vo.UserJwt" alias="userJwt" />
         <typeAlias type="com.spring.bittlebittle.board.vo.Board" alias="board" />
         <typeAlias type="com.spring.bittlebittle.board.vo.BoardReply" alias="boardReply" />

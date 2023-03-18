@@ -55,11 +55,20 @@
         where board_no = #{boardNo}
     </update>
 
-    <select id="isAuthor" parameterType="map" resultType="Integer">
-        select count(*)
-        from free_board_tbv
-        where board_no = #{boardNo}
-          and user_no = #{userNo}
-    </select>
+<!--    <select id="isAuthor" parameterType="map" resultType="Integer">-->
+<!--        select count(*)-->
+<!--        from free_board_tbv-->
+<!--        where board_no = #{boardNo}-->
+<!--          and user_no = #{userNo}-->
+<!--    </select>-->
+
+
+	<insert id="adminAddboard" parameterType="board">
+		insert into board (user_no, board_title, create_date, board_content, status)
+		values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent},
+		#{status})
+	</insert>
+
+
 
 </mapper>

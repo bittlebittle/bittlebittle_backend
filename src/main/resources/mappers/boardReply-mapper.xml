@@ -3,25 +3,67 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="boardReplyMapper">
 
+
+<!-- 
     <select id="getReplyList" parameterType="int" resultType="boardReply">
         select * from boardReply where review_no = #{reviewNo}
     </select>
+    
+   -->  
 
-    <select id="getReply" parameterType="int" resultType="boardReply">
-        select * from boardReply where reply_no = #{replyNo}
+    <resultMap id="replyResultSet" type="boardReply">
+        <result property="replyNo" column="FBR_NO_PK"/>
+        <result property="userNo" column="USER_NO_FK"/>
+        <result property="replyContent" column="FBR_CONTENT"/>
+        <result property="status" column="STATUS"/>
+        <result property="nickname" column="NICKNAME"/>
+    </resultMap>
+
+    <select id="getReplyList" parameterType="int" resultMap="replyResultSet">
+          <![CDATA[
+         SELECT *
+        FROM free_board_reply_tb fbr
+        join user_tb u
+        on fbr.USER_NO_FK = u.USER_NO_PK
+        WHERE BOARD_NO_FK = #{boardNo}
+        ]]>
     </select>
 
+<!-- 
     <insert id="addReply" parameterType="boardReply">
         insert into boardReply (user_no, review_no, reply_content, create_date) values (#{userNo}, #{reviewNo}, #{replyContent}, #{createDate})
     </insert>
+  -->   
 
     <update id="updateReply" parameterType="boardReply">
-        update boardReply set reply_content = #{replyContent} where reply_no = #{replyNo} and user_no = #{userNo}
+         <![CDATA[
+        UPDATE reply_tb
+        SET REPLY_CONTENT=#{replyContent}
+        WHERE REPLY_NO_PK=#{replyNo}
+        ]]>
     </update>
 
     <update id="deleteReply" parameterType="map">
-        update boardReply set status = 'N'
-        where reply_no = #{replyNo}
-          and user_no = #{userNo}
+          <![CDATA[
+        UPDATE reply_tb
+        SET STATUS='N'
+        WHERE REPLY_NO_PK=#{replyNo}
+        ]]>
     </update>
+    
+   <update id="addReply" parameterType="Map">
+    INSERT INTO free_board_reply_tb(USER_NO_FK, FBR_NO_PK, FBR_CONTENT, NICKNAME)
+    SELECT u.user_no_pk, #{replyNo}, #{replyContent}, u.nickname
+    FROM user_tb u
+    WHERE u.user_no_pk = #{userNo}
+</update>
+    
+    <select id="isAuthor" parameterType="map" resultType="Integer">
+        select count(*) from board where board_no = #{replyNo} and user_no = #{userNo}
+    </select>
+    
+    <select id="isAdmin" parameterType="map" resultType="Integer">
+        select count(*) from user_tb where admin_yn = 'Y' and user_no = #{userNo}
+    </select>
+
 </mapper>

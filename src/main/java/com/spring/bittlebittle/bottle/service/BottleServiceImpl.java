@@ -1,23 +1,10 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-
-import com.spring.bittlebittle.tag.vo.TagType;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
 import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.dao.FoodDao;
@@ -28,8 +15,16 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -48,40 +43,48 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private FavoriteDao fvdao;
 
-	private Logger log = getLogger("case3");
 
-
+	Logger log = LogManager.getLogger("case3");
+	
 	// 전체 리스트
     @Override
-    public Map<String, Object> getBottles(Map<String, String> param) {
-
-	
-	Logger log = getLogger("case3");
-
+    public Map<String, Object> getBottles(BottleSearch bottleSearch) {
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
-//		List<Favorite> favoriteList = fvdao.selectOne(favorite);
-		List<Bottle> allBottles = bdao.selectAllBottles(param);
-		List<TagType> tagTypeList = tdao.selectAllTagType();
-		List<Tag> tagList = tdao.selectAllTag();
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
+		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
-		map.put("TagType", tagTypeList);
-		map.put("Tag", tagList);
-//		map.put("Favorite", favoriteList);
+		map.put("Favorite", favoriteList);
 
 		return map;
     }
 	// 메인 리스트
-//	@Override
-//	public List<Bottle> getMainBottles( ) {
-//		return bdao.selectMainList();
-//
-//	}
+	@Override
+	public Map<String, Object> getMainBottles( ) {
+
+		int userNo = 1;
+		Favorite favorite = new Favorite();
+		favorite.setUserNo(userNo);
+
+		List<Favorite> favoriteList = fvdao.selectList(favorite);
+		List<Bottle> bottleNewList = bdao.selectNewList();
+		List<Bottle> bottleBestList = bdao.selectBestList();
+		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("newBottle", bottleNewList);
+		map.put("bestBottle", bottleBestList);
+		map.put("relatedFavorite", bottleRelatedeFavoriteList);
+		map.put("favorite", favoriteList);
+
+		return map;
+	}
+
 	// New 리스트
 	@Override
 	public List<Bottle> getNewBottles() {
@@ -99,14 +102,6 @@ public class BottleServiceImpl implements BottleService {
 	public List<Bottle> getRelatedFavorite() {
 		return bdao.selectRelatedFavoriteList();
 	}
-
-
-	// 키워드 검색
-//	@Override
-//	public List<Bottle> getSearchBottleList(String keyword) {
-//		return dao.selectSearchBottlesList(keyword);
-//	}
-
 
 	@Override
 	@Transactional
@@ -184,9 +179,9 @@ public class BottleServiceImpl implements BottleService {
 		int bottleNo = editBottle.getBottleNo();
 		
 		bdao.updateOne(editBottle);
-		
+
 		log.debug(bottleNo);
-		
+
 		tdao.deleteBottleTag(bottleNo);
 	
 		List<BottleTag> bottleTagList = new ArrayList();

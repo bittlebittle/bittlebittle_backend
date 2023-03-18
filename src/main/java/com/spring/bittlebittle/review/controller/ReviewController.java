@@ -1,22 +1,16 @@
 package com.spring.bittlebittle.review.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.spring.bittlebittle.reply.service.ReplyService;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/bottles/{bottleNo}/reviews", produces="application/json; charset=UTF-8")
@@ -114,8 +108,8 @@ public class ReviewController {
 	// 리뷰댓글수정 (확인완료)
 	@PostMapping(value="/{reviewNo}/replies/set-data")
 	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
-												// replyNo, replyContent
-		
+
+		// replyNo, replyContent
 		reply.setReviewNo(reviewNo);
 		
 		List<Reply> replyList = rpservice.editReply(reply);
