@@ -1,13 +1,12 @@
 package com.spring.bittlebittle.board.service;
 
-import java.util.List;
-
+import com.spring.bittlebittle.board.dao.BoardDaoImpl;
+import com.spring.bittlebittle.board.vo.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.bittlebittle.board.dao.BoardDaoImpl;
-import com.spring.bittlebittle.board.vo.Board;
+import java.util.List;
 
 
 @Service
@@ -35,16 +34,16 @@ public class AdminBoardServiceImpl implements AdminBoardService{
     public void updateBoard(Board board) {
         int boardNo = board.getBoardNo();
         int userNo = board.getUserNo();
-        if (dao.isAuthor(boardNo, userNo)) {
-            dao.updateBoard(board);
-
-        }
+//        if (dao.isAuthor(boardNo, userNo)) {
+//            dao.updateBoard(board);
+//
+//        }
     }
 
     @Override
     public void deleteBoard(int boardNo, int userNo) {
-        if (dao.isAuthor(boardNo, userNo)) {
-            dao.deleteBoard(boardNo);
-        }
+//        if (dao.isAuthor(boardNo, userNo)) {
+//            dao.deleteBoard(boardNo);
+//        }
     }
 }

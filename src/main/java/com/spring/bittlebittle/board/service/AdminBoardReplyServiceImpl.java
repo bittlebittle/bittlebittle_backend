@@ -25,10 +25,10 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
     }
 
     @Override
-    public void addReply(BoardReply reply, int userNo, String nickname) {
+    public void addReply(BoardReply boardReply, int userNo, String nickname) {
         User user = userDao.selectUsers().get(0);
-        reply.setUserNo(user.getUserNo());
-        dao.addReply(reply, userNo, nickname);
+        boardReply.setUserNo(user.getUserNo());
+        dao.addReply(boardReply);
        
     }
 
@@ -44,7 +44,7 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
     
 //  @Override
 //  public boolean isAdmin(String adminYn) {
-//      // Æ¯Á¤ ´ñ±ÛÀÌ ÀÛ¼ºÀÚÀÎÁö È®ÀÎÇÏ´Â ·ÎÁ÷
+//      // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 //      User user = new User();
 //      		
 //      if (user.getAdminYn() == "y") {
@@ -63,7 +63,7 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
     
 //    @Override
 //    public boolean isAuthor(int replyNo, int userNo) {
-//        // Æ¯Á¤ ´ñ±ÛÀÌ ÀÛ¼ºÀÚÀÎÁö È®ÀÎÇÏ´Â ·ÎÁ÷
+//        // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 //        BoardReply reply = new BoardReply();
 //        		
 //        if (reply != null && reply.getUserNo() == userNo) {
@@ -75,7 +75,7 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
 
 //    @Override
 //    public boolean isAuthor(int replyNo, int userNo) {
-//        // Æ¯Á¤ ´ñ±ÛÀÌ ÀÛ¼ºÀÚÀÎÁö È®ÀÎÇÏ´Â ·ÎÁ÷
+//        // Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 //        BoardReply reply = dao.getReplyList();
 //        if (reply != null && reply.getUserNo() == userNo) {
 //            return true;
