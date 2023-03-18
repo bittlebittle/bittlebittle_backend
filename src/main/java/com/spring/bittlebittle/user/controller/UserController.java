@@ -54,20 +54,18 @@ public class UserController {
     @GetMapping(value = "/{userNo}")
     public User getUser(@PathVariable int userNo, HttpEntity entity){
         log.debug("유저 조회");
-
-        // access token 의 유효성 검사
+        // access token 디코딩
         String token = jwtUtil.resolveAccessToken(entity);
-
+        // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
         if(jwtUtil.validateToken(token, UserJwt.builder()
                                         .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
-                                        .build()
-                )){
-
-            // 유저 정보 조회
+                                        .build())){
+            // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
             return user;
         }
         else {
+            // 토큰이 유효하지 않다면
             return null;
         }
     }
@@ -75,15 +73,16 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
 
-        Boolean isLoginValidation = service.loginUser(user);
+        User loginUser = service.loginUser(user);
         Map<String, Object> map = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
-        if(isLoginValidation) {
+        if(loginUser != null) {
             String accessToken = jwtUtil.createAccessJwt(user.getUserId());
             String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
             jwtUtil.setHeaderAccessToken(headers, accessToken);
             jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
             map.put("success", true);
+            map.put("userNo", loginUser.getUserNo());
         }
         else {
             map.put("success", false);

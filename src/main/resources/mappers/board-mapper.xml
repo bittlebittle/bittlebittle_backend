@@ -31,9 +31,9 @@
 
     <insert id="addBoard" parameterType="board">
         insert into free_board_tb (
-        user_no_FK, board_title, board_content, status)
+        user_no_FK, board_title, board_content)
         values (
-        #{userNo}, #{boardTitle}, #{boardContent}, #{status})
+        #{userNo}, #{boardTitle}, #{boardContent})
     </insert>
 
     <update id="updateBoard" parameterType="board">
