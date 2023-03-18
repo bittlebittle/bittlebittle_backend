@@ -14,7 +14,7 @@ public interface UserService {
     // selectOne
     User getUser(User user);
 
-    Boolean loginUser(User user);
+    User loginUser(User user);
     // insert
     int registerUser(User user);
 

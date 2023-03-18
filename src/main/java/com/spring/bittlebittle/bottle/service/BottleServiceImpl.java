@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
+
 
 @Service
 public class BottleServiceImpl implements BottleService {
@@ -47,11 +49,13 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private FavoriteDao fvdao;
 
+
 	Logger log = LogManager.getLogger("case3");
 	
 	// 전체 리스트
     @Override
     public Map<String, Object> getBottles(BottleSearch bottleSearch) {
+
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
@@ -63,6 +67,7 @@ public class BottleServiceImpl implements BottleService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
 		map.put("Favorite", favoriteList);
+
 
 		return map;
     }

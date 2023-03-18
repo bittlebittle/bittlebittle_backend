@@ -37,26 +37,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean loginUser(User user) {
+    public User loginUser(User user) {
         // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
         User loginUser = dao.selectLoginUser(user);
 
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
         if (loginUser == null) {
             log.debug("해당 아이디의 유저가 존재하지 않습니다.");
-            return false;
+            return null;
         }
 
         // 만약 비밀번호가 일치하지 않는다면
         if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
-            log.debug(passwordEncoder.encode(user.getUserPwd()));
-            log.debug(user.getUserPwd());
-            log.debug(loginUser.getUserPwd());
-            log.debug("비밀번호가 일치하지 안습니다.");
-            return false;
+            log.debug("유저가 로그인 창에 입력한 비밀번호를 인코딩한 값 : " + passwordEncoder.encode(user.getUserPwd()));
+            log.debug("유저가 로그인 창에 입력한 비밀번호 원본 값 : " + user.getUserPwd());
+            log.debug("실제 db에 암호화되서 저장된 비밀번호 값 : " + loginUser.getUserPwd());
+            log.debug("비밀번호가 일치하지 않습니다.");
+            return null;
         }
         log.debug("로그인에 성공했습니다.");
-        return true;
+        return loginUser;
     }
 
     @Override

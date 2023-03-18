@@ -106,7 +106,6 @@ public class BottleController {
 		
 		Map<String, Object> map = bservice.getBottle(bottleNo);
 		
-		
 		return map;
 	} 
 	

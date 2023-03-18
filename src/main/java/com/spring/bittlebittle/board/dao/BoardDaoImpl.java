@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,28 +15,31 @@ import com.spring.bittlebittle.board.vo.Board;
 @Repository
 public class BoardDaoImpl implements BoardDao{
 
-	
 	@Autowired
     private SqlSession sqlSession;
 
+    private Logger log = LogManager.getLogger("case3");
+
+
     public List<Board> getBoardList() {
-        return sqlSession.selectList("BoardMapper.getBoardList");
+        log.debug("Dada");
+        return sqlSession.selectList("boardMapper.getBoards");
     }
 
     public Board getBoard(int boardNo) {
-        return sqlSession.selectOne("BoardMapper.getBoard", boardNo);
+        return sqlSession.selectOne("boardMapper.getBoard", boardNo);
     }
 
-    public void addBoard(Board board) {
-        sqlSession.insert("BoardMapper.addBoard", board);
+    public int addBoard(Board board) {
+        return sqlSession.insert("boardMapper.addBoard", board);
     }
 
     public void updateBoard(Board board) {
-        sqlSession.update("BoardMapper.updateBoard", board);
+        sqlSession.update("boardMapper.updateBoard", board);
     }
 
     public void deleteBoard(int boardNo) {
-        sqlSession.delete("BoardMapper.deleteBoard", boardNo);
+        sqlSession.update("boardMapper.deleteBoard", boardNo);
     }
 
     public boolean isAuthor(int boardNo, int userNo) {

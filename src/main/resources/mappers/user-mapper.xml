@@ -28,7 +28,7 @@
     </insert>
 
     <select id="selectOne" parameterType="user" resultMap="userResultSet">
-        SELECT user_id, user_pwd, nickname
+        SELECT user_no_pk, user_id, user_pwd, nickname
         FROM USER_TB
         <where>
             <if test="userNo != null and userNo != 0">user_no_pk = #{userNo}</if>
@@ -37,7 +37,7 @@
     </select>
 
     <select id="selectLoginUser" parameterType="user" resultMap="userResultSet">
-        SELECT user_id, user_pwd, nickname
+        SELECT user_no_pk, user_id, user_pwd, nickname
         FROM USER_TB
         <where>
             <if test="userId != null and userId != ''">user_id = #{userId}</if>

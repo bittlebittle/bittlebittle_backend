@@ -2,6 +2,7 @@ package com.spring.bittlebittle.board.service;
 
 import java.util.List;
 
+import com.spring.bittlebittle.board.dao.BoardDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import com.spring.bittlebittle.board.vo.Board;
 @Transactional
 public class BoardServiceImpl implements BoardService{
     @Autowired
-    private BoardDaoImpl dao;
+    private BoardDao dao;
 
     @Override
     public List<Board> getBoardList() {
@@ -27,8 +28,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void addBoard(Board board) {
-        dao.addBoard(board);
+    public int addBoard(Board board) {
+        return dao.addBoard(board);
     }
 
     @Override

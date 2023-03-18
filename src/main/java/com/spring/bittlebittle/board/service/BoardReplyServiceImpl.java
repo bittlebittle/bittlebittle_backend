@@ -13,8 +13,8 @@ public class BoardReplyServiceImpl implements BoardReplyService{
     @Autowired
     private BoardReplyDaoImpl dao;
 
-    public List<BoardReply> getReplyList(int reviewNo) {
-        return dao.getReplyList(reviewNo);
+    public List<BoardReply> getReplyList(int boardNo) {
+        return dao.getReplyList(boardNo);
     }
 
     public void addReply(BoardReply boardReply) {

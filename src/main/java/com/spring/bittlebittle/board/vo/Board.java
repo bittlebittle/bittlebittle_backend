@@ -12,6 +12,7 @@ public class Board {
 	private int boardNo;
 	private int userNo;
 	private String boardTitle;
+	private String nickname;
 	private String createDate;
 	private String boardContent;
 	private String status;

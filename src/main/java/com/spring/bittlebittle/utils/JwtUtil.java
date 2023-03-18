@@ -187,6 +187,7 @@ public class JwtUtil {
                     .setSigningKey(DatatypeConverter.parseBase64Binary(SECRETKEY))
                     .parseClaimsJws(jwt)
                     .getBody();
+            log.debug(jwt);
             log.debug("유효한 access token 입니다.");
             return !claims.getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (Exception e) {

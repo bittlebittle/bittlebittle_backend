@@ -49,7 +49,6 @@
 		GROUP BY bottle_no_fk
 		ORDER BY count(tag_no_fk) DESC
 		LIMIT 5
-		
       ]]>
    </select>
 
