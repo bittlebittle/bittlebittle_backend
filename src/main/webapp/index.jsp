@@ -26,6 +26,7 @@
 
   <link href="static/css/tooplate-crispy-kitchen.css" rel="stylesheet">
 
+<<<<<<< HEAD
   <style>
     /*
 
@@ -905,6 +906,7 @@ https://www.tooplate.com/view/2129-crispy-kitchen
 
 
   </style>`
+
   <!--
 
   Tooplate 2129 Crispy Kitchen
@@ -915,6 +917,7 @@ https://www.tooplate.com/view/2129-crispy-kitchen
 </head>
 
 <body>Ï
+
 
 <nav class="navbar navbar-expand-lg bg-gray-900 shadow-lg">
   <div class="container">
@@ -1189,6 +1192,7 @@ https://www.tooplate.com/view/2129-crispy-kitchen
         <div class="col-lg-4 col-md-6 col-12">
           <div class="menu-thumb">
             <div class="menu-image-wrap">
+<<<<<<< HEAD
               <img src="static/images/dinner/farhad-ibrahimzade-ZipYER3NLhY-unsplash.jpg" class="img-fluid menu-image" alt="">
 
               <span class="menu-tag bg-warning">Dinner</span>

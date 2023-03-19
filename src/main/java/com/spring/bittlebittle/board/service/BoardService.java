@@ -1,5 +1,4 @@
 package com.spring.bittlebittle.board.service;
-
 import com.spring.bittlebittle.board.vo.Board;
 
 import java.util.List;

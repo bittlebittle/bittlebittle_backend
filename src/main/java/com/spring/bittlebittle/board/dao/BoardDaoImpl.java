@@ -1,16 +1,13 @@
 package com.spring.bittlebittle.board.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.spring.bittlebittle.board.vo.Board;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.bittlebittle.board.vo.Board;
+import java.util.List;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -34,19 +31,20 @@ public class BoardDaoImpl implements BoardDao{
         return sqlSession.insert("boardMapper.addBoard", board);
     }
 
-    public void updateBoard(Board board) {
-        sqlSession.update("boardMapper.updateBoard", board);
+    public int updateBoard(Board board) {
+        return sqlSession.update("boardMapper.updateBoard", board);
     }
 
-    public void deleteBoard(int boardNo) {
-        sqlSession.update("boardMapper.deleteBoard", boardNo);
+    public int deleteBoard(int boardNo) {
+        return sqlSession.update("boardMapper.deleteBoard", boardNo);
     }
 
-    public boolean isAuthor(int boardNo, int userNo) {
-        Map<String, Integer> params = new HashMap<>();
-        params.put("boardNo", boardNo);
-        params.put("userNo", userNo);
-        Integer count = sqlSession.selectOne("BoardMapper.isAuthor", params);
-        return count != null && count > 0;
-    }
+//    public boolean isAuthor(int boardNo, int userNo) {
+//        Map<String, Integer> params = new HashMap<>();
+//        params.put("boardNo", boardNo);
+//        params.put("userNo", userNo);
+//        Integer count = sqlSession.selectOne("BoardMapper.isAuthor", params);
+//        return count != null && count > 0;
+//    }
 }
+

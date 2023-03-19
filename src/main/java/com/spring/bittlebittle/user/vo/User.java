@@ -14,4 +14,5 @@ public class User {
     private int userNo;
     private String userId, userPwd, userName, nickname, email, phone, status, adminYn;
 
+    
 }

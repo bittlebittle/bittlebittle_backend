@@ -4,7 +4,6 @@
 
 <mapper namespace="userMapper">
 
-
     <resultMap id="userResultSet" type="user">
         <result property="userNo" column="USER_NO_PK" />
         <result property="userId" column="USER_ID" />
@@ -27,6 +26,26 @@
         INSERT INTO USER_TB VALUES (#{userId})
     </insert>
 
+	<insert id="registerUser" parameterType="User">
+		INSERT INTO user_table
+		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
+		 phone)
+		VALUES (#{userNo}, #{userId}, #{userPwd}, #{userName},
+				#{nickname},
+				#{email}, #{phone})
+	</insert>
+
+	<insert id="adminRegister" parameterType="User">
+		INSERT INTO user_table
+		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
+		 phone, status,
+		 adminYn)
+		VALUES (#{userNo}, #{userId}, #{userPwd}, #{userName},
+				#{nickname},
+				#{email}, #{phone}, #{status}, #{adminYn})
+	</insert>
+
+
     <select id="selectOne" parameterType="user" resultMap="userResultSet">
         SELECT user_no_pk, user_id, user_pwd, nickname
         FROM USER_TB
@@ -48,6 +67,20 @@
         select *
         from USER_TB;
     </select>
+
+	<select id="selectListbyId" parameterType="User"
+			resultMap="userResultSet">
+		select *
+		from USER_TB
+		where user_id = #{userId};
+	</select>
+
+	<select id="selectListbyNo" parameterType="User"
+			resultMap="userResultSet">
+		select *
+		from USER_TB
+		where user_no_pk = #{userNo};
+	</select>
 
     <select id="selectUserJwt" parameterType="userJwt" resultMap="userJwtResultSet">
         SELECT *
@@ -93,60 +126,30 @@
         WHERE USER_JWT_IDX_PK = #{userJwtIdx}
     </delete>
 
+	<update id="updateUser" parameterType="User">
+		UPDATE user_tb
+		SET user_id = #{userId},
+		    user_pwd = #{userPwd},
+		   	user_name = #{userName},
+		   	nickname = #{nickname},
+		   	email = #{mail},
+		   	phone= = #{phone}
+		WHERE
+			user_id = #{userId}
+	</update>
 
-<!--  <insert id="insert" parameterType="user">
-		INSERT INTO USER VALUES (#{userId})
-	</insert>
+	<update id="deleteUser" parameterType="User">
+		UPDATE user_tb
+		SET status = "y"
+		WHERE user_no = #{userNo}
+	</update>
 
-	<select id="selectOne" resultType="int">
-		select count(*)
-		from user_tb
+
+	<select id="findByUserId" parameterType="User"
+			resultMap="userResultSet">
+		SELECT *
+		FROM user_tb
+		WHERE user_id = #{userId}
 	</select>
 
-	<insert id="insertNull" parameterType="String">
-		insert into user_tb values (#{key}, #{key})
-	</insert>
-
-	<resultMap id="userMap" type="User">
-
-		<result property="userId" column="user_id" />
-		<result property="userPwd" column="user_pwd" />
-		<result property="userName" column="user_name" />
-		<result property="userNickname" column="nickname" />
-		<result property="userMail" column="email" />
-		<result property="userPhone" column="phone" />
-
-	</resultMap>
-
-	<select id="getUserById" resultMap="userMap"
-		parameterType="User">
-		SELECT * FROM user_tb WHERE user_id = #{userId}
-	</select>
-
-<select id="getAllUsers" resultMap="userMap">
-    SELECT * FROM user_tb
-  </select>
-
-  <insert id="insertUser" parameterType="User">
-    INSERT INTO user_tb (user_id, user_pwd, user_name, nickname, email,phone)
-    VALUES (#{userId}, #{userPwd}, #{userName}, #{userNickname}, #{userMail},#{userPhone})
-  </insert>
-
-  <update id="updateUser" parameterType="User">
-    UPDATE user_tb SET user_id = #{userId}, user_pwd = #{userPwd},
-    "user_name" = #{userName}, nickname = #{userNickname}, email = #{userMail},phone = #{userPhone}
-    WHERE userId = #{userId}
-  </update>
-
-  <delete id="deleteUser" parameterType="User">
-    DELETE FROM user_tb WHERE user_id = #{userId}
-  </delete>
-
-  <select id="getUserByCredentials" parameterType="map" resultType="User">
-  SELECT *
-  FROM users
-  WHERE user_id = #{userId} AND user_pwd = #{userPwd}
-</select>
-
-  -->
 </mapper>

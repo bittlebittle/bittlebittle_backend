@@ -89,7 +89,7 @@
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
-         GROUP BY b.bottle_no_pk
+        GROUP BY b.bottle_no_pk
         <choose>
             <when test='sorted=="new"'>
                 order by b.create_date desc, b.bottle_no_pk desc
@@ -140,7 +140,6 @@
                  JOIN favorite_tb f ON f.bottle_no_fk = bt.bottle_no_fk
         WHERE bt.tag_no_fk = #{bt.tagNo}
         ORDER BY b.bottle_no_pk desc;
-
     </select>
 
 
@@ -158,3 +157,4 @@
     </select>
 
 </mapper>
+

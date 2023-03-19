@@ -35,4 +35,13 @@ public interface UserService {
     UserJwt getUserJwtBySubject(UserJwt build);
 
     int removeUserJwt(UserJwt userJwt);
+
+	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	boolean isUsernameDuplicate(String userId);
+
+	boolean sendEmailAuth(String email);
+
 }

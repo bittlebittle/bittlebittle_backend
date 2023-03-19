@@ -1,25 +1,5 @@
 package com.spring.bittlebittle.bottle.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
-import com.spring.bittlebittle.bottle.vo.BottleSearch;
-import com.spring.bittlebittle.favorite.service.FavoriteService;
-import com.spring.bittlebittle.favorite.vo.Favorite;
-import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.review.service.ReviewService;
-import com.spring.bittlebittle.tag.service.TagService;
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
@@ -32,6 +12,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
 
 
 @RestController
@@ -51,8 +35,8 @@ public class BottleController {
 	@Autowired
 	private TagService tservice;
 
+	private Logger log = LogManager.getLogger("case3");
 
-	Logger log = LogManager.getLogger("case3");
 
 	// 리스트, 키워드는 확인 완료
 	// 태그 선택은 확인 해야함
@@ -97,15 +81,13 @@ public class BottleController {
 		return map;
 	}
 
-
-	
 	// 개별조회 (확인완료)
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
 		
 		Map<String, Object> map = bservice.getBottle(bottleNo);
-		
+
 		return map;
 	} 
 	
