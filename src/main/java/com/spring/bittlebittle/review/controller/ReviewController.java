@@ -56,12 +56,13 @@ public class ReviewController {
 	public List<Review> addReview(@PathVariable int bottleNo,
 								  @ModelAttribute Review review
 									, HttpServletRequest request) {
-
-		// access token 디코딩
+		// access token header 에서 뽑기
 		String token = jwtUtil.resolveAccessToken(request);
+		// refresh tokenIdx header 에서 뽑기
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
 		log.debug(token);
 		log.debug(refreshTokenIdx);
+		// 뽑아온 token 을 가지고 유효성 검사. validateToen 의 리턴값은 boolean( true/false)
 		if (jwtUtil.validateToken(token, UserJwt.builder()
 				.userJwtIdx(refreshTokenIdx)
 				.build())) {
