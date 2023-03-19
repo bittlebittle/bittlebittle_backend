@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,13 +120,13 @@ public class UserController {
 //    }
 
     @GetMapping(value = "/{userNo}")
-    public User getUser(@PathVariable int userNo, HttpEntity entity){
+    public User getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("유저 조회");
         // access token 디코딩
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
         // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
         if(jwtUtil.validateToken(token, UserJwt.builder()
-                                        .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
+                                        .userJwtIdx(jwtUtil.resolveRefreshToken(request))
                                         .build())){
             // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
@@ -161,13 +162,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/logout")
-    public ResponseEntity<Object> logoutUser(HttpEntity entity) {
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request) {
         log.debug("로그 아웃");
 
         // access token header 에서 추출
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
         String subject = jwtUtil.getSubject(token);
-        String userJwtIdx = jwtUtil.resolveRefreshToken(entity);
+        String userJwtIdx = jwtUtil.resolveRefreshToken(request);
 
         // access token 이 만료되었다면?
         // subject 를 가져올 수 없게 된다.

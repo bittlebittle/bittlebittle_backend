@@ -3,17 +3,19 @@ package com.spring.bittlebittle.utils;
 import com.google.gson.Gson;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.UserJwt;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -132,19 +134,19 @@ public class JwtUtil {
 //    }
 
     // Request의 Header에서 AccessToken 값을 가져옵니다. "Authorization" : "token'
-    public String resolveAccessToken(HttpEntity entity) {
-        if(entity.getHeaders().get("Authorization") != null ) {
-            log.debug(entity.getHeaders().get("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7));
-            return entity.getHeaders().get("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7);
+    public String resolveAccessToken(HttpServletRequest request) {
+        if(request.getHeader("Authorization") != null ) {
+            log.debug(request.getHeader("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7));
+            return request.getHeader("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7);
         }
         return null;
     }
 
     // Request의 Header에서 RefreshToken의 idx 값을 가져옵니다. "RefreshToken" : "db의 idx 값'
-    public String resolveRefreshToken(HttpEntity entity) {
-        if (entity.getHeaders().get("RefreshTokenIdx") != null) {
-            log.debug(entity.getHeaders().get("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", ""));
-            return entity.getHeaders().get("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", "");
+    public String resolveRefreshToken(HttpServletRequest request) {
+        if (request.getHeader("RefreshTokenIdx") != null) {
+            log.debug(request.getHeader("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+            return request.getHeader("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", "");
         } return null;
     }
 

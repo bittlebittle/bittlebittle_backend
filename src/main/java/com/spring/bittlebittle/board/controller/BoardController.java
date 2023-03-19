@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 //import com.spring.bittlebittle.NotAuthorizedException;
@@ -47,12 +48,12 @@ public class BoardController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> addBoard(@RequestBody  Board board, HttpEntity entity) {
+    public ResponseEntity<Board> addBoard(@RequestBody Board board, HttpServletRequest request) {
 
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
         // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
         if(jwtUtil.validateToken(token, UserJwt.builder()
-                .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
                 .build())){
             // 토큰이 유효하다면 유저 정보 조회
 
