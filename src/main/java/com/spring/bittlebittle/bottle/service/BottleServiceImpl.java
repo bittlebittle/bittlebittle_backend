@@ -1,17 +1,6 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
@@ -26,9 +15,17 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
+import com.spring.bittlebittle.tag.vo.TagType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -59,10 +56,15 @@ public class BottleServiceImpl implements BottleService {
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
+		List<Tag> tagList = tdao.selectAllTag();
+		List<TagType> tagTypeList = tdao.selectAllTagType();
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
 		map.put("Favorite", favoriteList);
+		map.put("tagList", tagList);
+		map.put("tagTypeList", tagTypeList);
+
 
 		return map;
     }

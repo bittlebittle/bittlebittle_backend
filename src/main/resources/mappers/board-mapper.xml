@@ -11,7 +11,7 @@
         select * from board where board_no = #{boardNo}
     </select>
 
-    <insert id="addBoard" parameterType="ㅠoard">
+    <insert id="addBoard" parameterType="board">
         insert into board (user_no, board_title, create_date, board_content, status) values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent}, #{status})
     </insert>
 
