@@ -44,6 +44,8 @@ public class AdminTagTypeController {
 	public List<TagType> editTagType(@RequestBody TagType tagType){
 										//tagTypeNo, tagTypeName
 		
+		log.debug(tagType);
+		
 		List<TagType> tagTypeList = tservice.editTagType(tagType);
 		
 		return tagTypeList;
