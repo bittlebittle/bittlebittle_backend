@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+
 @RestController
 @RequestMapping(value="/api/admin/tags", produces="application/json; charset=UTF-8")
 public class AdminTagController {
@@ -17,11 +18,13 @@ public class AdminTagController {
 	
 	// 태그 창 들어갔을 때 (확인완료)
 	@GetMapping
+
 	public List<Tag> getTag(){
 		return null;
 	}
 
 	public List<Tag>  getTags() {
+
 		List<Tag> tagList = tservice.getAllTags();
 		
 		return tagList;

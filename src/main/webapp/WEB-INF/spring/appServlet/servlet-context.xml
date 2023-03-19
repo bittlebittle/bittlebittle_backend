@@ -30,6 +30,7 @@
 
 	<default-servlet-handler />
 
+<!-- CORS -->
 	<mvc:cors>
 		<mvc:mapping path="/**"
 					allowed-origins="http://localhost:4000, http://localhost:8080"

@@ -42,6 +42,7 @@ public class BottleController {
 	// 태그 선택은 확인 해야함
 	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
 	public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
+
 		Map<String, Object> map = bservice.getBottles(bottleSearch);
 
 		return map;
@@ -70,7 +71,6 @@ public class BottleController {
 
 		return  bottleFavoriteList;
 	}
-
 
 	// 확인 완료
 	@GetMapping

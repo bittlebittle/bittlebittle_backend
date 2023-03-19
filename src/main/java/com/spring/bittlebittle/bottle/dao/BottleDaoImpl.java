@@ -1,5 +1,6 @@
 package com.spring.bittlebittle.bottle.dao;
 
+
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
@@ -22,6 +23,7 @@ public class BottleDaoImpl implements BottleDao {
 		return sqlSession.selectList("bottleMapper.selectAll", bottleSearch);
 	}
 
+
 //	@Override
 //	public List<Bottle> selectMainList() {
 //		return sqlSession.selectList();
@@ -36,11 +38,13 @@ public class BottleDaoImpl implements BottleDao {
 
 	@Override
 	public List<Bottle> selectBestList() {
+
 		return sqlSession.selectList("bottleMapper.selectBestBottles");
 	}
 
 	@Override
 	public List<Bottle> selectRelatedFavoriteList() {
+
 		return sqlSession.selectList("bottleMapper.selectRelatedFavorite");
 	}
 

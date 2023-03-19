@@ -15,6 +15,7 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	
 	@Override
 	public int insertOne(Favorite favorite) {
+
 		return sqlSession.insert("favoriteMapper.insertOne", favorite);
 
 	}

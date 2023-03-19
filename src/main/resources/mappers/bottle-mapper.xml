@@ -10,7 +10,7 @@
       <result property="bottleName" column="BOTTLE_NAME"/>
       <result property="bottleContent" column="BOTTLE_CONTENT" />
       <result property="bottleBrand" column="BOTTLE_BRAND" />
-      <result property="bottleAbv" column="BOTTLE_ABV" />
+       <result property="bottleAbv" column="BOTTLE_ABV" />
       <result property="viewCnt" column="VIEW_CNT" />
       <result property="createDate" column="CREATE_DATE" jdbcType="TIME" javaType="String" />
       <result property="imgUrl" column="IMG_URL" />
@@ -35,7 +35,7 @@
 
    <select id="selectRelated" parameterType="Integer" resultMap="bottleResultSet">
        <![CDATA[   
-        SELECT BOTTLE_NAME, IMG_URL
+        SELECT BOTTLE_NO_PK, BOTTLE_NAME, IMG_URL
 		FROM bottle_tag_tb bt
 		INNER JOIN bottle_tb b
 		ON b.bottle_no_pk=bt.bottle_no_fk
@@ -67,6 +67,7 @@
          WHERE BOTTLE_NO_PK=#{bottleNo}
       ]]>
    </update>
+
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
@@ -137,7 +138,6 @@
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN favorite_tb f ON f.bottle_no_fk = bt.bottle_no_fk
-
         WHERE bt.tag_no_fk = #{bt.tagNo}
         ORDER BY b.bottle_no_pk desc;
     </select>
@@ -157,3 +157,4 @@
     </select>
 
 </mapper>
+

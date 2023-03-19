@@ -1,5 +1,6 @@
 package com.spring.bittlebittle.review.controller;
 
+
 import com.spring.bittlebittle.reply.service.ReplyService;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
@@ -54,17 +55,17 @@ public class ReviewController {
 	@PostMapping()
 	public List<Review> addReview(@PathVariable int bottleNo,
 								  @ModelAttribute Review review
-									, HttpServletRequest request){
+									, HttpServletRequest request) {
 
 		// access token 디코딩
 		String token = jwtUtil.resolveAccessToken(request);
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
 		log.debug(token);
 		log.debug(refreshTokenIdx);
-		if(jwtUtil.validateToken(token, UserJwt.builder()
+		if (jwtUtil.validateToken(token, UserJwt.builder()
 				.userJwtIdx(refreshTokenIdx)
 				.build())) {
-//		if(true) {
+
 			int userNo = 1;
 
 			review.setUserNo(userNo);
@@ -80,7 +81,7 @@ public class ReviewController {
 
 	// 리뷰수정 (확인완료)
 	@PostMapping(value="/set-data")
-	public List<Review> editReveiw(@PathVariable int bottleNo, @RequestBody Review review){
+	public List<Review> editReveiw(@PathVariable int bottleNo, @ModelAttribute Review review){
 																			// reviewNo도 데이터로 보내줘야함
 
 		review.setBottleNo(bottleNo);
@@ -112,7 +113,7 @@ public class ReviewController {
 
 	// 리뷰댓글작성 (확인완료)
 	@PostMapping(value="/{reviewNo}/replies")
-	public List<Reply> addReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+	public List<Reply> addReply(@PathVariable int reviewNo, @ModelAttribute Reply reply){
 																		// replyContent
 		int userNo = 1;
 
@@ -129,6 +130,7 @@ public class ReviewController {
 	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
 
 		// replyNo, replyContent
+
 		reply.setReviewNo(reviewNo);
 
 		List<Reply> replyList = rpservice.editReply(reply);
