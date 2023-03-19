@@ -3,6 +3,8 @@ package com.spring.bittlebittle.bottle.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
+import com.spring.bittlebittle.user.vo.UserJwt;
+import com.spring.bittlebittle.utils.JwtUtil;
 
 @RestController
 @RequestMapping(value="/api/admin/bottles", produces="application/json; charset=UTF-8")
@@ -30,6 +35,8 @@ public class AdminBottleController {
 	private ReviewService rservice;
 	@Autowired
 	private TagService tservice;
+	@Autowired
+	private JwtUtil jwtUtil;
 	
 	Logger log = LogManager.getLogger("case3");
 	
@@ -60,14 +67,30 @@ public class AdminBottleController {
 	
 	// 추가 완료할 때(확인완료)
 	@PostMapping
-	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle) {
+	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
+		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			List<Bottle> bottleList = bservice.addBottle(bottle);
+			
+			return bottleList;
+			
+		} else {
+			
+			Map<String, Object> map = bservice.getBottles(null);
+			
+			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
+			
+			return bottleList;
+		}
 		
 		
-		List<Bottle> bottleList = bservice.addBottle(bottle);
-		
-		
-		// 리스트 or 새로운 bottle
-		return bottleList;
 	}
 	
 //	// 수정창 들어갈때 

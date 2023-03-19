@@ -1,20 +1,28 @@
 package com.spring.bittlebittle.review.controller;
 
 
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.spring.bittlebittle.reply.service.ReplyService;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/bottles/{bottleNo}/reviews", produces="application/json; charset=UTF-8")
@@ -25,7 +33,6 @@ public class ReviewController {
 	private ReviewService rservice;
 	@Autowired
 	private ReplyService rpservice;
-
 	@Autowired
 	private JwtUtil jwtUtil;
 
@@ -50,6 +57,7 @@ public class ReviewController {
 
 		return map;
 	}
+	
 
 	// 리뷰등록 (확인완료)
 	@PostMapping()
@@ -66,40 +74,67 @@ public class ReviewController {
 				.userJwtIdx(refreshTokenIdx)
 				.build())) {
 
-			int userNo = 1;
-
-			review.setUserNo(userNo);
-			review.setBottleNo(bottleNo);
-
 			List<Review> reviewList = rservice.addReview(review);
 
 			return reviewList;
 		} else {
-			return null;
+			
+			List<Review> reviewList = rservice.getReviews(bottleNo);
+			
+			return reviewList;
 		}
 	}
 
 	// 리뷰수정 (확인완료)
 	@PostMapping(value="/set-data")
-	public List<Review> editReveiw(@PathVariable int bottleNo, @ModelAttribute Review review){
+	public List<Review> editReveiw(@PathVariable int bottleNo, @ModelAttribute Review review
+									, HttpServletRequest request){
 																			// reviewNo도 데이터로 보내줘야함
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
 
-		review.setBottleNo(bottleNo);
+			List<Review> reviewList = rservice.editReview(review);
 
-		log.debug(review);
+			return reviewList;
+			
+		} else {
+			
+			List<Review> reviewList = rservice.getReviews(bottleNo);
+			
+			return reviewList;
+		}
+		
 
-		List<Review> reviewList = rservice.editReview(review);
-
-		return reviewList;
+		
 	}
 
 	// 리뷰삭제 (확인완료)
 	@GetMapping(value="/{reviewNo}/deletion")
-	public List<Review> deleteReview(@PathVariable int bottleNo, @PathVariable int reviewNo){
+	public List<Review> deleteReview(@PathVariable int bottleNo, @PathVariable int reviewNo, HttpServletRequest request){
 
-		List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
 
-		return reviewList;
+			List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
+
+			return reviewList;
+			
+		} else {
+			
+			List<Review> reviewList = rservice.getReviews(bottleNo);
+			
+			return reviewList;
+		}
 	}
 
 	// 리뷰댓글조회 (확인완료)
@@ -113,38 +148,88 @@ public class ReviewController {
 
 	// 리뷰댓글작성 (확인완료)
 	@PostMapping(value="/{reviewNo}/replies")
-	public List<Reply> addReply(@PathVariable int reviewNo, @ModelAttribute Reply reply){
+	public List<Reply> addReply(@PathVariable int reviewNo, @ModelAttribute Reply reply, HttpServletRequest request){
 																		// replyContent
-		int userNo = 1;
+		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
 
-		reply.setReviewNo(reviewNo);
-		reply.setUserNo(userNo);
+			log.debug(reply);
 
-		List<Reply> replyList = rpservice.addReply(reply);
+			List<Reply> replyList = rpservice.addReply(reply);
 
-		return replyList;
+			return replyList;
+			
+		} else {
+			
+			List<Reply> replyList = rpservice.getReplies(reviewNo);
+
+			return replyList;
+		}
+		
+		
+
 	}
 
 	// 리뷰댓글수정 (확인완료)
 	@PostMapping(value="/{reviewNo}/replies/set-data")
-	public List<Reply> updateReply(@PathVariable int reviewNo, @RequestBody Reply reply){
+	public List<Reply> updateReply(@PathVariable int reviewNo, @ModelAttribute Reply reply, HttpServletRequest request){
+																// replyNo, replyContent
 
-		// replyNo, replyContent
+		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
 
-		reply.setReviewNo(reviewNo);
+			List<Reply> replyList = rpservice.editReply(reply);
 
-		List<Reply> replyList = rpservice.editReply(reply);
+			return replyList;
+			
+		} else {
+			
+			List<Reply> replyList = rpservice.getReplies(reviewNo);
 
-		return replyList;
+			return replyList;
+		}
+		
+
+		
 	}
 
 	// 리뷰댓글삭제 (확인완료)
 	@GetMapping(value="/{reviewNo}/replies/{replyNo}/deletion")
 	public List<Reply> deleteReply(@PathVariable int reviewNo,
-			@PathVariable int replyNo){
-		List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
+			@PathVariable int replyNo, HttpServletRequest request){
+		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
 
-		return replyList;
+
+			List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
+
+			return replyList;
+			
+		} else {
+			
+			List<Reply> replyList = rpservice.getReplies(reviewNo);
+
+			return replyList;
+		}
+		
 	}
 
 }
