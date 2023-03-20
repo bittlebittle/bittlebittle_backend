@@ -33,8 +33,14 @@ public class UserController {
     private Gson gson;
 
     @PostMapping
-    public void registerUser(@ModelAttribute User user) {
-        service.registerUser(user);
+    public ResponseEntity registerUser(@ModelAttribute User user) {
+        Map<String, Boolean> map = new HashMap<>();
+        if ( service.registerUser(user) == 1 ) {
+            map.put("request", true);
+        } else {
+            map.put("request", false);
+        }
+        return ResponseEntity.ok().body(gson.toJson(map));
     }
 
     @GetMapping()
@@ -69,29 +75,18 @@ public class UserController {
 //////////////////////
 //아래는 tag 관련
 	
-	@PostMapping(value = "/tagadd", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addUserTags(@RequestParam int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
+	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
         service.addUserTags(userNo, tagNoList);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/tagdelete/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "{userNo}/tags/deletion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
         service.deleteUserTags(userNo, tagNoList);
         return ResponseEntity.ok().build();
     }
-	
-//	 @PostMapping(value="/tagadd", produces = MediaType.APPLICATION_JSON_VALUE)
-//	 public void addUserTags(@RequestParam int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-//	          service.addUserTags(userNo, tagNoList);
-//	    }
-//	 
-//	 @DeleteMapping(value = "/tagdelete/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-//	    public void deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-//	        service.deleteUserTags(userNo, tagNoList);
-//	    }
-    
-    
+
     //이메일인증, 아이디 중복확인
     
     @PostMapping(value="/check-duplicate", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -151,6 +146,7 @@ public class UserController {
             jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
             map.put("success", true);
             map.put("userNo", loginUser.getUserNo());
+            map.put("adminYn", loginUser.getAdminYn());
         }
         else {
             map.put("success", false);
