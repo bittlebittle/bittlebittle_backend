@@ -1,25 +1,5 @@
 package com.spring.bittlebittle.bottle.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
-import com.spring.bittlebittle.bottle.vo.BottleSearch;
-import com.spring.bittlebittle.favorite.service.FavoriteService;
-import com.spring.bittlebittle.favorite.vo.Favorite;
-import com.spring.bittlebittle.food.service.FoodService;
-import com.spring.bittlebittle.review.service.ReviewService;
-import com.spring.bittlebittle.tag.service.TagService;
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
@@ -32,6 +12,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -59,10 +42,22 @@ public class BottleController {
 	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
 	public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
 
+		log.debug(bottleSearch.toString());
 		Map<String, Object> map = bservice.getBottles(bottleSearch);
 
 		return map;
 	}
+
+	@PostMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
+	public Map<String, Object> getBottless(@ModelAttribute BottleSearch bottleSearch) {
+
+		log.debug(bottleSearch.toString());
+		Map<String, Object> map = bservice.getBottles(bottleSearch);
+
+		return map;
+	}
+
+
 
 	@GetMapping(params = "sorted = new")
 	public List<Bottle> getNewBottles(){

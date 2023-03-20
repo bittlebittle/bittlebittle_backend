@@ -15,12 +15,12 @@ import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
-import com.spring.bittlebittle.tag.vo.TagType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +48,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	// 전체 리스트
     @Override
-    public Map<String, Object> getBottles(BottleSearch bottleSearch) {
+    public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
 
 		int userNo = 1;
 		Favorite favorite = new Favorite();
@@ -56,15 +56,14 @@ public class BottleServiceImpl implements BottleService {
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
 		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
-		List<Tag> tagList = tdao.selectAllTag();
-		List<TagType> tagTypeList = tdao.selectAllTagType();
+//		List<Tag> tagList = tdao.selectAllTag();
+//		List<TagType> tagTypeList = tdao.selectAllTagType();
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
 		map.put("Favorite", favoriteList);
-		map.put("tagList", tagList);
-		map.put("tagTypeList", tagTypeList);
-
+//		map.put("tagList", tagList);
+//		map.put("tagTypeList", tagTypeList);
 
 		return map;
     }
@@ -133,7 +132,7 @@ public class BottleServiceImpl implements BottleService {
 		map.put("reviewList", reviewList);
 		map.put("foodList",foodList);
 		map.put("isFavorite", favoriteList);
-		
+
 		return map;	
 	}
 	

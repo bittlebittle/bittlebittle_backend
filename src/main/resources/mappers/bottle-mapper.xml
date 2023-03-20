@@ -76,27 +76,29 @@
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
         GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no
         FROM bottle_tb b
-        JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
-        JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
+            JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+            JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
         <where>
             <if test="tagNoList != null" >
                 t.tag_no_pk IN
                 <foreach collection="tagNoList" item="tagNo" separator="," open="(" close=")">
                     #{tagNo}
                 </foreach>
-        		HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
             </if>
-            <if test="keyword != null">
+            <if test="keyword != null and keyword != ''">
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
         GROUP BY b.bottle_no_pk
+        <if test="tagNoList != null">
+            HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
+        </if>
         <choose>
             <when test='sorted=="new"'>
                 order by b.create_date desc, b.bottle_no_pk desc
             </when>
             <when test='sorted=="best"'>
-                order by grade desc, b.bottle_no_pk desc
+                order by grade desc, b.create_date desc, b.bottle_no_pk desc
             </when>
 <!--
 
@@ -110,6 +112,7 @@
             </otherwise>
         </choose>
     </select>
+
 
     <!-- NEW 리스트  -->
     <select id="selectNewBottles" resultMap="bottleResultSet">
