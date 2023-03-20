@@ -35,7 +35,7 @@
 
    <select id="selectRelated" parameterType="Integer" resultMap="bottleResultSet">
        <![CDATA[   
-        SELECT BOTTLE_NO_PK, BOTTLE_NAME, IMG_URL
+        SELECT BOTTLE_NO_PK, BOTTLE_NAME, IMG_URL, IMG_CUS_URL
 		FROM bottle_tag_tb bt
 		INNER JOIN bottle_tb b
 		ON b.bottle_no_pk=bt.bottle_no_fk
@@ -72,7 +72,7 @@
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
     <select id="selectAll" parameterType="bottleSearch" resultMap="bottleResultSet">
-        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL,
         GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no
         FROM bottle_tb b
         JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
@@ -114,7 +114,7 @@
 
     <!-- NEW 리스트  -->
     <select id="selectNewBottles" resultMap="bottleResultSet">
-        SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
+        SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL, bt.tag_no_fk, ut.user_no_fk
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
@@ -124,7 +124,7 @@
 
     <!-- BEST 리스트  -->
     <select id="selectBestBottles" resultMap="bottleResultSet">
-        SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, ut.user_no_fk
+        SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL, bt.tag_no_fk, ut.user_no_fk
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
@@ -136,7 +136,7 @@
 
     <!-- 찜하기기반 리스트  -->
     <select id="selectRelatedFavorite" resultMap="bottleResultSet">
-        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, bt.tag_no_fk, b.IMG_URL, b.IMG_CUS_URL
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN favorite_tb f ON f.bottle_no_fk = bt.bottle_no_fk

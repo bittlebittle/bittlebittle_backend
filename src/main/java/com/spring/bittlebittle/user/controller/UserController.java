@@ -33,7 +33,8 @@ public class UserController {
     private Gson gson;
 
     @PostMapping
-    public ResponseEntity registerUser(@ModelAttribute User user) {
+    public ResponseEntity registerUser(@RequestBody User user) {
+        log.debug(user.toString());
         Map<String, Boolean> map = new HashMap<>();
         if ( service.registerUser(user) == 1 ) {
             map.put("request", true);
@@ -90,12 +91,12 @@ public class UserController {
     //이메일인증, 아이디 중복확인
     
     @PostMapping(value="/check-duplicate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> checkDuplicate(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Object> checkDuplicate(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
         boolean isDuplicate = service.isUsernameDuplicate(userId);
         Map<String, Boolean> response = new HashMap<>();
         response.put("isDuplicate", isDuplicate);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 	
     @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)

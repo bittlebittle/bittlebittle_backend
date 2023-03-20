@@ -31,7 +31,6 @@ public class BottleController {
 	private FoodService fservice;
 	@Autowired
 	private FavoriteService fvservice;
-
 	@Autowired
 	private TagService tservice;
 
