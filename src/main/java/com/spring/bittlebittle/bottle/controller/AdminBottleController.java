@@ -1,10 +1,31 @@
 package com.spring.bittlebittle.bottle.controller;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+>>>>>>> 9ee0ed79273e3dec87c008a2d4d9af5674c42c12
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
+<<<<<<< HEAD
 import com.spring.bittlebittle.utils.ImageUploadUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +37,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
+=======
+import com.spring.bittlebittle.user.vo.UserJwt;
+import com.spring.bittlebittle.utils.JwtUtil;
+>>>>>>> 9ee0ed79273e3dec87c008a2d4d9af5674c42c12
 
 @RestController
 @RequestMapping(value="/api/admin/bottles", produces="application/json; charset=UTF-8")
@@ -28,7 +53,11 @@ public class AdminBottleController {
 	@Autowired
 	private TagService tservice;
 	@Autowired
+<<<<<<< HEAD
 	private ImageUploadUtil imageUploadUtil;
+=======
+	private JwtUtil jwtUtil;
+>>>>>>> 9ee0ed79273e3dec87c008a2d4d9af5674c42c12
 	
 	Logger log = LogManager.getLogger("case3");
 	
@@ -59,6 +88,7 @@ public class AdminBottleController {
 	
 	// 추가 완료할 때(확인완료)
 	@PostMapping
+<<<<<<< HEAD
 	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle,
 								  @RequestParam("imgUrlOrigin") MultipartFile upfile, HttpServletRequest request) throws MalformedURLException {
 
@@ -81,7 +111,36 @@ public class AdminBottleController {
 
 		// 리스트 or 새로운 bottle
 		return bottleList;
+=======
+	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
+		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			
+			List<Bottle> bottleList = bservice.addBottle(bottle);
+			
+			return bottleList;
+			
+		} else {
+			
+			Map<String, Object> map = bservice.getBottles(null);
+			
+			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
+			
+			return bottleList;
+		}
+		
+		
+>>>>>>> 9ee0ed79273e3dec87c008a2d4d9af5674c42c12
 	}
+	
+
 	
 //	// 수정창 들어갈때 
 //	@GetMapping(value="/{bottleNo}/set-data")
@@ -104,13 +163,30 @@ public class AdminBottleController {
 //	
 	// 수정완료 (확인완료)
 	@PostMapping(value="/set-data")
-	public Map<String, Object> editBottle(@ModelAttribute BottleInfo editBottle) {
+	public Map<String, Object> editBottle(@ModelAttribute BottleInfo editBottle, HttpServletRequest request) {
 		
 		
-		Map<String, Object> map = bservice.editBottle(editBottle);
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			Map<String, Object> map = bservice.editBottle(editBottle);
+			
+			// 수정된 bottle정보, tag
+			return map;
+			
+		} else {
+			
+			Map<String, Object> map = bservice.getBottle(editBottle.getBottleNo());
+			
+			return map;
+		}
 		
-		// 수정된 bottle정보, tag
-		return map;
+		
 		
 	}
 	

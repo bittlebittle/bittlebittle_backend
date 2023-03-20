@@ -3,6 +3,10 @@ package com.spring.bittlebittle.review.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +17,8 @@ import com.spring.bittlebittle.reply.service.ReplyService;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.user.vo.UserJwt;
+import com.spring.bittlebittle.utils.JwtUtil;
 
 @RestController
 @RequestMapping(value="/api/admin/bottles/{bottleNo}/reviews", produces="application/json; charset=UTF-8")
@@ -22,6 +28,10 @@ public class AdminReviewController {
 	private ReviewService rservice;
 	@Autowired
 	private ReplyService rpservice;
+	@Autowired
+	private JwtUtil jwtUtil;
+	
+	Logger log = LogManager.getLogger("case3");
 	
 	// 리뷰목록조회(확인완료)
 	@GetMapping
@@ -44,11 +54,28 @@ public class AdminReviewController {
 	
 	// 리뷰삭제 (확인완료)
 	@GetMapping(value="/{reviewNo}/deletion")
-	public List<Review> removeReview(@PathVariable int bottleNo, @PathVariable int reviewNo){
+	public List<Review> removeReview(@PathVariable int bottleNo, @PathVariable int reviewNo, HttpServletRequest request){
 		
-		List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			List<Review> reviewList = rservice.removeReview(bottleNo, reviewNo);
+			
+			return reviewList;
+			
+		} else {
+			
+			List<Review> reviewList = rservice.getReviews(bottleNo);
+			
+			return reviewList;
+		}
 		
-		return reviewList;
+		
 	}
 	
 	// 리뷰댓글조회  (확인완료)
@@ -63,10 +90,27 @@ public class AdminReviewController {
 	// 리뷰댓글삭제 (확인완료)
 	@GetMapping(value="/{reviewNo}/replies/{replyNo}/deletion")
 	public List<Reply> removeReply(@PathVariable int reviewNo,
-			@PathVariable int replyNo){
+			@PathVariable int replyNo, HttpServletRequest request){
 	
-		List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			List<Reply> replyList = rpservice.removeReply(reviewNo, replyNo);
+			
+			return replyList;
+			
+		} else {
+			
+			List<Reply> replyList = rpservice.getReplies(reviewNo);
+			
+			return replyList;
+		}
 		
-		return replyList;
+		
 	}
 }

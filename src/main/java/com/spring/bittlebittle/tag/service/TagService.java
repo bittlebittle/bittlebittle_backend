@@ -6,6 +6,7 @@ import com.spring.bittlebittle.tag.vo.Tag;
 import com.spring.bittlebittle.tag.vo.TagType;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TagService {
 
@@ -42,5 +43,5 @@ public interface TagService {
 	void removeFoodTag(int foodNo);
 
 
-
+    Map<String, Object> getTags();
 }

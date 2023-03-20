@@ -12,5 +12,4 @@ public class BottleSearch {
 	private String keyword;
 	private String sorted;
 	private int[] tagNoList;
-  
   }

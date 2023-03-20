@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-
-
 @RestController
 @RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
 public class BottleController {
@@ -42,10 +40,22 @@ public class BottleController {
 	@GetMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
 	public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
 
+		log.debug(bottleSearch.toString());
 		Map<String, Object> map = bservice.getBottles(bottleSearch);
 
 		return map;
 	}
+
+	@PostMapping(value = "/all") // bittlebittle/api/bottles?keyword={bottleTitle}&sorted={sorted}
+	public Map<String, Object> getBottless(@ModelAttribute BottleSearch bottleSearch) {
+
+		log.debug(bottleSearch.toString());
+		Map<String, Object> map = bservice.getBottles(bottleSearch);
+
+		return map;
+	}
+
+
 
 	@GetMapping(params = "sorted = new")
 	public List<Bottle> getNewBottles(){
