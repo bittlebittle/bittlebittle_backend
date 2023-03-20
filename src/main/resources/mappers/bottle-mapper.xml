@@ -75,8 +75,8 @@
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv,
         GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no
         FROM bottle_tb b
-        JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
-        JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
+            JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+            JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
         <where>
             <if test="tagNoList != null" >
                 t.tag_no_pk IN
@@ -84,12 +84,12 @@
                     #{tagNo}
                 </foreach>
             </if>
-            <if test="keyword != null">
+            <if test="keyword != null and keyword != ''">
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
         GROUP BY b.bottle_no_pk
-        <if test="tagNoList != null" >
+        <if test="tagNoList != null">
             HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
         </if>
         <choose>
@@ -97,7 +97,7 @@
                 order by b.create_date desc, b.bottle_no_pk desc
             </when>
             <when test='sorted=="best"'>
-                order by grade desc, b.bottle_no_pk desc
+                order by grade desc, b.create_date desc, b.bottle_no_pk desc
             </when>
 <!--
 
@@ -111,6 +111,7 @@
             </otherwise>
         </choose>
     </select>
+
 
     <!-- NEW 리스트  -->
     <select id="selectNewBottles" resultMap="bottleResultSet">
@@ -143,7 +144,70 @@
         WHERE bt.tag_no_fk = #{bt.tagNo}
         ORDER BY b.bottle_no_pk desc;
     </select>
+<!-- 찜하기기반 리스트....
+    <select id="selectRelatedFavorite" resultMap="bottleResultSet">
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
+        FROM bottle_tb b
+        JOIN (
+            SELECT bt.bottle_no_fk, COUNT(bt.tag_no_fk) AS common_tag_count
+            FROM BOTTLE_TAG_TB bt
+            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+            WHERE f.user_no_fk = #{userNo}
+            GROUP BY bt.bottle_no_fk
+            HAVING COUNT(DISTINCT bt.tag_no_fk) = (
+                SELECT COUNT(DISTINCT bt.tag_no_fk)
+                FROM BOTTLE_TAG_TB bt
+                JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+                JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+                WHERE f.user_no_fk = #{userNo}
+            )
+        ) ctc ON ctc.bottle_no_fk = b.bottle_no_pk
+        JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+        WHERE bt.tag_no_fk IN (
+            SELECT bt.tag_no_fk
+            FROM BOTTLE_TAG_TB bt
+            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+            WHERE f.user_no_fk = #{userNo}
+        )
+        GROUP BY b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
+        HAVING COUNT(DISTINCT bt.tag_no_fk) >= 1
+        ORDER BY ctc.common_tag_count DESC;
+    </select>
 
+-->
+<!--
+        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
+        FROM bottle_tb b
+        JOIN (
+            SELECT bt.bottle_no_fk, COUNT(bt.tag_no_fk) AS common_tag_count
+            FROM BOTTLE_TAG_TB bt
+            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+            WHERE f.user_no_fk = 1
+            GROUP BY bt.bottle_no_fk
+            HAVING COUNT(DISTINCT bt.tag_no_fk) = (
+                SELECT COUNT(DISTINCT bt.tag_no_fk)
+                FROM BOTTLE_TAG_TB bt
+                JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+                JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+                WHERE f.user_no_fk = 1
+            )
+        ) ctc ON ctc.bottle_no_fk = b.bottle_no_pk
+        JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+        WHERE bt.tag_no_fk IN (
+            SELECT bt.tag_no_fk
+            FROM BOTTLE_TAG_TB bt
+            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
+            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
+            WHERE f.user_no_fk = 1
+        )
+        GROUP BY b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
+        HAVING COUNT(DISTINCT bt.tag_no_fk) >= 1
+        ORDER BY ctc.common_tag_count DESC
+        LIMIT 10;
+-->
 
 	<update id="deleteOne" parameterType="Integer">
        <![CDATA[   
