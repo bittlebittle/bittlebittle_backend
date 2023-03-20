@@ -56,7 +56,7 @@
     </select>
 
     <select id="selectLoginUser" parameterType="user" resultMap="userResultSet">
-        SELECT user_no_pk, user_id, user_pwd, nickname
+        SELECT user_no_pk, user_id, user_pwd, nickname, admin_yn
         FROM USER_TB
         <where>
             <if test="userId != null and userId != ''">user_id = #{userId}</if>

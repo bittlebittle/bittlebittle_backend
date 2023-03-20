@@ -83,13 +83,15 @@
                 <foreach collection="tagNoList" item="tagNo" separator="," open="(" close=")">
                     #{tagNo}
                 </foreach>
-        		HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
             </if>
             <if test="keyword != null">
                 AND b.bottle_name LIKE CONCAT('%', #{keyword}, '%')
             </if>
         </where>
         GROUP BY b.bottle_no_pk
+        <if test="tagNoList != null" >
+            HAVING COUNT(DISTINCT bt.tag_no_fk) = ${tagNoList.length}
+        </if>
         <choose>
             <when test='sorted=="new"'>
                 order by b.create_date desc, b.bottle_no_pk desc
