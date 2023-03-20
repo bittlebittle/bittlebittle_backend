@@ -66,47 +66,35 @@ public class AdminBottleController {
 //	}
 	
 	// 추가 완료할 때(확인완료)
-//	@PostMapping
-//	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
-//		
-//		String token = jwtUtil.resolveAccessToken(request);
-//		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
-//		log.debug(token);
-//		log.debug(refreshTokenIdx);
-//		if (jwtUtil.validateToken(token, UserJwt.builder()
-//				.userJwtIdx(refreshTokenIdx)
-//				.build())) {
-//			
-//			List<Bottle> bottleList = bservice.addBottle(bottle);
-//			
-//			return bottleList;
-//			
-//		} else {
-//			
-//			Map<String, Object> map = bservice.getBottles(null);
-//			
-//			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
-//			
-//			return bottleList;
-//		}
-//		
-//		
-//	}
-	
-	// 추가 완료할 때(확인완료)
 	@PostMapping
-	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle) {
-				
-			
-			log.debug(bottle);
+	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
 		
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
 			
 			List<Bottle> bottleList = bservice.addBottle(bottle);
 			
 			return bottleList;
 			
+		} else {
+			
+			Map<String, Object> map = bservice.getBottles(null);
+			
+			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
+			
+			return bottleList;
+		}
+		
 		
 	}
+	
+
 	
 //	// 수정창 들어갈때 
 //	@GetMapping(value="/{bottleNo}/set-data")
@@ -129,13 +117,30 @@ public class AdminBottleController {
 //	
 	// 수정완료 (확인완료)
 	@PostMapping(value="/set-data")
-	public Map<String, Object> editBottle(@ModelAttribute BottleInfo editBottle) {
+	public Map<String, Object> editBottle(@ModelAttribute BottleInfo editBottle, HttpServletRequest request) {
 		
 		
-		Map<String, Object> map = bservice.editBottle(editBottle);
+		String token = jwtUtil.resolveAccessToken(request);
+		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+		log.debug(token);
+		log.debug(refreshTokenIdx);
+		if (jwtUtil.validateToken(token, UserJwt.builder()
+				.userJwtIdx(refreshTokenIdx)
+				.build())) {
+			
+			Map<String, Object> map = bservice.editBottle(editBottle);
+			
+			// 수정된 bottle정보, tag
+			return map;
+			
+		} else {
+			
+			Map<String, Object> map = bservice.getBottle(editBottle.getBottleNo());
+			
+			return map;
+		}
 		
-		// 수정된 bottle정보, tag
-		return map;
+		
 		
 	}
 	
