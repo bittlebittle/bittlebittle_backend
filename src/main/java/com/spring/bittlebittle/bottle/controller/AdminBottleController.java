@@ -66,30 +66,45 @@ public class AdminBottleController {
 //	}
 	
 	// 추가 완료할 때(확인완료)
+//	@PostMapping
+//	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
+//		
+//		String token = jwtUtil.resolveAccessToken(request);
+//		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
+//		log.debug(token);
+//		log.debug(refreshTokenIdx);
+//		if (jwtUtil.validateToken(token, UserJwt.builder()
+//				.userJwtIdx(refreshTokenIdx)
+//				.build())) {
+//			
+//			List<Bottle> bottleList = bservice.addBottle(bottle);
+//			
+//			return bottleList;
+//			
+//		} else {
+//			
+//			Map<String, Object> map = bservice.getBottles(null);
+//			
+//			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
+//			
+//			return bottleList;
+//		}
+//		
+//		
+//	}
+	
+	// 추가 완료할 때(확인완료)
 	@PostMapping
-	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle, HttpServletRequest request) {
+	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle) {
+				
+			
+			log.debug(bottle);
 		
-		String token = jwtUtil.resolveAccessToken(request);
-		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
-		log.debug(token);
-		log.debug(refreshTokenIdx);
-		if (jwtUtil.validateToken(token, UserJwt.builder()
-				.userJwtIdx(refreshTokenIdx)
-				.build())) {
 			
 			List<Bottle> bottleList = bservice.addBottle(bottle);
 			
 			return bottleList;
 			
-		} else {
-			
-			Map<String, Object> map = bservice.getBottles(null);
-			
-			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
-			
-			return bottleList;
-		}
-		
 		
 	}
 	
