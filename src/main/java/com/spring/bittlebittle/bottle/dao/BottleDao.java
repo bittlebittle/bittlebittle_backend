@@ -13,11 +13,11 @@ public interface BottleDao {
 
 //	List<Bottle> selectMainList();
 
-	List<Bottle> selectNewList();
+	List<Bottle> selectNewList(int userNo);
 
-	List<Bottle> selectBestList();
+	List<Bottle> selectBestList(int userNo);
 
-	List<Bottle> selectRelatedFavoriteList();
+	List<Bottle> selectRelatedFavoriteList(int userNo);
 
 	Bottle selectOne(int bottleNo);
 
