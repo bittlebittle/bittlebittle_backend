@@ -81,7 +81,7 @@
 	
 	<select id="selectOneGrade" parameterType="Integer" resultType="Integer">
        <![CDATA[   
-        SELECT avg(grade)
+        SELECT IFNULL(ROUND(AVG(grade), 0), 0)
 		FROM review_tb
 		WHERE BOTTLE_NO_FK=#{bottleNo} and STATUS = 'Y'
       ]]>
