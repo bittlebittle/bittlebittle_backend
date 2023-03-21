@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.user.service;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.dao.UserDaoImpl;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -41,10 +43,12 @@ public class UserServiceImpl implements UserService {
         return dao.selectUser(user);
     }
 
+
     @Override
     public User loginUser(User user) {
         // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
         User loginUser = dao.selectLoginUser(user);
+
 
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
         if (loginUser == null) {
@@ -63,6 +67,7 @@ public class UserServiceImpl implements UserService {
         log.debug("로그인에 성공했습니다.");
         return loginUser;
     }
+
 
     @Override
     public int registerUser(User user) {
@@ -167,6 +172,22 @@ public class UserServiceImpl implements UserService {
     public boolean sendEmailAuth(String email) {
         return false;
     }
+
+	@Override
+	public List<Review> getUserReviews(int userNo) {
+		return dao.getUserReviews(userNo);
+	}
+
+	@Override
+	public List<Reply> getUserComments(int userNo) {
+		return dao.getUserComments(userNo);
+	}
+
+	@Override
+	public void withdrawUser(int userNo) {
+		dao.updateStatusToWithdraw(userNo);
+		
+	}
 
 //	@Override
 //	public boolean sendEmailAuth(String email) {

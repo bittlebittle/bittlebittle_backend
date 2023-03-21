@@ -2,6 +2,8 @@ package com.spring.bittlebittle.user.controller;
 
 
 import com.google.gson.Gson;
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -115,6 +117,7 @@ public class UserController {
 //        oService.request(socialLoginType);
 //    }
 
+    
     @GetMapping(value = "/{userNo}")
     public User getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("유저 조회");
@@ -186,7 +189,29 @@ public class UserController {
         }
         return ResponseEntity.ok().body(map);
     }
+    
+    @GetMapping("/api/users/{userNo}/reviews")
+    public ResponseEntity<List<Review>> getUserReviews(@PathVariable("userNo") int userNo) {
+        List<Review> reviews = service.getUserReviews(userNo);
+        return ResponseEntity.ok(reviews);
+    }
 
+    @GetMapping("/api/users/{userNo}/comments")
+    public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+        List<Reply> comments = service.getUserComments(userNo);
+        return ResponseEntity.ok(comments);
+    }
+    
+ // 회원 탈퇴 API 추가
+    @PutMapping("/withdraw/{userNo}")
+    public ResponseEntity<Void> withdrawUser(@PathVariable("userNo") int userNo) {
+    	service.withdrawUser(userNo);
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
+    
+    
     /*
 
     @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
