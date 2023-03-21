@@ -156,39 +156,6 @@
         ORDER BY count(b.BOTTLE_NAME) DESC
     </select>
 
-
-<!--
-        SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
-        FROM bottle_tb b
-        JOIN (
-            SELECT bt.bottle_no_fk, COUNT(bt.tag_no_fk) AS common_tag_count
-            FROM BOTTLE_TAG_TB bt
-            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
-            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
-            WHERE f.user_no_fk = 1
-            GROUP BY bt.bottle_no_fk
-            HAVING COUNT(DISTINCT bt.tag_no_fk) = (
-                SELECT COUNT(DISTINCT bt.tag_no_fk)
-                FROM BOTTLE_TAG_TB bt
-                JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
-                JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
-                WHERE f.user_no_fk = 1
-            )
-        ) ctc ON ctc.bottle_no_fk = b.bottle_no_pk
-        JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
-        WHERE bt.tag_no_fk IN (
-            SELECT bt.tag_no_fk
-            FROM BOTTLE_TAG_TB bt
-            JOIN FAVORITE_TB f ON f.bottle_no_fk = bt.bottle_no_fk
-            JOIN USER_TAG_TB ut ON ut.tag_no_fk = bt.tag_no_fk AND ut.user_no_fk = f.user_no_fk
-            WHERE f.user_no_fk = 1
-        )
-        GROUP BY b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv
-        HAVING COUNT(DISTINCT bt.tag_no_fk) >= 1
-        ORDER BY ctc.common_tag_count DESC
-        LIMIT 10;
--->
-
 	<update id="deleteOne" parameterType="Integer">
        <![CDATA[   
          UPDATE bottle_tb
