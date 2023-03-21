@@ -35,6 +35,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public User selectLoginUser(User user) {
+		log.debug(user.toString());
 		return sqlSession.selectOne("userMapper.selectLoginUser", user);
 	}
 
@@ -79,7 +80,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 //////////////////////
-// ¾Æ·¡´Â tag °ü·Ã
+// ï¿½Æ·ï¿½ï¿½ï¿½ tag ï¿½ï¿½ï¿½ï¿½
 
 	@Override
 	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
@@ -98,7 +99,7 @@ public class UserDaoImpl implements UserDao {
 	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
 	}
 
-	//¾ÆÀÌµðÁßº¹È®ÀÎ
+	//ï¿½ï¿½ï¿½Ìµï¿½ï¿½ßºï¿½È®ï¿½ï¿½
 	@Override
 	public User findByUserId(String userId) {
 		return sqlSession.selectOne("userMapper.findByUserId", userId);

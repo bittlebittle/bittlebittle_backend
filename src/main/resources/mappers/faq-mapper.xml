@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="FaqMapper">
-
+<!-- 
     <select id="getFaqList" resultType="Faq">
         select * from faq
     </select>
@@ -29,4 +29,5 @@
     <select id="isAuthor" parameterType="map" resultType="Integer">
         select count(*) from faq where faq_no = #{faqNo} and user_no = #{userNo}
     </select>
+     -->
 </mapper>

@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 		// 筌띾슣鍮� 占쎌�占쏙옙 占쎈툡占쎌뵠占쎈탵揶쏉옙 占쎌뵬燁삼옙 占쎈릭筌욑옙 占쎈륫占쎌몵筌롳옙 db 占쎈퓠 鈺곌퀬�돳揶쏉옙 占쎈툧占쎈쭍 野껉퍔�뵠�⑨옙,
 		if (loginUser == null) {
-			log.debug("占쎈퉸占쎈뼣 占쎈툡占쎌뵠占쎈탵占쎌벥 占쎌�占쏙옙揶쏉옙 鈺곕똻�삺占쎈릭筌욑옙 占쎈륫占쎈뮸占쎈빍占쎈뼄.");
+			log.debug("아이디가 존재하지 않는다");
 			return false;
 		}
 
@@ -61,10 +61,10 @@ public class UserServiceImpl implements UserService {
 			log.debug(passwordEncoder.encode(user.getUserPwd()));
 			log.debug(user.getUserPwd());
 			log.debug(loginUser.getUserPwd());
-			log.debug("�뜮袁⑨옙甕곕뜇�깈揶쏉옙 占쎌뵬燁살꼹釉�筌욑옙 占쎈툧占쎈뮸占쎈빍占쎈뼄.");
+			log.debug("비밀번호가 일치하지 않는다.");
 			return false;
 		}
-		log.debug("嚥≪뮄�젃占쎌뵥占쎈퓠 占쎄쉐�⑤벏六쏙옙�뮸占쎈빍占쎈뼄.");
+		log.debug("로그인성공.");
 		return true;
 	}
 
