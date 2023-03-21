@@ -10,76 +10,50 @@ import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-
-import com.spring.bittlebittle.user.service.UserService;
-import com.spring.bittlebittle.user.vo.User;
-
 
 @RestController // @Controller + @ResponseBody
 @RequestMapping(value = "api/users", produces = "application/json; charset=utf-8")
 public class UserController {
 
-	private Logger log = LogManager.getLogger("case3");
-	@Autowired
-	private UserService service;
-	@Autowired
-	private OAuthService oService;
-	@Autowired
-	private JwtUtil jwtUtil;
-	@Autowired
-	private Gson gson;
+    private Logger log = LogManager.getLogger("case3");
+    @Autowired
+    private UserService service;
+    @Autowired
+    private OAuthService oService;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private Gson gson;
 
-	// 회원가입
-	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void registerUser(@RequestBody User user) {
-		service.registerUser(user);
-	}
+    @PostMapping
+    public ResponseEntity registerUser(@RequestBody User user) {
+        log.debug(user.toString());
+        Map<String, Boolean> map = new HashMap<>();
+        if ( service.registerUser(user) == 1 ) {
+            map.put("request", true);
+        } else {
+            map.put("request", false);
+        }
+        return ResponseEntity.ok().body(gson.toJson(map));
+    }
 
-//    @GetMapping()
-//    public List<User> getUsers(){
-//        log.debug("user �쟾泥� 議고쉶");
-//        return service.getUsers();
-//    }
-	// 회원개인정보조회
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public User selectUser(User user) {
-//        log.debug("user 전체 조회");
-//        return service.selectUser(user);
-//    }
+    @GetMapping()
+    public List<User> getUsers() {
+        log.debug("user 전체 조회");
+        return service.getUsers();
+    }
 
 	// 정보삭제(탈퇴)
-	@PostMapping("/{user_no}/deletion, produces = \"application/json; charset=utf-8")
-	public ResponseEntity<String> deleteUser(@RequestBody User user) {
-		int result = service.deleteUser(user);
+    @GetMapping(value = "/{userNo}/deletion")
+	public ResponseEntity<String> deleteUser(@PathVariable int userNo) {
+		int result = service.removeUser(User.builder().userNo(userNo).build());
 		if (result > 0) {
 			return ResponseEntity.ok("User has been deleted.");
 		} else {
@@ -88,125 +62,41 @@ public class UserController {
 	}
 
 	// 회원정보수정
-	@PostMapping("/set-data, produces = \"application/json; charset=utf-8")
+	@PostMapping(value = "/set-data", produces = "application/json; charset=utf-8")
 	public ResponseEntity<String> updateUser(@RequestBody User user) {
-		int result = service.updateUser(user);
-		if (result > 0) {
+		User updateUser = service.editUser(user);
+		if (updateUser != null ) {
 			return ResponseEntity.ok("User information has been updated.");
 		} else {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user information.");
 		}
 	}
 
-//    @GetMapping(value = "/accounts/auth/{socialLoginType}")
-//    public void socialLoginRedirect(@PathVariable(value = "socialLoginType") String socialLoginPath) throws IOException {
-//        SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
-//        oService.request(socialLoginType);
-//    }
-
-	@GetMapping(value = "/{userNo}")
-	public User getUser(@PathVariable int userNo, HttpEntity entity) {
-		log.debug("�쑀�� 議고쉶");
-
-		// access token �쓽 �쑀�슚�꽦 寃��궗
-		String token = jwtUtil.resolveAccessToken(entity);
-
-		if (jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(jwtUtil.resolveRefreshToken(entity)).build())) {
-			// �쑀�� �젙蹂� 議고쉶
-			User user = service.getUser(User.builder().userNo(userNo).build());
-			return user;
-		} else {
-			return null;
-		}
-	}
-
-	// 보안 로그인
-	@PostMapping(value = "/login")
-	public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
-
-		Boolean isLoginValidation = service.loginUser(user);
-		Map<String, Object> map = new HashMap<>();
-		HttpHeaders headers = new HttpHeaders();
-		if (isLoginValidation) {
-			String accessToken = jwtUtil.createAccessJwt(user.getUserId());
-			String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
-			jwtUtil.setHeaderAccessToken(headers, accessToken);
-			jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
-			map.put("success", true);
-		} else {
-			map.put("success", false);
-		}
-		String json = gson.toJson(map);
-		return ResponseEntity.ok().headers(headers).body(json);
-	}
-
-	// 보안해제 로그아웃
-	@PostMapping(value = "/logout")
-	public ResponseEntity<Object> logoutUser(HttpEntity entity) {
-		log.debug("濡쒓렇 �븘�썐");
-
-		// access token header �뿉�꽌 異붿텧
-		String token = jwtUtil.resolveAccessToken(entity);
-		String subject = jwtUtil.getSubject(token);
-		String userJwtIdx = jwtUtil.resolveRefreshToken(entity);
-
-		// access token �씠 留뚮즺�릺�뿀�떎硫�?
-		// subject 瑜� 媛��졇�삱 �닔 �뾾寃� �맂�떎.
-		// 洹몃윭硫� 洹몃깷 idx 瑜� 湲곕컲�쑝濡� 議고쉶�빐�꽌 �궘�젣�빐以��떎.
-		UserJwt userJwt = UserJwt.builder().userJwtIdx(userJwtIdx).subject(subject).build();
-		Map<String, Object> map = new HashMap<>();
-		if (jwtUtil.validateToken(token, userJwt)) {
-			if (jwtUtil.removeRefreshJwt(token, userJwt)) {
-				map.put("success", true);
-			} else {
-				map.put("success", false);
-			}
-		} else {
-			map.put("validate", false);
-		}
-		return ResponseEntity.ok().body(map);
-	}
-
-	public Object update(User user) {
-		return null;
-	}
-	
 	
 //////////////////////
 //아래는 tag 관련
 	
-	@PostMapping(value = "/tagadd", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addUserTags(@RequestParam int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
+	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
         service.addUserTags(userNo, tagNoList);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/tagdelete/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "{userNo}/tags/deletion", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
         service.deleteUserTags(userNo, tagNoList);
         return ResponseEntity.ok().build();
     }
-	
-//	 @PostMapping(value="/tagadd", produces = MediaType.APPLICATION_JSON_VALUE)
-//	 public void addUserTags(@RequestParam int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-//	          service.addUserTags(userNo, tagNoList);
-//	    }
-//	 
-//	 @DeleteMapping(value = "/tagdelete/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-//	    public void deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-//	        service.deleteUserTags(userNo, tagNoList);
-//	    }
-    
-    
+
     //이메일인증, 아이디 중복확인
     
-    @PostMapping(value="/check-duplicate" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> checkDuplicate(@RequestBody Map<String, String> request) {
+    @PostMapping(value="/check-duplicate", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> checkDuplicate(@RequestBody Map<String, String> request) {
         String userId = request.get("userId");
         boolean isDuplicate = service.isUsernameDuplicate(userId);
         Map<String, Boolean> response = new HashMap<>();
         response.put("isDuplicate", isDuplicate);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 	
     @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -218,56 +108,156 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 	
-	
-	
-	
 
-	/*
-	 * 
-	 * @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody public Map<String, Object> createUser(@RequestBody User user) {
-	 * Map<String, Object> response = new HashMap<>(); if
-	 * (userService.checkUserExists(user.getUserName())) { response.put("status",
-	 * "error"); response.put("message", "User already exists"); } else {
-	 * userService.insertUser(user); response.put("status", "success");
-	 * response.put("message", "User created successfully"); } return response; }
-	 * 
-	 * @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody public List<User> getAllUsers(User user) { List<User> users =
-	 * userService.getAllUsers(user); return users; }
-	 * 
-	 * @GetMapping(value = "/users/{id}", produces =
-	 * MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody public Map<String, Object> getUserById(@PathVariable String
-	 * userId) { Map<String, Object> response = new HashMap<>(); User user =
-	 * userService.getUserById(userId); if (user == null) { response.put("status",
-	 * "error"); response.put("message", "User not found"); } else {
-	 * response.put("status", "success"); response.put("user", user); } return
-	 * response; }
-	 * 
-	 * @PutMapping(value = "/users/{id}", produces =
-	 * MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody public Map<String, Object> updateUser(@PathVariable String
-	 * userId, @RequestBody User user) { Map<String, Object> response = new
-	 * HashMap<>(); User existingUser = userService.getUserById(userId); if
-	 * (existingUser == null) { response.put("status", "error");
-	 * response.put("message", "User not found"); } else { user.setUserId(userId);
-	 * userService.updateUser(user); response.put("status", "success");
-	 * response.put("message", "User updated successfully"); } return response; }
-	 * 
-	 * @DeleteMapping(value = "/users/{id}", produces =
-	 * MediaType.APPLICATION_JSON_VALUE)
-	 * 
-	 * @ResponseBody public Map<String, Object> deleteUser(@PathVariable String
-	 * userId) { Map<String, Object> response = new HashMap<>(); User existingUser =
-	 * userService.getUserById(userId); if (existingUser == null) {
-	 * response.put("status", "error"); response.put("message", "User not found"); }
-	 * else { userService.deleteUser(userId); response.put("status", "success");
-	 * response.put("message", "User deleted successfully"); } return response; }
-	 * 
-	 */
+//    @GetMapping(value = "/accounts/auth/{socialLoginType}")
+//    public void socialLoginRedirect(@PathVariable(value = "socialLoginType") String socialLoginPath) throws IOException {
+//        SocialLoginType socialLoginType = SocialLoginType.valueOf(socialLoginPath.toUpperCase());
+//        oService.request(socialLoginType);
+//    }
+
+    @GetMapping(value = "/{userNo}")
+    public User getUser(@PathVariable int userNo, HttpServletRequest request){
+        log.debug("유저 조회");
+        // access token 디코딩
+        String token = jwtUtil.resolveAccessToken(request);
+        // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                                        .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                                        .build())){
+            // 토큰이 유효하다면 유저 정보 조회
+            User user = service.getUser(User.builder().userNo(userNo).build());
+            return user;
+        }
+        else {
+            // 토큰이 유효하지 않다면
+            return null;
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
+
+        User loginUser = service.loginUser(user);
+        Map<String, Object> map = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        if(loginUser != null) {
+            String accessToken = jwtUtil.createAccessJwt(user.getUserId());
+            String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
+            jwtUtil.setHeaderAccessToken(headers, accessToken);
+            jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
+            map.put("success", true);
+            map.put("userNo", loginUser.getUserNo());
+            map.put("adminYn", loginUser.getAdminYn());
+        }
+        else {
+            map.put("success", false);
+        }
+        String json = gson.toJson(map);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(json);
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request) {
+        log.debug("로그 아웃");
+
+        // access token header 에서 추출
+        String token = jwtUtil.resolveAccessToken(request);
+        String subject = jwtUtil.getSubject(token);
+        String userJwtIdx = jwtUtil.resolveRefreshToken(request);
+
+        // access token 이 만료되었다면?
+        // subject 를 가져올 수 없게 된다.
+        // 그러면 그냥 idx 를 기반으로 조회해서 삭제해준다.
+        UserJwt userJwt = UserJwt.builder()
+                .userJwtIdx(userJwtIdx)
+                .subject(subject)
+                .build();
+        Map<String, Object> map = new HashMap<>();
+        if(jwtUtil.validateToken(token, userJwt)) {
+            if(jwtUtil.removeRefreshJwt(token, userJwt)) {
+                map.put("success", true);
+            } else {
+                map.put("success", false);
+            }
+        } else {
+            map.put("validate", false);
+        }
+        return ResponseEntity.ok().body(map);
+    }
+
+    /*
+
+    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> createUser(@RequestBody User user) {
+    Map<String, Object> response = new HashMap<>();
+    if (userService.checkUserExists(user.getUserName())) {
+    response.put("status", "error");
+    response.put("message", "User already exists");
+    } else {
+    userService.insertUser(user);
+    response.put("status", "success");
+    response.put("message", "User created successfully");
+    }
+    return response;
+    }
+
+    @GetMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public List<User> getAllUsers(User user) {
+    List<User> users = userService.getAllUsers(user);
+    return users;
+    }
+
+    @GetMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> getUserById(@PathVariable String userId) {
+    Map<String, Object> response = new HashMap<>();
+    User user = userService.getUserById(userId);
+    if (user == null) {
+    response.put("status", "error");
+    response.put("message", "User not found");
+    } else {
+    response.put("status", "success");
+    response.put("user", user);
+    }
+    return response;
+    }
+
+    @PutMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> updateUser(@PathVariable String userId, @RequestBody User user) {
+    Map<String, Object> response = new HashMap<>();
+    User existingUser = userService.getUserById(userId);
+    if (existingUser == null) {
+    response.put("status", "error");
+    response.put("message", "User not found");
+    } else {
+    user.setUserId(userId);
+    userService.updateUser(user);
+    response.put("status", "success");
+    response.put("message", "User updated successfully");
+    }
+    return response;
+    }
+
+    @DeleteMapping(value = "/users/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String, Object> deleteUser(@PathVariable String userId) {
+    Map<String, Object> response = new HashMap<>();
+    User existingUser = userService.getUserById(userId);
+    if (existingUser == null) {
+    response.put("status", "error");
+    response.put("message", "User not found");
+    } else {
+    userService.deleteUser(userId);
+    response.put("status", "success");
+    response.put("message", "User deleted successfully");
+    }
+    return response;
+    }
+
+     */
 }

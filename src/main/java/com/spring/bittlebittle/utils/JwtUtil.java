@@ -3,17 +3,19 @@ package com.spring.bittlebittle.utils;
 import com.google.gson.Gson;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.UserJwt;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
@@ -39,27 +41,10 @@ public class JwtUtil {
     @Autowired
     private UserService service;
 
-//    public String createJwt(String subject, Long expTime) {
-//
-//        if(expTime <= 0) {
-//            throw new RuntimeException("留뚮즺 �떆媛꾩씠 0蹂대떎 而ㅼ빞 �븳�떎");
-//        }
-//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-//        byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRETKEY);
-//        Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
-//        String token = Jwts.builder()
-//                .setSubject(subject)
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPTIME))
-//                .signWith(signingKey)
-//                .compact();
-//
-//        return token;
-//    }
-
     public String createAccessJwt(String subject) {
         if(ACCESS_TOKEN_EXPTIME <= 0) {
-            throw new RuntimeException("留뚮즺 �떆媛꾩씠 0蹂대떎 而ㅼ빞 �븳�떎");
+
+            throw new RuntimeException("만료 시간이 0보다 커야 한다");
         }
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRETKEY);
@@ -68,14 +53,14 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPTIME))
-                .signWith(signatureAlgorithm,signingKey)
+                .signWith(signingKey)
                 .compact();
 
     }
 
     public String createRefreshJwt(String subject) {
         if(REFRESH_TOKEN_EXPTIME <= 0) {
-            throw new RuntimeException("留뚮즺 �떆媛꾩씠 0蹂대떎 而ㅼ빞 �븳�떎");
+            throw new RuntimeException("만료 시간이 0보다 커야 한다");
         }
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         byte[] secretKeyBytes = DatatypeConverter.parseBase64Binary(SECRETKEY);
@@ -85,31 +70,31 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPTIME))
-                .signWith(signatureAlgorithm,signingKey)
+                .signWith(signingKey)
                 .compact();
 
-        // subject 瑜� 湲곕컲�쑝濡� userJwt 媛� 議댁옱�븯�뒗吏� 議고쉶
+        // subject 를 기반으로 userJwt 가 존재하는지 조회
         UserJwt userJwt = service.getUserJwtBySubject(UserJwt.builder()
                 .subject(subject).build());
-        // �샊�떆�씪�룄 userJwt �뿉 userNo �씠 議댁옱�븳�떎硫� �뾽�뜲�씠�듃瑜� �빐以��떎.
+        // 혹시라도 userJwt 에 userNo 이 존재한다면 업데이트를 해준다.
         if(userJwt != null) {
             userJwt = service.editUserJwt(UserJwt.builder()
                     .userJwtIdx(userJwt.getUserJwtIdx())
                     .refreshToken(refreshToken)
                     .build());
-            log.debug("db �닔�젙");
+            log.debug("db 수정");
         } else {
             userJwt = service.createUserJwt(UserJwt.builder()
                     .subject(subject)
                     .refreshToken(refreshToken)
                     .build());
-            log.debug("db �깮�꽦");
+            log.debug("db 생성");
         }
-        // db�뿉 議댁옱�븯吏� �븡�뒗�떎硫� userJwt �뀒�씠釉붿뿉 refresh token �깮�꽦
+        // db에 존재하지 않는다면 userJwt 테이블에 refresh token 생성
         return userJwt.getUserJwtIdx();
     }
 
-    // 濡쒓렇�븘�썐�쓣 �쐞�빐 access token 留뚮즺 諛� db �뿉 ���옣�맂 refresh �궘�젣
+    // 로그아웃을 위해 access token 만료 및 db 에 저장된 refresh 삭제
     public boolean removeRefreshJwt(String jwt, UserJwt userJwt) {
         try {
             Claims claims = Jwts.parser()
@@ -117,29 +102,29 @@ public class JwtUtil {
                     .parseClaimsJws(jwt)
                     .getBody();
             claims.setExpiration(new Date(System.currentTimeMillis()));
-            log.debug("access token�쓽 �쑀�슚湲곌컙 留뚮즺 蹂�寃�");
+            log.debug("access token의 유효기간 만료 변경");
             if (service.removeUserJwt(userJwt) == 1) {
                 return true;
             } else {
                 return false;
             }
         } catch (Exception e) {
-            log.debug("access token 湲곌컙 留뚮즺");
+            log.debug("access token 기간 만료");
             return false;
         }
     }
 
-    // �뼱�꽭�뒪 �넗�겙 �뿤�뜑 �꽕�젙
+    // 어세스 토큰 헤더 설정
     public void setHeaderAccessToken(HttpHeaders headers, String accessJwt) {
         headers.set("Authorization", "bearer "+ accessJwt);
     }
 
-    // 由ы봽�젅�떆 �넗�겙 �뿤�뜑 �꽕�젙
+    // 리프레시 토큰 헤더 설정
 //    public void setHeaderRefreshToken(HttpHeaders headers, String refreshJwt) {
 //        headers.set("RefreshToken", "bearer "+ refreshJwt);
 //    }
 
-    // DB 由ы봽�젅�떆 �넗�겙�쓽 idx 媛� �뿤�뜑 �꽕�젙
+    // DB 리프레시 토큰의 idx 값 헤더 설정
     public void setHeaderRefreshToken(HttpHeaders headers, String userJwtIdx) {
         headers.set("RefreshTokenIdx", userJwtIdx);
     }
@@ -148,24 +133,24 @@ public class JwtUtil {
 //        return service.registerJwtWithIdx(userAuthentication);
 //    }
 
-    // Request�쓽 Header�뿉�꽌 AccessToken 媛믪쓣 媛��졇�샃�땲�떎. "Authorization" : "token'
-    public String resolveAccessToken(HttpEntity entity) {
-        if(entity.getHeaders().get("Authorization") != null ) {
-            log.debug(entity.getHeaders().get("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7));
-            return entity.getHeaders().get("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7);
+    // Request의 Header에서 AccessToken 값을 가져옵니다. "Authorization" : "token'
+    public String resolveAccessToken(HttpServletRequest request) {
+        if(request.getHeader("Authorization") != null ) {
+            log.debug(request.getHeader("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7));
+            return request.getHeader("Authorization").toString().replaceAll("\\[", "").replaceAll("\\]", "").substring(7);
         }
         return null;
     }
 
-    // Request�쓽 Header�뿉�꽌 RefreshToken�쓽 idx 媛믪쓣 媛��졇�샃�땲�떎. "RefreshToken" : "db�쓽 idx 媛�'
-    public String resolveRefreshToken(HttpEntity entity) {
-        if (entity.getHeaders().get("RefreshTokenIdx") != null) {
-            log.debug(entity.getHeaders().get("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", ""));
-            return entity.getHeaders().get("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", "");
+    // Request의 Header에서 RefreshToken의 idx 값을 가져옵니다. "RefreshToken" : "db의 idx 값'
+    public String resolveRefreshToken(HttpServletRequest request) {
+        if (request.getHeader("RefreshTokenIdx") != null) {
+            log.debug(request.getHeader("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", ""));
+            return request.getHeader("RefreshTokenIdx").toString().replaceAll("\\[", "").replaceAll("\\]", "");
         } return null;
     }
 
-    // payload �뿉 ���옣�맂 id 議고쉶
+    // payload 에 저장된 id 조회
     public String getSubject(String token) {
         try {
             Claims claims = Jwts.parser()
@@ -179,36 +164,37 @@ public class JwtUtil {
     }
 
 
-    // �넗�겙 �쑀�슚�꽦 寃��궗
+    // 토큰 유효성 검사
     public boolean validateToken(String jwt, UserJwt userJwt) {
         try {
-            // access token �쑀�슚�꽦 寃��궗
+            // access token 유효성 검사
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(SECRETKEY))
                     .parseClaimsJws(jwt)
                     .getBody();
-            log.debug("�쑀�슚�븳 access token �엯�땲�떎.");
+            log.debug(jwt);
+            log.debug("유효한 access token 입니다.");
             return !claims.getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (Exception e) {
-            log.debug("留뚮즺�맂 access token �엯�땲�떎.");
+            log.debug("만료된 access token 입니다.");
             return validateRefreshToken(jwt, userJwt);
         }
     }
 
     public boolean validateRefreshToken(String jwt, UserJwt userJwt) {
-        // refresh token �쑀�슚�꽦 寃��궗
-        // idx �쓣 媛�吏�怨� db�뿉 ���옣�맂 refresh token �쓣 媛��졇�삩 �뮘
+        // refresh token 유효성 검사
+        // idx 을 가지고 db에 저장된 refresh token 을 가져온 뒤
         String refreshToken = service.getUserJwt(userJwt).getRefreshToken();
-        // 媛��졇�삩 refresh token �쓣 �떎�떆 寃�利�
+        // 가져온 refresh token 을 다시 검증
         Claims claims = Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRETKEY))
                 .parseClaimsJws(refreshToken)
                 .getBody();
         try {
-            log.debug("�쑀�슚�븳 refresh token �엯�땲�떎.");
+            log.debug("유효한 refresh token 입니다.");
             return !claims.getExpiration().before(new Date(System.currentTimeMillis()));
         } catch (Exception e2) {
-            log.debug("留뚮즺�맂 refresh token �엯�땲�떎.");
+            log.debug("만료된 refresh token 입니다.");
             return false;
         }
     }

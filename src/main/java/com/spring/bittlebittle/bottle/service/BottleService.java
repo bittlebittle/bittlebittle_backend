@@ -7,8 +7,6 @@ import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import java.util.List;
 import java.util.Map;
 
-
-
 public interface BottleService {
 
 	// 검색,키워드 조회하는 리스트

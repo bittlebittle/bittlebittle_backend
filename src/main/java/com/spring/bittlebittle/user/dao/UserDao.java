@@ -14,12 +14,11 @@ public interface UserDao  {
 
     User selectUser(User user);
 
-    int registerUser(User user);
+    int insertUser(User user);
 
     int updateUser(User user);
 
     int deleteUser(User user);
-    
 
     UserJwt selectUserJwt(UserJwt userJwt);
 
@@ -32,9 +31,7 @@ public interface UserDao  {
     int deleteUserJwt(UserJwt userJwt);
 
 	User selectLoginUser(User user);
-	//////////////////////
-	// 아래는 tag 관련
-	
+
 	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 	
 	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
@@ -42,11 +39,7 @@ public interface UserDao  {
 //    void deleteUserTags(int userNo) throws Exception;
 
 //    String getTagName(int tagNo) throws Exception;
-	
-	//아이디중복조회
-	
+
 	User findByUserId(String userId);
-	
-	
 
 }

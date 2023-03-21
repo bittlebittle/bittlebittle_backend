@@ -1,55 +1,52 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.user.dao.UserDao;
 import com.spring.bittlebittle.user.dao.UserDaoImpl;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
+import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Random;
+
 
 @Service
 public class UserServiceImpl implements UserService {
 
-	private Logger log = LogManager.getLogger("case3");
+    private Logger log = LogManager.getLogger("case3");
+    @Autowired
+    private UserDaoImpl dao;
 
-	@Autowired
-	private UserDao dao;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-    private JavaMailSender javaMailSender;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Value("${secretKey}")
-	private String key;
+    @Value("${secretKey}")
+    private String key;
 
-	@Override
-	public List<User> getUsers() {
-		return dao.selectUsers();
-	}
+    @Override
+    public List<User> getUsers() {
+        return dao.selectUsers();
+    }
 
-	@Override
-	public User getUser(User user) {
-		return dao.selectUser(user);
-	}
+    @Override
+    public User getUser(User user) {
+        return dao.selectUser(user);
+    }
 
-	@Override
-	public Boolean loginUser(User user) {
-		// login 占쎈뻻 占쎄텢占쎌뒠占쎈릭占쎈뮉 id 筌랃옙 揶쏉옙筌욑옙�⑨옙 占쎌뵬占쎈뼊 db �몴占� �겫�뜄�쑎占쎌궔 占쎈츟
-		User loginUser = dao.selectLoginUser(user);
+    @Override
+    public User loginUser(User user) {
+        // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
+        User loginUser = dao.selectLoginUser(user);
 
+<<<<<<< HEAD
 		// 筌띾슣鍮� 占쎌�占쏙옙 占쎈툡占쎌뵠占쎈탵揶쏉옙 占쎌뵬燁삼옙 占쎈릭筌욑옙 占쎈륫占쎌몵筌롳옙 db 占쎈퓠 鈺곌퀬�돳揶쏉옙 占쎈툧占쎈쭍 野껉퍔�뵠�⑨옙,
 		if (loginUser == null) {
 			log.debug("아이디가 존재하지 않는다");
@@ -67,61 +64,103 @@ public class UserServiceImpl implements UserService {
 		log.debug("로그인성공.");
 		return true;
 	}
+=======
+        // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
+        if (loginUser == null) {
+            log.debug("해당 아이디의 유저가 존재하지 않습니다.");
+            return null;
+        }
 
-	@Override
-	public int registerUser(User user) {
-		user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
-		return dao.registerUser(user);
+        // 만약 비밀번호가 일치하지 않는다면
+        if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
+            log.debug("유저가 로그인 창에 입력한 비밀번호를 인코딩한 값 : " + passwordEncoder.encode(user.getUserPwd()));
+            log.debug("유저가 로그인 창에 입력한 비밀번호 원본 값 : " + user.getUserPwd());
+            log.debug("실제 db에 암호화되서 저장된 비밀번호 값 : " + loginUser.getUserPwd());
+            log.debug("비밀번호가 일치하지 않습니다.");
+            return null;
+        }
+        log.debug("로그인에 성공했습니다.");
+        return loginUser;
+    }
+>>>>>>> 90b33edeb442b7e180d262414960820976b5a61d
 
-	}
+    @Override
+    public int registerUser(User user) {
+        user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
+        return dao.insertUser(user);
+    }
 
-	@Override
-	public int updateUser(User user) {
-		return dao.updateUser(user);
-	}
+    @Override
+    @Transactional
+    public User editUser(User user) {
+        user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
+        dao.updateUser(user);
+        return dao.selectUser(user);
+    }
 
-	@Override
-	public int deleteUser(User user) {
-		return dao.deleteUser(user);
-	}
+    @Override
+    public int removeUser(User user) {
+        return dao.deleteUser(user);
+    }
 
-	@Override
-	@Transactional
-	public UserJwt createUserJwt(UserJwt userJwt) {
-		userJwt.setUserJwtIdx(passwordEncoder.encode(userJwt.getSubject() + key));
-		dao.insertJwtWithIdx(userJwt);
-		return dao.selectUserJwt(userJwt);
-	}
 
-	@Override
-	public UserJwt getUserJwt(UserJwt userJwt) {
-		return dao.selectUserJwt(userJwt);
-	}
+    @Override
+    @Transactional
+    public UserJwt createUserJwt(UserJwt userJwt) {
+        userJwt.setUserJwtIdx(passwordEncoder.encode(userJwt.getSubject() + key));
+        dao.insertJwtWithIdx(userJwt);
+        return dao.selectUserJwt(userJwt);
+    }
 
-	@Override
-	public UserJwt getUserJwtBySubject(UserJwt userJwt) {
-		return dao.selectUserJwtBySubject(userJwt);
-	}
+    @Override
+    public UserJwt getUserJwt(UserJwt userJwt) {
+        return dao.selectUserJwt(userJwt);
+    }
 
-	@Override
-	@Transactional
-	public UserJwt editUserJwt(UserJwt userJwt) {
-		dao.updateUserJwt(userJwt);
-		return dao.selectUserJwt(userJwt);
-	}
+    @Override
+    public UserJwt getUserJwtBySubject(UserJwt userJwt) {
+        return dao.selectUserJwtBySubject(userJwt);
+    }
 
-	@Override
-	public int removeUserJwt(UserJwt userJwt) {
-		return dao.deleteUserJwt(userJwt);
-	}
+    @Override
+    @Transactional
+    public UserJwt editUserJwt(UserJwt userJwt) {
+        dao.updateUserJwt(userJwt);
+        return dao.selectUserJwt(userJwt);
+    }
 
-	@Override
-	public User selectUser(User user) {
-		return dao.selectUser(user);
-	}
+    @Override
+    public int removeUserJwt(UserJwt userJwt) {
+        return dao.deleteUserJwt(userJwt);
+    }
 
-//////////////////////
-//�븘�옒�뒗 tag 愿��젴
+//
+//	@Override
+//    public boolean checkUserExists(String username) {
+//        User user = dao.getUserByUsername(username);
+//        return user != null;
+//    }
+//
+//    @Override
+//    public User getUserById(String userId) {
+//        return dao.getUserById(userId);
+//    }
+//
+//    @Override
+//    public User getUserByUsername(String username) {
+//        return dao.getUserByUsername(username);
+//    }
+//
+//    @Override
+//    public List<User> getAllUsers(User user) {
+//        return dao.getAllUsers(user);
+//    }
+
+//	@Override
+//	public User selectUser(User user) {
+//		return dao.selectUser(user);
+//	}
+//
 
 	@Override
 	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
@@ -133,7 +172,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
 		dao.deleteUserTags(userNo, tagNoList);
-		
 
 	}
 
@@ -141,60 +179,34 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isUsernameDuplicate(String userId) {
 		User user = dao.findByUserId(userId);
+        // 있으면 유저가 나올거고, 앖으면 null.
         return user != null;
 	}
 
-	@Override
-	public boolean sendEmailAuth(String email) {
-		SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("이메일 인증 코드");
-//        message.setText("인증 코드: 123456"); // 실제로는 무작위로 생성한 인증 코드를 사용해야 합니다.
-        
-        Random random = new Random();
-        int authCode = random.nextInt(900000) + 100000; // 100000부터 999999까지의 랜덤한 6자리 수 생성
-        message.setText("인증 코드: " + authCode);
-
-        try {
-            javaMailSender.send(message);
-            return true;
-        } catch (MailException e) {
-            e.printStackTrace();
-            return false;
-        }
+    @Override
+    public boolean sendEmailAuth(String email) {
+        return false;
     }
+
+//	@Override
+//	public boolean sendEmailAuth(String email) {
+//		SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(email);
+//        message.setSubject("이메일 인증 코드");
+////        message.setText("인증 코드: 123456"); // 실제로는 무작위로 생성한 인증 코드를 사용해야 합니다.
+//
+//        Random random = new Random();
+//        int authCode = random.nextInt(900000) + 100000; // 100000부터 999999까지의 랜덤한 6자리 수 생성
+//        message.setText("인증 코드: " + authCode);
+//
+//        try {
+//            javaMailSender.send(message);
+//            return true;
+//        } catch (MailException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 	
 
-	/*
-	 * 
-	 * @Override public boolean checkPassword(String userName, String userPwd) {
-	 * User user = userDao.getUserByUsername(userName); if (user == null) { return
-	 * false; } else { return BCrypt.checkpw(userPwd, user.getUserPwd()); }
-	 * 
-	 * }
-	 * 
-	 * @Override public boolean checkUserExists(String username) { User user =
-	 * userDao.getUserByUsername(username); return user != null; }
-	 * 
-	 * @Override public User getUserById(String userId) { return
-	 * userDao.getUserById(userId); }
-	 * 
-	 * @Override public User getUserByUsername(String username) { return
-	 * userDao.getUserByUsername(username); }
-	 * 
-	 * @Override public List<User> getAllUsers(User user) { return
-	 * userDao.getAllUsers(user); }
-	 * 
-	 * @Override public void insertUser(User user) { String userPwd =
-	 * BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt()); user.setUserPwd(userPwd);
-	 * userDao.insertUser(user); }
-	 * 
-	 * @Override public void updateUser(User user) { String userPwd =
-	 * BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt()); user.setUserPwd(userPwd);
-	 * userDao.updateUser(user); }
-	 * 
-	 * @Override public void deleteUser(String userId) { userDao.deleteUser(userId);
-	 * }
-	 * 
-	 */
 }

@@ -65,7 +65,5 @@
     <select id="isAdmin" parameterType="map" resultType="Integer">
         select count(*) from user_tb where admin_yn = 'Y' and user_no = #{userNo}
     </select>
-    
-    
-    
+
 </mapper>

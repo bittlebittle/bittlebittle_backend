@@ -1,6 +1,5 @@
 package com.spring.bittlebittle.favorite.dao;
 
-
 import com.spring.bittlebittle.favorite.vo.Favorite;
 
 import java.util.List;
