@@ -99,14 +99,14 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 	
-    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        boolean success = service.sendEmailAuth(email);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("success", success);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
+//        String email = request.get("email");
+//        boolean success = service.sendEmailAuth(email);
+//        Map<String, Boolean> response = new HashMap<>();
+//        response.put("success", success);
+//        return ResponseEntity.ok(response);
+//    }
 	
 
 //    @GetMapping(value = "/accounts/auth/{socialLoginType}")
