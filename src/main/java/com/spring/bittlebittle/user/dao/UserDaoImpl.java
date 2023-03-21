@@ -33,9 +33,11 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.selectOne("userMapper.selectOne", user);
     }
 
+
     public User selectLoginUser(User user) {
         return sqlSession.selectOne("userMapper.selectLoginUser", user);
     }
+
 
     @Override
     public int insertUser(User user) {
@@ -71,10 +73,12 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.update("userMapper.updateUserJwtWithIdx", userJwt);
     }
 
+
     @Override
     public int deleteUserJwt(UserJwt userJwt) {
         return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
     }
+
 
 	@Override
 	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
@@ -91,6 +95,7 @@ public class UserDaoImpl implements UserDao {
 	    paramMap.put("tagNoList", tagNoList);
 	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
 	}
+
 
 	@Override
 	public User findByUserId(String userId) {

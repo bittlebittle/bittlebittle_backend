@@ -41,10 +41,12 @@ public class UserServiceImpl implements UserService {
         return dao.selectUser(user);
     }
 
+
     @Override
     public User loginUser(User user) {
         // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
         User loginUser = dao.selectLoginUser(user);
+
 
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
         if (loginUser == null) {
