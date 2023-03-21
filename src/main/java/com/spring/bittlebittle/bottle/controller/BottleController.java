@@ -101,8 +101,10 @@ public class BottleController {
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
-		
 		Map<String, Object> map = bservice.getBottle(bottleNo);
+
+
+		log.debug(((Bottle)map.get("bottle")).toString());
 
 		return map;
 	} 

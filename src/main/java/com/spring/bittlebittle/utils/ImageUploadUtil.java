@@ -48,15 +48,14 @@ public class ImageUploadUtil {
         String changeName = currentTime + ranNum + ext;
 
         // 6. 업로드 하고자 하는 물리적인 경로 알아내기
-        // String savePath = request.getServletContext().getResource("/resources/image/"+path+"/").getPath();
-        String savePath = request.getServletContext().getResource("/resources/static/image/"+path).getPath();
+        String savePath = request.getServletContext().getRealPath("/resources/static/image/"+path);
+//      String savePath = request.getServletContext().getResource("/resources/static/image/"+path).getPath();
 
         // 7. 경로와 수정파일명을 합체시킨 후 저장
         try {
             File destinationFile = new File(savePath + File.separator + changeName);
             log.debug(destinationFile);
             FileUtils.writeByteArrayToFile(destinationFile, upfile.getBytes());
-
         } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
