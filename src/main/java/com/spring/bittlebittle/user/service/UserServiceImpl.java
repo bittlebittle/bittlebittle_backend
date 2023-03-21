@@ -161,6 +161,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isUsernameDuplicate(String userId) {
 		User user = dao.findByUserId(userId);
+        // 있으면 유저가 나올거고, 앖으면 null.
         return user != null;
 	}
 

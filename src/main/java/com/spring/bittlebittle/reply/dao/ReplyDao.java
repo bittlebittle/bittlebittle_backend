@@ -2,14 +2,12 @@ package com.spring.bittlebittle.reply.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-
 import com.spring.bittlebittle.reply.vo.Reply;
-import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.reply.vo.ReplyNickname;
 
 public interface ReplyDao {
 
-	List<Reply> selectList(int reviewNo);
+	List<ReplyNickname> selectList(int reviewNo);
 
 	int insertOne(Reply reply);
 

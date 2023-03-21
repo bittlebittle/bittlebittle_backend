@@ -27,12 +27,10 @@
     </insert>
 
 	<insert id="registerUser" parameterType="User">
-		INSERT INTO user_table
-		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
-		 phone)
-		VALUES (#{userNo}, #{userId}, #{userPwd}, #{userName},
-				#{nickname},
-				#{email}, #{phone})
+        INSERT INTO user_tb
+        (user_id, user_pwd, user_name, nickname,email, phone)
+        VALUES (#{userId}, #{userPwd}, #{userName},
+        #{nickname}, #{email}, #{phone})
 	</insert>
 
 	<insert id="adminRegister" parameterType="User">
@@ -56,7 +54,7 @@
     </select>
 
     <select id="selectLoginUser" parameterType="user" resultMap="userResultSet">
-        SELECT user_no_pk, user_id, user_pwd, nickname
+        SELECT user_no_pk, user_id, user_pwd, nickname, admin_yn
         FROM USER_TB
         <where>
             <if test="userId != null and userId != ''">user_id = #{userId}</if>

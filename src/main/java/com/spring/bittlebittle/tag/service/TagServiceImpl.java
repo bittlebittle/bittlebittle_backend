@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TagServiceImpl implements TagService{
@@ -139,6 +141,19 @@ public class TagServiceImpl implements TagService{
 		
 		dao.deleteFoodTag(foodNo);
 		
+	}
+
+	@Override
+	public Map<String, Object> getTags() {
+
+		List<Tag> tagList = dao.selectAllTag();
+		List<TagType> tagTypeList = dao.selectAllTagType();
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("tagList", tagList);
+		map.put("tagTypeList", tagTypeList);
+
+		return map;
 	}
 
 }

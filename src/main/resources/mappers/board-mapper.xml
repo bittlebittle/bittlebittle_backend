@@ -19,6 +19,7 @@
         from free_board_tb fb
             join user_tb u
             on fb.user_no_fk = u.user_no_pk
+        order by fb.BOARD_NO_PK desc
     </select>
 
     <select id="getBoard" parameterType="int" resultMap="boardResultSet">
@@ -68,7 +69,5 @@
 		values (#{userNo}, #{boardTitle}, #{createDate}, #{boardContent},
 		#{status})
 	</insert>
-
-
 
 </mapper>

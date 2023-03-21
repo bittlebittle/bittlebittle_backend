@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.review.vo.ReviewNickname;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao{
@@ -15,13 +16,13 @@ public class ReviewDaoImpl implements ReviewDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<Review> selectList(int bottleNo) {
+	public List<ReviewNickname> selectList(int bottleNo) {
 		
 		return sqlSession.selectList("reviewMapper.selectList", bottleNo);
 	}
 	
 	@Override
-	public Review selectOne(int reviewNo) {
+	public ReviewNickname selectOne(int reviewNo) {
 		
 		return sqlSession.selectOne("reviewMapper.selectOne", reviewNo);
 	}
@@ -43,6 +44,12 @@ public class ReviewDaoImpl implements ReviewDao{
 	public int deleteOne(int reviewNo) {
 		
 		return sqlSession.delete("reviewMapper.deleteOne", reviewNo);
+	}
+	
+	@Override
+	public int selectGradeByBottle(int bottleNo) {
+		
+		return sqlSession.selectOne("reviewMapper.selectOneGrade", bottleNo);
 	}
 	
 }
