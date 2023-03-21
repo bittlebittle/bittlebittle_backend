@@ -1,24 +1,6 @@
 package com.spring.bittlebittle.review.controller;
 
 
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.spring.bittlebittle.reply.service.ReplyService;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.reply.vo.ReplyNickname;
@@ -28,6 +10,17 @@ import com.spring.bittlebittle.review.vo.ReviewNickname;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.ImageUploadUtil;
 import com.spring.bittlebittle.utils.JwtUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/bottles/{bottleNo}/reviews", produces="application/json; charset=UTF-8")
@@ -88,8 +81,10 @@ public class ReviewController {
 				review.setImgUrl(upfile.getOriginalFilename());                                                                                                                                                                                                                                                                                                                                                                                                                 
 				review.setImgCusUrl(changeName);
 			}
-			
+			// 파일 저장
+			log.debug(review.toString());
 			List<ReviewNickname> reviewList = rservice.addReview(review);
+			log.debug(reviewList.get(0).toString());
 
 			return reviewList;
 		} else {
@@ -102,30 +97,66 @@ public class ReviewController {
 
 	// 리뷰수정 (확인완료)
 	@PostMapping(value="/set-data")
-	public List<ReviewNickname> editReveiw(@PathVariable int bottleNo, @ModelAttribute Review review
-									, HttpServletRequest request){
-																			// reviewNo도 데이터로 보내줘야함
+	public List<ReviewNickname> editReveiw(@PathVariable int bottleNo,
+										   @ModelAttribute Review review,
+										   @RequestParam("reupfile") MultipartFile reupfile,
+											HttpServletRequest request) throws MalformedURLException {
+		// reviewNo도 데이터로 보내줘야함
 		String token = jwtUtil.resolveAccessToken(request);
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
 		log.debug(token);
 		log.debug(refreshTokenIdx);
-		if (jwtUtil.validateToken(token, UserJwt.builder()
-				.userJwtIdx(refreshTokenIdx)
-				.build())) {
+		// 토큰이 유효하다면.
+		if (jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(refreshTokenIdx).build())) {
 
-			List<ReviewNickname> reviewList = rservice.editReview(review);
+			log.debug(review.toString());
+			log.debug(reupfile.getOriginalFilename());
 
-			return reviewList;
-			
-		} else {
-			
+			// 우선, 업로드된 파일이 있따면
+			if (!reupfile.getOriginalFilename().equals("")) {
+
+				// 만약 들어온 reupfile 과 기존의 db 파일이름이 동일하지 않으면! 저장
+				if (!reupfile.getOriginalFilename().equals(review.getImgCusUrl())) {
+
+					// 기존 파일 삭제
+					// String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + ((Bottle) originBottleInfo.get("bottle")).getImgCusUrl());
+					String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "review" + File.separator + review.getImgCusUrl());
+					log.debug(filePath);
+					File file = new File(filePath);
+					if (file.exists() && file.isFile()) {
+						file.delete();
+					}
+
+					// 새로운 파일을 저장
+					String changeName = imageUploadUtil.saveFile(reupfile, request, "review");
+					review.setImgUrl(reupfile.getOriginalFilename());
+					log.debug(changeName);
+					review.setImgCusUrl(changeName);
+				}
+				// 들어온 reupfile 과 기존의 파일 이름이 동일하다면 수정할 것은 없음.
+
+				List<ReviewNickname> reviewList = rservice.editReview(review);
+
+				return reviewList;
+
+				// 반면에 업로드된 파일이 없다면
+			} else {
+				// 기존 파일 삭제
+				// String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + ((Bottle) originBottleInfo.get("bottle")).getImgCusUrl());
+				String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "review" + File.separator + review.getImgCusUrl());
+				log.debug(filePath);
+				File file = new File(filePath);
+				if (file.exists() && file.isFile()) {
+					file.delete();
+				}
+				review.setImgUrl(null);
+				review.setImgCusUrl(null);
+			}
 			List<ReviewNickname> reviewList = rservice.getReviews(bottleNo);
-			
 			return reviewList;
+		} else {
+			return null;
 		}
-		
-
-		
 	}
 
 	// 리뷰삭제 (확인완료)
