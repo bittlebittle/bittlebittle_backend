@@ -23,10 +23,10 @@
          SELECT *
          FROM favorite_tb
          	<choose>
-         		<when test="bottleNo != null">
+         		<when test="bottleNo != 0">
          			 WHERE USER_NO_FK=#{userNo} AND BOTTLE_NO_FK=#{bottleNo}
          		</when>
-         		<when test="bottleNo == null">
+         		<when test="bottleNo == 0">
          			 WHERE USER_NO_FK=#{userNo}
          		</when>
          		<otherwise></otherwise>
