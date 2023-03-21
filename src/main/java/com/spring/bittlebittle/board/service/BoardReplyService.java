@@ -7,14 +7,12 @@ import java.util.List;
 public interface BoardReplyService {
 
 
-	 List<BoardReply> getReplyList(int replyNo);
+    List<BoardReply> getReplyList(int reviewNo);
 
-	    void addReply(BoardReply reply, int userNo, String nickname);
+    void addReply(BoardReply boardReply);
 
-	    void updateReply(BoardReply reply);
+    void updateReply(BoardReply boardReply);
 
-	    void deleteReply(int replyNo);
-
-	    boolean isAuthor(int replyNo, int userNo);
+    void deleteReply(int replyNo);
 
 }

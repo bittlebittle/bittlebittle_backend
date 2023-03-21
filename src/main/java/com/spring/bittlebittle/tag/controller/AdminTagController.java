@@ -1,8 +1,9 @@
 package com.spring.bittlebittle.tag.controller;
 
 import java.util.List;
-import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.tag.vo.Tag;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.bittlebittle.tag.service.TagService;
+import com.spring.bittlebittle.tag.vo.Tag;
 
 
 
@@ -20,9 +24,12 @@ public class AdminTagController {
 	@Autowired
 	private TagService tservice;
 	
+	Logger log = LogManager.getLogger("case3");
+	
 	// 태그 창 들어갔을 때 (확인완료)
 	@GetMapping
-	public List<Tag>  getTags(){
+
+	public List<Tag>  getTags() {
 
 		List<Tag> tagList = tservice.getAllTags();
 		
@@ -42,6 +49,8 @@ public class AdminTagController {
 	@PostMapping(value="/set-data")
 	public List<Tag> editTag(@RequestBody Tag tag){
 										// TagNo, TagType, keyTypeNo
+		
+		log.debug(tag);
 		
 		List<Tag> tagList = tservice.editTag(tag);
 		

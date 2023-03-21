@@ -1,18 +1,12 @@
 package com.spring.bittlebittle.tag.controller;
 
+import com.spring.bittlebittle.tag.service.TagService;
+import com.spring.bittlebittle.tag.vo.TagType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.tag.vo.TagType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -35,12 +29,12 @@ public class AdminTagTypeController {
 	
 	// 작성 (확인완료)
 	@PostMapping
-	public List<TagType> addTagType(@RequestBody String tagTypeName){
-												// 재료 이렇게만 써야됨	
+	public List<TagType> addTagType(@RequestBody TagType tagType){
+												// tagTypeName으로 받으면 재료 이렇게만 써야됨	
 		
-		log.debug(tagTypeName);
+		log.debug(tagType);
 		
-		List<TagType> tagTypeList = tservice.addTagType(tagTypeName);
+		List<TagType> tagTypeList = tservice.addTagType(tagType.getTagTypeName());
 		
 		return tagTypeList;
 	}
@@ -49,6 +43,8 @@ public class AdminTagTypeController {
 	@PostMapping(value="/set-data")
 	public List<TagType> editTagType(@RequestBody TagType tagType){
 										//tagTypeNo, tagTypeName
+		
+		log.debug(tagType);
 		
 		List<TagType> tagTypeList = tservice.editTagType(tagType);
 		

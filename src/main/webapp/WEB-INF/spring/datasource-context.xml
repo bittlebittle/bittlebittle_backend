@@ -35,8 +35,6 @@
         <property name="mapperLocations">
             <list>
                 <value>classpath:mappers/*-mapper.xml</value>
-               
-
             </list>
         </property>
     </bean>
@@ -54,6 +52,9 @@
     </bean>
 
 
+	<!--
+
+
 	<bean id="javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${spring.mail.host}" />
@@ -67,8 +68,6 @@
         </props>
     </property>
 	</bean>
-	
-	<!--
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
@@ -81,4 +80,18 @@
 
         <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
     </aop:config> -->
+    
+        <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+        <!-- defaultEncoding : 업로드 되는 파일에 대한 인코딩 설정 -->
+        <property name="defaultEncoding" value="UTF-8" />
+        <!--
+            maxUploadSize : 한번에 전체 업로드 되는 파일의 총 용량
+                            10Mbyte = 1024 * 1024 * 10
+                                    = 10000000 (대략의 수치)
+        -->
+        <property name="maxUploadSize" value="10000000" />
+        <!-- maxInMemorySize : 메모리 상의 파일 최대 용량 -->
+        <property name="maxInMemorySize" value="10000000" />
+    </bean>
+
 </beans>

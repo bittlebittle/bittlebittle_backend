@@ -26,6 +26,8 @@ import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
 import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController// @Controller + @ResponseBody
 @RequestMapping(value = "api/admin", produces = "application/json; charset=utf-8")
 public class AdminUserController {
@@ -108,14 +110,14 @@ public class AdminUserController {
     //정보조회
     
     @GetMapping(value = "/{userNo}")
-    public User getUser(@PathVariable int userNo, HttpEntity entity){
+    public User getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("�쑀�� 議고쉶");
 
         // access token �쓽 �쑀�슚�꽦 寃��궗
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
 
         if(jwtUtil.validateToken(token, UserJwt.builder()
-                                        .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
+                                        .userJwtIdx(jwtUtil.resolveRefreshToken(request))
                                         .build()
                 )){
             // �쑀�� �젙蹂� 議고쉶
@@ -151,13 +153,13 @@ public class AdminUserController {
     }
     //보안해제 로그아웃
     @PostMapping(value = "/logout")
-    public ResponseEntity<Object> logoutUser(HttpEntity entity) {
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request) {
         log.debug("濡쒓렇 �븘�썐");
 
         // access token header �뿉�꽌 異붿텧
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
         String subject = jwtUtil.getSubject(token);
-        String userJwtIdx = jwtUtil.resolveRefreshToken(entity);
+        String userJwtIdx = jwtUtil.resolveRefreshToken(request);
 
         // access token �씠 留뚮즺�릺�뿀�떎硫�?
         // subject 瑜� 媛��졇�삱 �닔 �뾾寃� �맂�떎.

@@ -22,7 +22,8 @@ public class LibraryComponent {
     // getBean �쓽�씪�뒗 bean 硫붿냼�뱶�쓽 id �뒗 硫붿냼�뱶 �씠由꾩씠�떎.
 
 
-    // 鍮꾨�踰덊샇 �븫�샇�솕
+    // 비밀번호 암호화
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
