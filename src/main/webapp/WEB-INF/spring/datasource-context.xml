@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
@@ -50,7 +51,25 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
+
+
 	<!--
+
+
+	<bean id="javaMailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${spring.mail.host}" />
+		<property name="port" value="${spring.mail.port}" />
+		<property name="username" value="${spring.mail.username}" />
+		<property name="password" value="${spring.mail.password}" />
+		<property name="javaMailProperties">
+        <props>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+        </props>
+    </property>
+	</bean>
+
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="*" rollback-for="Exception"/>
@@ -64,6 +83,7 @@
     </aop:config> -->
 
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+
         <!-- defaultEncoding : 업로드 되는 파일에 대한 인코딩 설정 -->
         <property name="defaultEncoding" value="UTF-8" />
         <!--
@@ -75,4 +95,10 @@
         <!-- maxInMemorySize : 메모리 상의 파일 최대 용량 -->
         <property name="maxInMemorySize" value="10000000" />
     </bean>
+
+<!--    <context:component-scan base-package="com.spring.bittlebittle.utils" />-->
+
+<!--    <bean id="webappRoot" class="java.lang.String" factory-bean="appConfig" factory-method="webappRoot" />-->
+
+<!--    <mvc:resources mapping="/uploaded_images/**" location="file:${webappRoot}/uploaded_images/" />-->
 </beans>

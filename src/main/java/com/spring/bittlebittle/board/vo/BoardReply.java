@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardReply {
-	
+
 	private int replyNo;
 	private int userNo;
-	private int reviewNo;
-	private String creatDate;
+	private int boardNo;
+	private String nickname;
+	private String createDate;
+	private String replyContent;
+	private String status;
 
 }

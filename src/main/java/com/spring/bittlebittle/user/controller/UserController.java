@@ -2,6 +2,8 @@ package com.spring.bittlebittle.user.controller;
 
 
 import com.google.gson.Gson;
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -10,12 +12,10 @@ import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +35,81 @@ public class UserController {
     private Gson gson;
 
     @PostMapping
-    public void registerUser(@ModelAttribute User user) {
-        service.registerUser(user);
+    public ResponseEntity registerUser(@RequestBody User user) {
+        log.debug(user.toString());
+        Map<String, Boolean> map = new HashMap<>();
+        if ( service.registerUser(user) == 1 ) {
+            map.put("request", true);
+        } else {
+            map.put("request", false);
+        }
+        return ResponseEntity.ok().body(gson.toJson(map));
     }
 
     @GetMapping()
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         log.debug("user 전체 조회");
         return service.getUsers();
     }
+
+	// 정보삭제(탈퇴)
+    @GetMapping(value = "/{userNo}/deletion")
+	public ResponseEntity<String> deleteUser(@PathVariable int userNo) {
+		int result = service.removeUser(User.builder().userNo(userNo).build());
+		if (result > 0) {
+			return ResponseEntity.ok("User has been deleted.");
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete user.");
+		}
+	}
+
+	// 회원정보수정
+	@PostMapping(value = "/set-data", produces = "application/json; charset=utf-8")
+	public ResponseEntity<String> updateUser(@RequestBody User user) {
+		User updateUser = service.editUser(user);
+		if (updateUser != null ) {
+			return ResponseEntity.ok("User information has been updated.");
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user information.");
+		}
+	}
+
+	
+//////////////////////
+//아래는 tag 관련
+	
+	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
+        service.addUserTags(userNo, tagNoList);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "{userNo}/tags/deletion", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
+        service.deleteUserTags(userNo, tagNoList);
+        return ResponseEntity.ok().build();
+    }
+
+    //이메일인증, 아이디 중복확인
+    
+    @PostMapping(value="/check-duplicate", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> checkDuplicate(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        boolean isDuplicate = service.isUsernameDuplicate(userId);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+        return ResponseEntity.ok().body(response);
+    }
+	
+//    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
+//        String email = request.get("email");
+//        boolean success = service.sendEmailAuth(email);
+//        Map<String, Boolean> response = new HashMap<>();
+//        response.put("success", success);
+//        return ResponseEntity.ok(response);
+//    }
+	
 
 //    @GetMapping(value = "/accounts/auth/{socialLoginType}")
 //    public void socialLoginRedirect(@PathVariable(value = "socialLoginType") String socialLoginPath) throws IOException {
@@ -51,22 +117,22 @@ public class UserController {
 //        oService.request(socialLoginType);
 //    }
 
+    
     @GetMapping(value = "/{userNo}")
-    public User getUser(@PathVariable int userNo, HttpEntity entity){
+    public User getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("유저 조회");
-
-        // access token 의 유효성 검사
-        String token = jwtUtil.resolveAccessToken(entity);
-
+        // access token 디코딩
+        String token = jwtUtil.resolveAccessToken(request);
+        // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
         if(jwtUtil.validateToken(token, UserJwt.builder()
-                                        .userJwtIdx(jwtUtil.resolveRefreshToken(entity))
-                                        .build()
-                )){
-            // 유저 정보 조회
+                                        .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                                        .build())){
+            // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
             return user;
         }
         else {
+            // 토큰이 유효하지 않다면
             return null;
         }
     }
@@ -74,15 +140,17 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
 
-        Boolean isLoginValidation = service.loginUser(user);
+        User loginUser = service.loginUser(user);
         Map<String, Object> map = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
-        if(isLoginValidation) {
+        if(loginUser != null) {
             String accessToken = jwtUtil.createAccessJwt(user.getUserId());
             String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
             jwtUtil.setHeaderAccessToken(headers, accessToken);
             jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
             map.put("success", true);
+            map.put("userNo", loginUser.getUserNo());
+            map.put("adminYn", loginUser.getAdminYn());
         }
         else {
             map.put("success", false);
@@ -94,13 +162,13 @@ public class UserController {
     }
 
     @PostMapping(value = "/logout")
-    public ResponseEntity<Object> logoutUser(HttpEntity entity) {
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request) {
         log.debug("로그 아웃");
 
         // access token header 에서 추출
-        String token = jwtUtil.resolveAccessToken(entity);
+        String token = jwtUtil.resolveAccessToken(request);
         String subject = jwtUtil.getSubject(token);
-        String userJwtIdx = jwtUtil.resolveRefreshToken(entity);
+        String userJwtIdx = jwtUtil.resolveRefreshToken(request);
 
         // access token 이 만료되었다면?
         // subject 를 가져올 수 없게 된다.
@@ -121,12 +189,29 @@ public class UserController {
         }
         return ResponseEntity.ok().body(map);
     }
-
-    public Object update(User user) {
-        return null;
+    
+    @GetMapping("/api/users/{userNo}/reviews")
+    public ResponseEntity<List<Review>> getUserReviews(@PathVariable("userNo") int userNo) {
+        List<Review> reviews = service.getUserReviews(userNo);
+        return ResponseEntity.ok(reviews);
     }
 
-
+    @GetMapping("/api/users/{userNo}/comments")
+    public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+        List<Reply> comments = service.getUserComments(userNo);
+        return ResponseEntity.ok(comments);
+    }
+    
+ // 회원 탈퇴 API 추가
+    @PutMapping("/withdraw/{userNo}")
+    public ResponseEntity<Void> withdrawUser(@PathVariable("userNo") int userNo) {
+    	service.withdrawUser(userNo);
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
+    
+    
     /*
 
     @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -198,7 +283,6 @@ public class UserController {
     }
     return response;
     }
-
 
      */
 }

@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.user.dao;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import org.apache.ibatis.session.SqlSession;
@@ -8,8 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 @Repository
 public class UserDaoImpl implements UserDao {
 
@@ -32,24 +35,27 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.selectOne("userMapper.selectOne", user);
     }
 
-    public User selectLoginUser(User user) {
-        return sqlSession.selectOne("userMapper.selectLoginUser", user);
-    }
+
+	public User selectLoginUser(User user) {
+		log.debug(user.toString());
+		return sqlSession.selectOne("userMapper.selectLoginUser", user);
+	}
+
 
     @Override
     public int insertUser(User user) {
-        return 0;
+		return sqlSession.insert("userMapper.registerUser", user);
     }
 
-    @Override
-    public int updateUser(User user) {
-        return 0;
-    }
+	@Override
+	public int updateUser(User user) {
+		return sqlSession.update("userMapper.updateUser", user);
+	}
 
-    @Override
-    public int deleteUser(User user) {
-        return 0;
-    }
+	@Override
+	public int deleteUser(User user) {
+		return sqlSession.update("userMapper.deleteUser", user);
+	}
 
     @Override
     public UserJwt selectUserJwt(UserJwt userJwt) {
@@ -58,6 +64,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserJwt selectUserJwtBySubject(UserJwt userJwt) {
+log.debug(userJwt.toString());
         return sqlSession.selectOne("userMapper.selectUserJwtBySubject", userJwt);
     }
 
@@ -70,42 +77,48 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.update("userMapper.updateUserJwtWithIdx", userJwt);
     }
 
-    @Override
-    public int deleteUserJwt(UserJwt userJwt) {
-        return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
-    }
 
-    /*
+	@Override
+	public int deleteUserJwt(UserJwt userJwt) {
+		return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
+	}
 
-    @Override
-    public User getUserById(String userId) {
-        return sqlSession.selectOne("getUserById", userId);
-    }
 
-    @Override
-    public User getUserByUsername(String userName) {
-        return sqlSession.selectOne("getUserByUsername", userName);
-    }
+	@Override
+	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("userNo", userNo);
+		paramMap.put("tagNoList", tagNoList);
+		sqlSession.insert("tagMapper.addUserTags", paramMap);
 
-    @Override   //???????
-    public List<User> getAllUsers(User user) {
-        return sqlSession.selectList("getAllUsers", user);
-    }
+	}
+	@Override
+	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("userNo", userNo);
+	    paramMap.put("tagNoList", tagNoList);
+	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
+	}
 
-    @Override
-    public void insertUser(User user) {
-        sqlSession.insert("insertUser", user);
-    }
 
-    @Override
-    public void updateUser(User user) {
-        sqlSession.update("updateUser", user);
-    }
+	@Override
+	public User findByUserId(String userId) {
+		return sqlSession.selectOne("userMapper.findByUserId", userId);
+	}
 
-    @Override
-    public void deleteUser(String userId) {
-        sqlSession.delete("deleteUser", userId);
-    }
+	public List<Review> getUserReviews(int userNo) {
+		return sqlSession.selectList("userMapper.selectReview",userNo);
+	}
 
-     */
+	public List<Reply> getUserComments(int userNo) {
+		return sqlSession.selectList("userMapper.selectReply",userNo);
+	}
+
+	@Override
+	public void updateStatusToWithdraw(int userNo) {
+		sqlSession.update("userMapper.updateWithdraw", userNo);
+		
+	}
+
+
 }

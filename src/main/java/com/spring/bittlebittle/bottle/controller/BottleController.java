@@ -1,5 +1,19 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
@@ -7,14 +21,6 @@ import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
-
 
 @RestController
 @RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
@@ -29,12 +35,11 @@ public class BottleController {
 	private FoodService fservice;
 	@Autowired
 	private FavoriteService fvservice;
-
 	@Autowired
 	private TagService tservice;
 
+	private Logger log = LogManager.getLogger("case3");
 
-	Logger log = LogManager.getLogger("case3");
 
 	// 리스트, 키워드는 확인 완료
 	// 태그 선택은 확인 해야함
@@ -93,38 +98,34 @@ public class BottleController {
 		return map;
 	}
 
-
-	
 	// 개별조회 (확인완료)
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
-		
 		Map<String, Object> map = bservice.getBottle(bottleNo);
-		
-		
+
+
+		log.debug(((Bottle)map.get("bottle")).toString());
+
 		return map;
 	} 
 	
 	// favorite 클릭했을 때 (확인완료)
-	@GetMapping(value="/{bottleNo}/favorite")
-	public List<Favorite> isFavorite(@PathVariable int bottleNo) {
+	@PostMapping(value="/{bottleNo}/favorite")
+	public List<Favorite> isFavorite(@PathVariable int bottleNo, @ModelAttribute Favorite favorite) {
 		
 		
-		// userNo -> session 등록되면 session에서 빼오는 것으로 할 것 
-		int userNo = 1;
-		
-
-		Favorite favorite = new Favorite(userNo, bottleNo);
-
+		log.debug(favorite);
 		
 		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
 		
 		
 		if(favoriteList.isEmpty()) {
 			fvservice.addFavorite(favorite);
+			log.debug("찜하기");
 		} else {
 			fvservice.removeFavorite(favorite);
+			log.debug("찜제거하기");
 		}
 		
 		

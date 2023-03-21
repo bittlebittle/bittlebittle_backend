@@ -7,6 +7,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/spring/*-context.xml</param-value>
+
     </context-param>
 
     <!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -62,6 +63,7 @@
         _method=put,delete 값에 따라 @PutMapping
         또는 @DeleteMapping 으로 request 의 method 를
         바꿔주는 filter -->
+
 <!--    <filter>-->
 <!--        <filter-name>httpMethodFilter</filter-name>-->
 <!--        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>-->

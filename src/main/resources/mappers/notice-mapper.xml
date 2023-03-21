@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticeMapper">
+<!-- 
+    <select id="getNoticeList" resultType="notice">
+        select * from notice
+    </select>
+
+    <select id="getNotice" parameterType="int" resultType="notice">
+        select * from notice where notice_no = #{noticeNo}
+    </select>
+
+    <insert id="addNotice" parameterType="notice">
+        insert into notice (user_no, notice_title, create_date, notice_content) values (#{userNo}, #{noticeTitle}, #{createDate}, #{noticeContent})
+    </insert>
+    
+      <insert id="adminAddNotice" parameterType="notice">
+        insert into notice (user_no, notice_title, create_date, notice_content, status) values (#{userNo}, #{noticeTitle}, #{createDate}, #{noticeContent}, #{status})
+    </insert>
+
+    <update id="updateNotice" parameterType="notice">
+        update notice set notice_title = #{noticeTitle}, notice_content = #{noticeContent} where notice_no = #{noticeNo}
+    </update>
+
+    <update id="deleteNotice" parameterType="int">
+        update notice
+        set status = 'N'
+        where notice_no = #{noticedNo}
+    </update>
+
+    <select id="isAuthor" parameterType="map" resultType="Integer">
+        select count(*) from notice where notice_no = #{noticeNo} and user_no = #{userNo}
+    </select>
+     -->
+</mapper>

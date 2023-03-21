@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.user.service;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 
@@ -14,7 +16,7 @@ public interface UserService {
     // selectOne
     User getUser(User user);
 
-    Boolean loginUser(User user);
+    User loginUser(User user);
     // insert
     int registerUser(User user);
 
@@ -35,4 +37,21 @@ public interface UserService {
     UserJwt getUserJwtBySubject(UserJwt build);
 
     int removeUserJwt(UserJwt userJwt);
+
+	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	boolean isUsernameDuplicate(String userId);
+
+	boolean sendEmailAuth(String email);
+
+	List<Review> getUserReviews(int userNo);
+
+	List<Reply> getUserComments(int userNo);
+	
+	void withdrawUser(int userNo);
+	
+	
+
 }

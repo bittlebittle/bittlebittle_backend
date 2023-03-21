@@ -1,8 +1,11 @@
 package com.spring.bittlebittle.user.service;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.dao.UserDaoImpl;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
+import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
     private Logger log = LogManager.getLogger("case3");
     @Autowired
     private UserDaoImpl dao;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -36,43 +43,49 @@ public class UserServiceImpl implements UserService {
         return dao.selectUser(user);
     }
 
+
     @Override
-    public Boolean loginUser(User user) {
+    public User loginUser(User user) {
         // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
         User loginUser = dao.selectLoginUser(user);
+
 
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
         if (loginUser == null) {
             log.debug("해당 아이디의 유저가 존재하지 않습니다.");
-            return false;
+            return null;
         }
 
         // 만약 비밀번호가 일치하지 않는다면
         if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
-            log.debug(passwordEncoder.encode(user.getUserPwd()));
-            log.debug(user.getUserPwd());
-            log.debug(loginUser.getUserPwd());
-            log.debug("비밀번호가 일치하지 안습니다.");
-            return false;
+            log.debug("유저가 로그인 창에 입력한 비밀번호를 인코딩한 값 : " + passwordEncoder.encode(user.getUserPwd()));
+            log.debug("유저가 로그인 창에 입력한 비밀번호 원본 값 : " + user.getUserPwd());
+            log.debug("실제 db에 암호화되서 저장된 비밀번호 값 : " + loginUser.getUserPwd());
+            log.debug("비밀번호가 일치하지 않습니다.");
+            return null;
         }
         log.debug("로그인에 성공했습니다.");
-        return true;
+        return loginUser;
     }
+
 
     @Override
     public int registerUser(User user) {
         user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
-        return 0;
+        return dao.insertUser(user);
     }
 
     @Override
+    @Transactional
     public User editUser(User user) {
-        return null;
+        user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
+        dao.updateUser(user);
+        return dao.selectUser(user);
     }
 
     @Override
     public int removeUser(User user) {
-        return 0;
+        return dao.deleteUser(user);
     }
 
 
@@ -106,58 +119,95 @@ public class UserServiceImpl implements UserService {
         return dao.deleteUserJwt(userJwt);
     }
 
-    /*
+//
+//	@Override
+//    public boolean checkUserExists(String username) {
+//        User user = dao.getUserByUsername(username);
+//        return user != null;
+//    }
+//
+//    @Override
+//    public User getUserById(String userId) {
+//        return dao.getUserById(userId);
+//    }
+//
+//    @Override
+//    public User getUserByUsername(String username) {
+//        return dao.getUserByUsername(username);
+//    }
+//
+//    @Override
+//    public List<User> getAllUsers(User user) {
+//        return dao.getAllUsers(user);
+//    }
+
+//	@Override
+//	public User selectUser(User user) {
+//		return dao.selectUser(user);
+//	}
+//
 
 	@Override
-	public boolean checkPassword(String userName, String userPwd) {
-		User user = userDao.getUserByUsername(userName);
-		if (user == null) {
-            return false;
-        } else {
-            return BCrypt.checkpw(userPwd, user.getUserPwd());
-        }
+	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		
+		dao.addUserTags(userNo, tagNoList);
 
 	}
 
 	@Override
-    public boolean checkUserExists(String username) {
-        User user = userDao.getUserByUsername(username);
+	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		dao.deleteUserTags(userNo, tagNoList);
+
+	}
+
+	//아이디 중복확인, 이메일인증
+	@Override
+	public boolean isUsernameDuplicate(String userId) {
+		User user = dao.findByUserId(userId);
+        // 있으면 유저가 나올거고, 앖으면 null.
         return user != null;
-    }
+	}
 
     @Override
-    public User getUserById(String userId) {
-        return userDao.getUserById(userId);
+    public boolean sendEmailAuth(String email) {
+        return false;
     }
 
-    @Override
-    public User getUserByUsername(String username) {
-        return userDao.getUserByUsername(username);
-    }
+	@Override
+	public List<Review> getUserReviews(int userNo) {
+		return dao.getUserReviews(userNo);
+	}
 
-    @Override
-    public List<User> getAllUsers(User user) {
-        return userDao.getAllUsers(user);
-    }
+	@Override
+	public List<Reply> getUserComments(int userNo) {
+		return dao.getUserComments(userNo);
+	}
 
-    @Override
-    public void insertUser(User user) {
-        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
-        user.setUserPwd(userPwd);
-        userDao.insertUser(user);
-    }
+	@Override
+	public void withdrawUser(int userNo) {
+		dao.updateStatusToWithdraw(userNo);
+		
+	}
 
-    @Override
-    public void updateUser(User user) {
-        String userPwd = BCrypt.hashpw(user.getUserPwd(), BCrypt.gensalt());
-        user.setUserPwd(userPwd);
-        userDao.updateUser(user);
-    }
+//	@Override
+//	public boolean sendEmailAuth(String email) {
+//		SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(email);
+//        message.setSubject("이메일 인증 코드");
+////        message.setText("인증 코드: 123456"); // 실제로는 무작위로 생성한 인증 코드를 사용해야 합니다.
+//
+//        Random random = new Random();
+//        int authCode = random.nextInt(900000) + 100000; // 100000부터 999999까지의 랜덤한 6자리 수 생성
+//        message.setText("인증 코드: " + authCode);
+//
+//        try {
+//            javaMailSender.send(message);
+//            return true;
+//        } catch (MailException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+	
 
-    @Override
-    public void deleteUser(String userId) {
-        userDao.deleteUser(userId);
-    }
-
-     */
 }

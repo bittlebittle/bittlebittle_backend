@@ -15,13 +15,25 @@
       <result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
       <result property="status" column="STATUS" />
    </resultMap>
+	
+	   <resultMap id="replyNicknameResultSet"
+      type="replyNickname">
+      <result property="replyNo" column="REPLY_NO_PK"/>
+      <result property="userNo" column="USER_NO_FK"/>
+      <result property="reviewNo" column="REVIEW_NO_FK" />
+      <result property="replyContent" column="REPLY_CONTENT" />
+      <result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
+      <result property="status" column="STATUS" />
+      <result property="userNickname" column="NICKNAME" />
+   </resultMap>
 
-
-   <select id="selectList" parameterType="Integer" resultMap="replyResultSet">
+   <select id="selectList" parameterType="Integer" resultMap="replyNicknameResultSet">
        <![CDATA[   
-         SELECT *
-         FROM reply_tb
-         WHERE REVIEW_NO_FK = #{reviewNo} AND STATUS = 'Y'
+        SELECT rp.REPLY_NO_PK, rp.USER_NO_FK, rp.REVIEW_NO_FK, rp.REPLY_CONTENT, rp.CREATE_DATE, rp.STATUS, u.NICKNAME
+		FROM reply_tb rp
+		JOIN user_tb u
+		ON rp.USER_NO_FK=u.USER_NO_PK
+		WHERE rp.REVIEW_NO_FK=#{reviewNo} and rp.STATUS = 'Y';
       ]]>
    </select>
 
