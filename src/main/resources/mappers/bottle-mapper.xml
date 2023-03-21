@@ -53,19 +53,40 @@
    </select>
 
    <insert id="insertOne" parameterType="bottleInfo">
-    <![CDATA[   
-         INSERT INTO bottle_tb(BOTTLE_NAME, BOTTLE_CONTENT, BOTTLE_BRAND, BOTTLE_ABV, IMG_URL)
-         VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv}, #{imgUrl})
-     ]]>
+         INSERT INTO bottle_tb(BOTTLE_NAME, BOTTLE_CONTENT, BOTTLE_BRAND, BOTTLE_ABV
+             <if test="imgUrl != null and imgUrl != ''">
+              ,IMG_URL
+              </if>
+             <if test="imgCusUrl != null and imgCusUrl != ''">
+              ,IMG_CUS_URL
+            </if>
+               )
+         VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv},
+           <if test="imgUrl != null and imgUrl != ''">
+           , #{imgUrl}
+                </if>
+            <if test="imgCusUrl != null and imgCusUrl != ''">
+           , #{imgCusUrl}
+                </if>
+                )
    </insert>
    
   
     <update id="updateOne" parameterType="bottle">
-       <![CDATA[   
          UPDATE bottle_tb
-         SET BOTTLE_NAME=#{bottleName}, BOTTLE_CONTENT=#{bottleContent}, BOTTLE_BRAND=#{bottleBrand}, BOTTLE_ABV=#{bottleAbv}, IMG_URL=#{imgUrl}
+         SET BOTTLE_NAME=#{bottleName},
+             BOTTLE_CONTENT=#{bottleContent},
+             BOTTLE_BRAND=#{bottleBrand},
+             BOTTLE_ABV=#{bottleAbv},
+             IMG_URL = #{imgUrl},
+             IMG_CUS_URL = #{imgCusUrl}
+<!--             <if test="imgUrl != null and imgUrl != ''">-->
+<!--                IMG_URL = #{imgUrl},-->
+<!--             </if>-->
+<!--             <if test="imgCusUrl != null and imgCusUrl != ''">-->
+<!--                 IMG_CUS_URL = #{imgCusUrl}-->
+<!--             </if>-->
          WHERE BOTTLE_NO_PK=#{bottleNo}
-      ]]>
    </update>
 
 
@@ -78,8 +99,9 @@
             JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
             JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
         <where>
+                b.status = 'y'
             <if test="tagNoList != null" >
-                t.tag_no_pk IN
+                AND t.tag_no_pk IN
                 <foreach collection="tagNoList" item="tagNo" separator="," open="(" close=")">
                     #{tagNo}
                 </foreach>

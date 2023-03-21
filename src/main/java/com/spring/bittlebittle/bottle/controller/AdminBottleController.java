@@ -1,5 +1,6 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import com.google.gson.Gson;
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
@@ -11,6 +12,7 @@ import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +35,9 @@ public class AdminBottleController {
 	private TagService tservice;
 	@Autowired
 	private ImageUploadUtil imageUploadUtil;
+
+	@Autowired
+	private Gson gson;
 
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -66,16 +71,17 @@ public class AdminBottleController {
 	
 	// 추가 완료할 때(확인완료)
 	@PostMapping
-	public List<Bottle> addBottle(@ModelAttribute BottleInfo bottle,
-								  @RequestParam("imgUrlOrigin") MultipartFile upfile, HttpServletRequest request) throws MalformedURLException {
+	public ResponseEntity<Object> addBottle(@ModelAttribute BottleInfo bottle,
+									@RequestParam("imgUrlOrigin") MultipartFile upfile,
+									HttpServletRequest request) throws MalformedURLException {
+
+		Map<String, Object> map = new HashMap<>();
 
 		String token = jwtUtil.resolveAccessToken(request);
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
 		log.debug(token);
 		log.debug(refreshTokenIdx);
-		if (jwtUtil.validateToken(token, UserJwt.builder()
-				.userJwtIdx(refreshTokenIdx)
-				.build())) {
+		if (jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(refreshTokenIdx).build())) {
 
 			// 전달된 파일이 있을 경우
 			// 1. 파일명 수정 => yyyymmddhhmmssxxxxx.확장자
@@ -93,111 +99,99 @@ public class AdminBottleController {
 			// 넘어온 첨부파일이 있을 경우 b : 제목, 내용, 작성자, 원본파일명, 수정파일명
 			// 넘어온 첨부파일이 없을 경우 b : 제목, 내용, 작성자
 			List<Bottle> bottleList = bservice.addBottle(bottle);
-
+//			map.put("bottleList", bottleList);
+//			map.put("request", "success");
 			// 리스트 or 새로운 bottle
-			return bottleList;
-
+			return ResponseEntity.ok().body(bottleList);
 		} else {
-
-			Map<String, Object> map = bservice.getBottles(null);
-
-			List<Bottle> bottleList = (List<Bottle>) map.get("bottle");
-
-			return bottleList;
+			map.put("request", "error");
+			return ResponseEntity.ok().body(map);
 		}
 	}
 
-
-	
-//	// 수정창 들어갈때 
-//	@GetMapping(value="/{bottleNo}/set-data")
-//	public Map<String, Object> getBottleInfo(@PathVariable int bottleNo) {
-//		
-//		
-//		Bottle bottle = bservice.getBottleByAdmin(bottleNo);
-//		List<TagType> tagTypeList= tservice.getAllTagTypes();
-//		List<Tag> bottleTagList = tservice.getTagsByBottle(bottleNo);
-//		
-//		// 태그 리스트도 보내야돼~
-//		
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("bottle", bottle);
-//		map.put("tagTypeList", tagTypeList);
-//		map.put("bottleTagList", bottleTagList);
-//		
-//		return map;
-//	}
-//	
 	// 수정완료 (확인완료)
 	@PostMapping(value="/set-data")
-	public Map<String, Object> editBottle(@ModelAttribute BottleInfo editBottle,
-										  MultipartFile reupfile,
+	public ResponseEntity<Object> editBottle(@ModelAttribute BottleInfo editBottle,
+										  @RequestParam("reupfile") MultipartFile reupfile,
 										  HttpServletRequest request) throws MalformedURLException {
-		
-		
+
+		Map<String, Object> map = null;
+
 		String token = jwtUtil.resolveAccessToken(request);
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
 		log.debug(token);
 		log.debug(refreshTokenIdx);
-		if (jwtUtil.validateToken(token, UserJwt.builder()
-				.userJwtIdx(refreshTokenIdx)
-				.build())) {
 
-			// 만약 업로드된 이미지파일이 존재한다면
+		// 토큰이 유효하다면
+		if (jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(refreshTokenIdx).build())) {
+
+			/*
+			1. 새로 업로드된 파일이 있냐 없냐. 있으면 2번, 없으면 3번
+			2. 있다면, 기존의 파일이 있냐?
+				2-1) 있다.
+					2-1-1) 있다면, 새 파일과 기존 파일의 이름이 동일하지 않으면 기존 파일 삭제 후 새 파일 저장.
+					2-1-2) 동일하면 종료
+				2-2) 없다면, 저장
+			3. 없다면, 기존 파일이 존재하는가?
+				3-1) 있으면 삭제
+				3-2) 없으면 텍스트만 수정
+			 */
+
+			// 1. 새로 업로드된 파일이 있다.
 			if (!reupfile.getOriginalFilename().equals("")) {
 
-				// 넘어온 기존의 bottleInfo 에서 bottleNo 를 가지고 와서, db의 bottle img 를 가지고 온다.
-//				Map<String, Object> originBottleInfo = bservice.getBottle(editBottle.getBottleNo());
+				// 2. 기존의 이미지 파일이 있다
+				if(!editBottle.getImgCusUrl().equals("")) {
 
+					// 2-1-1) 만약 들어온 reupfile 과 기존의 db 파일이름이 동일하지 않으면!
+					if (!reupfile.getOriginalFilename().equals(editBottle.getImgCusUrl())) {
 
-				// 만약 들어온 reupfile 과 기존의 db 파일이름이 동일하지 않으면! 저장
-//				if (!((Bottle) originBottleInfo.get("bottle")).getImgCusUrl().equals(reupfile.getOriginalFilename())) {
-				if (!reupfile.getOriginalFilename().equals(editBottle.getImgCusUrl()) ) {
+						// 기존 파일 삭제
+						// 기존에 업로드되어 있던 파일의 경로.
+						String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + editBottle.getImgCusUrl());
+						File file = new File(filePath);
+						if (file.exists() && file.isFile()) {
+							file.delete();
+						}
 
+						// 새로운 파일을 저장
+						String changeName = imageUploadUtil.saveFile(reupfile, request, "bottle");
+						editBottle.setImgUrl(reupfile.getOriginalFilename());
+						editBottle.setImgCusUrl(changeName);
+						map = bservice.editBottle(editBottle);
 
-					// 기존 파일 삭제
-					// String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + ((Bottle) originBottleInfo.get("bottle")).getImgCusUrl());
-					String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + editBottle.getImgCusUrl());
+					} // 2-1-2) 들어온 reupfile 과 기존의 db 파일 이름이 동일하다면 다른 과정이 불필요.
 
-					log.debug(filePath);
-					File file = new File(filePath);
-					if (file.exists() && file.isFile()) {
-						file.delete();
-					}
-
+				// 2-2). 기존 파일은 없고 새로 업로드만 됐다.
+				} else {
 					// 새로운 파일을 저장
 					String changeName = imageUploadUtil.saveFile(reupfile, request, "bottle");
 					editBottle.setImgUrl(reupfile.getOriginalFilename());
 					editBottle.setImgCusUrl(changeName);
-
-					Map<String, Object> map = bservice.editBottle(editBottle);
-					return map;
-				} else {
-					Map<String, Object> map = bservice.editBottle(editBottle);
-					return map;
+					map = bservice.editBottle(editBottle);
 				}
-
+			// 3. 새로 업로드된 파일이 없다.
 			} else {
-				// 만약 reupfile 이 없다면 기존파일만 삭제
-				String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + editBottle.getImgCusUrl());
-
-				log.debug(filePath);
-				File file = new File(filePath);
-				if (file.exists() && file.isFile()) {
-					file.delete();
+				// 3-1). 새로 업로드된 파일이 없고, 기존 파일이 있다면 삭제
+				if(!editBottle.getImgCusUrl().equals("")) {
+					// 기존 파일 삭제
+					// 기존에 업로드되어 있던 파일의 경로.
+					String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + editBottle.getImgCusUrl());
+					File file = new File(filePath);
+					if (file.exists() && file.isFile()) {
+						file.delete();
+					}
 				}
-
 				editBottle.setImgUrl("");
 				editBottle.setImgCusUrl("");
-
-				Map<String, Object> map = bservice.editBottle(editBottle);
-				return map;
+				map = bservice.editBottle(editBottle);
 			}
+			return ResponseEntity.ok().body(map);
 		} else {
 			// 토큰이 유효하지 않다면,
-			Map<String, Object> map = new HashMap<>();
-			map.put("msg", "error");
-			return map;
+			map = new HashMap<>();
+			map.put("request", "error");
+			return ResponseEntity.ok().body(gson.toJson(map));
 		}
 	}
 	

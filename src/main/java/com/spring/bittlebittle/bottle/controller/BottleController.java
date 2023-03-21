@@ -1,19 +1,5 @@
 package com.spring.bittlebittle.bottle.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
@@ -21,6 +7,13 @@ import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/bottles", produces="application/json; charset=UTF-8")
@@ -103,10 +96,6 @@ public class BottleController {
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
 		Map<String, Object> map = bservice.getBottle(bottleNo);
-
-
-		log.debug(((Bottle)map.get("bottle")).toString());
-
 		return map;
 	} 
 	
