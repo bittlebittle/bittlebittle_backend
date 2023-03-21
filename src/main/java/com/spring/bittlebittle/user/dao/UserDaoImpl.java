@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.user.dao;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import org.apache.ibatis.session.SqlSession;
@@ -62,6 +64,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserJwt selectUserJwtBySubject(UserJwt userJwt) {
+log.debug(userJwt.toString());
         return sqlSession.selectOne("userMapper.selectUserJwtBySubject", userJwt);
     }
 
@@ -101,6 +104,20 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User findByUserId(String userId) {
 		return sqlSession.selectOne("userMapper.findByUserId", userId);
+	}
+
+	public List<Review> getUserReviews(int userNo) {
+		return sqlSession.selectList("userMapper.selectReview",userNo);
+	}
+
+	public List<Reply> getUserComments(int userNo) {
+		return sqlSession.selectList("userMapper.selectReply",userNo);
+	}
+
+	@Override
+	public void updateStatusToWithdraw(int userNo) {
+		sqlSession.update("userMapper.updateWithdraw", userNo);
+		
 	}
 
 

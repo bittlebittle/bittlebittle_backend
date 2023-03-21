@@ -1,5 +1,7 @@
 package com.spring.bittlebittle.user.service;
 
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.dao.UserDaoImpl;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -170,6 +172,22 @@ public class UserServiceImpl implements UserService {
     public boolean sendEmailAuth(String email) {
         return false;
     }
+
+	@Override
+	public List<Review> getUserReviews(int userNo) {
+		return dao.getUserReviews(userNo);
+	}
+
+	@Override
+	public List<Reply> getUserComments(int userNo) {
+		return dao.getUserComments(userNo);
+	}
+
+	@Override
+	public void withdrawUser(int userNo) {
+		dao.updateStatusToWithdraw(userNo);
+		
+	}
 
 //	@Override
 //	public boolean sendEmailAuth(String email) {
