@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.bittlebittle.reply.vo.Reply;
-import org.springframework.stereotype.Repository;
+import com.spring.bittlebittle.reply.vo.ReplyNickname;
 
 
 @Repository
@@ -18,7 +18,7 @@ public class ReplyDaoImpl implements ReplyDao {
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<Reply> selectList(int reviewNo) {
+	public List<ReplyNickname> selectList(int reviewNo) {
 		
 		return sqlSession.selectList("replyMapper.selectList", reviewNo);
 	}

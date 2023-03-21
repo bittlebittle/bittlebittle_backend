@@ -6,17 +6,18 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.review.vo.ReviewNickname;
 
 public interface ReviewService {
 
-	List<Review> getReviews(int bottleNo);
+	List<ReviewNickname> getReviews(int bottleNo);
 
 	Map<String, Object> getReview(int reviewNo);
 	
-	List<Review> addReview(Review review);
+	List<ReviewNickname> addReview(Review review);
 
-	List<Review> editReview(Review review);
+	List<ReviewNickname> editReview(Review review);
 
-	List<Review> removeReview(int bottleNo, int reviewNo);
+	List<ReviewNickname> removeReview(int bottleNo, int reviewNo);
 
 }

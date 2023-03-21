@@ -19,28 +19,47 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
       <result property="status" column="STATUS" />
    </resultMap>
+   
+    <resultMap id="reviewNicknameResultSet"
+      type="reviewNickname">
+      <result property="reviewNo" column="REVIEW_NO_PK"/>
+      <result property="userNo" column="USER_NO_FK"/>
+      <result property="bottleNo" column="BOTTLE_NO_FK" />
+      <result property="grade" column="GRADE" />
+      <result property="reviewTitle" column="REVIEW_TITLE" />
+      <result property="reviewContent" column="REVIEW_CONTENT" />
+      <result property="createDate" column="CREATE_DATE" />
+      <result property="imgUrl" column="IMG_URL" />
+      <result property="imgCusUrl" column="IMG_CUS_URL" />
+      <result property="status" column="STATUS" />
+      <result property="userNickname" column="NICKNAME" />
+   </resultMap>
 
-   <select id="selectList" parameterType="Integer" resultMap="reviewResultSet">
+   <select id="selectList" parameterType="Integer" resultMap="reviewNicknameResultSet">
        <![CDATA[   
-         SELECT *
-         FROM review_tb
-         WHERE BOTTLE_NO_FK=#{bottleNo} AND STATUS='Y'
+       	SELECT r.REVIEW_NO_PK, r.USER_NO_FK, r.BOTTLE_NO_FK, r.GRADE, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.CREATE_DATE, r.IMG_URL, r.IMG_CUS_URL, r.STATUS, u.NICKNAME
+		FROM review_tb r
+		JOIN user_tb u
+		ON r.USER_NO_FK=u.USER_NO_PK
+		WHERE r.BOTTLE_NO_FK=#{bottleNo} and r.STATUS = 'Y'
       ]]>
    </select>
 
 
-	<select id="selectOne" parameterType="Integer" resultMap="reviewResultSet">
+	<select id="selectOne" parameterType="Integer" resultMap="reviewNicknameResultSet">
        <![CDATA[   
-         SELECT *
-         FROM review_tb
-         WHERE REVIEW_NO_PK=#{reviewNo} AND STATUS='Y'
+        SELECT r.REVIEW_NO_PK, r.USER_NO_FK, r.BOTTLE_NO_FK, r.GRADE, r.REVIEW_TITLE, r.REVIEW_CONTENT, r.CREATE_DATE, r.IMG_URL, r.IMG_CUS_URL, r.STATUS, u.NICKNAME
+		FROM review_tb r
+		JOIN user_tb u
+		ON r.USER_NO_FK=u.USER_NO_PK
+		WHERE r.REVIEW_NO_PK=#{reviewNo} and r.STATUS = 'Y'
       ]]>
    </select>
 	
 	<update id="insertOne" parameterType="review">
        <![CDATA[   
-         INSERT INTO review_tb(USER_NO_FK, BOTTLE_NO_FK, GRADE, REVIEW_TITLE, REVIEW_CONTENT, IMG_URL)
-         VALUE(#{userNo}, #{bottleNo}, #{grade}, #{reviewTitle}, #{reviewContent}, #{imgUrl})
+         INSERT INTO review_tb(USER_NO_FK, BOTTLE_NO_FK, GRADE, REVIEW_TITLE, REVIEW_CONTENT, IMG_URL, IMG_CUS_URL)
+         VALUE(#{userNo}, #{bottleNo}, #{grade}, #{reviewTitle}, #{reviewContent}, #{imgUrl}, #{imgCusUrl})
       ]]>
 	</update>
 	
@@ -59,5 +78,13 @@
          WHERE REVIEW_NO_PK=#{reviewNo}
       ]]>
 	</update>
+	
+	<select id="selectOneGrade" parameterType="Integer" resultType="Integer">
+       <![CDATA[   
+        SELECT avg(grade)
+		FROM review_tb
+		WHERE BOTTLE_NO_FK=#{bottleNo} and STATUS = 'Y'
+      ]]>
+   </select>
 
 </mapper>

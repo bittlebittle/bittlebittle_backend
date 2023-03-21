@@ -1,6 +1,18 @@
 package com.spring.bittlebittle.bottle.service;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
@@ -11,21 +23,10 @@ import com.spring.bittlebittle.food.dao.FoodDao;
 import com.spring.bittlebittle.food.vo.Food;
 import com.spring.bittlebittle.reply.dao.ReplyDao;
 import com.spring.bittlebittle.review.dao.ReviewDao;
-import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.review.vo.ReviewNickname;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -120,14 +121,16 @@ public class BottleServiceImpl implements BottleService {
 		
 		Bottle bottle = bdao.selectOne(bottleNo);
 		bdao.editViewCnt(bottleNo);
+		int grade = rdao.selectGradeByBottle(bottleNo);
 		List<Tag> tagListByBottle = tdao.selectTagByBottle(bottleNo); 
 		List<Bottle> relatedBottleList = bdao.selectRelatedBottleList(bottleNo);
-		List<Review> reviewList = rdao.selectList(bottleNo);
+		List<ReviewNickname> reviewList = rdao.selectList(bottleNo);
 		List<Food> foodList = fdao.selectRelatedFoods(bottleNo);
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
 	
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", bottle);
+		map.put("grade", grade);
 		map.put("tagListByBottle", tagListByBottle);
 		map.put("relatedBottleList", relatedBottleList);
 		map.put("reviewList", reviewList);
@@ -142,7 +145,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		Bottle bottle = bdao.selectOne(bottleNo);
 		List<Tag> tagListByBottle = tdao.selectTagByBottle(bottleNo);
-		List<Review> reviewList = rdao.selectList(bottleNo);
+		List<ReviewNickname> reviewList = rdao.selectList(bottleNo);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", bottle);
