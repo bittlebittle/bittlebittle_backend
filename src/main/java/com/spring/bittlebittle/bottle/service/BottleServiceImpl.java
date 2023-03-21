@@ -73,14 +73,16 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public Map<String, Object> getMainBottles( ) {
 
-		int userNo = 1;
+		int userNo = 2;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 
 		List<Favorite> favoriteList = fvdao.selectList(favorite);
-		List<Bottle> bottleNewList = bdao.selectNewList();
-		List<Bottle> bottleBestList = bdao.selectBestList();
-		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList();
+		log.debug(favoriteList);
+
+		List<Bottle> bottleNewList = bdao.selectNewList(userNo);
+		List<Bottle> bottleBestList = bdao.selectBestList(userNo);
+		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList(userNo);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("newBottle", bottleNewList);
@@ -89,24 +91,6 @@ public class BottleServiceImpl implements BottleService {
 		map.put("favorite", favoriteList);
 
 		return map;
-	}
-
-	// New 리스트
-	@Override
-	public List<Bottle> getNewBottles() {
-		return bdao.selectNewList();
-	}
-
-	// Best 리스트
-	@Override
-	public List<Bottle> getBestBottles() {
-		return bdao.selectBestList();
-	}
-
-	// 찜하기 관련 리스트
-	@Override
-	public List<Bottle> getRelatedFavorite() {
-		return bdao.selectRelatedFavoriteList();
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
 import com.spring.bittlebittle.favorite.vo.Favorite;
@@ -64,35 +63,37 @@ public class BottleController {
 
 
 
-	@GetMapping(params = "sorted = new")
-	public List<Bottle> getNewBottles(){
-
-		List<Bottle> bottlenewList = bservice.getNewBottles();
-
-		return  bottlenewList;
-	}
-
-	@GetMapping(params = "sorted = best")
-	public List<Bottle> getBestBottles(){
-
-		List<Bottle> bottlebestList = bservice.getBestBottles();
-
-		return  bottlebestList;
-	}
-
-	@GetMapping(params = "sorted = relatedFavorite")
-	public List<Bottle> getRelatedFavoriteBottles(){
-
-		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
-
-		return  bottleFavoriteList;
-	}
+//	@GetMapping(params = "sorted = new")
+//	public List<Bottle> getNewBottles(){
+//
+//		List<Bottle> bottlenewList = bservice.getNewBottles();
+//
+//		return  bottlenewList;
+//	}
+//
+//	@GetMapping(params = "sorted = best")
+//	public List<Bottle> getBestBottles(){
+//
+//		List<Bottle> bottlebestList = bservice.getBestBottles();
+//
+//		return  bottlebestList;
+//	}
+//
+//	@GetMapping(params = "sorted = relatedFavorite")
+//	public List<Bottle> getRelatedFavoriteBottles(){
+//
+//		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
+//
+//		return  bottleFavoriteList;
+//	}
 
 	// 확인 완료
 	@GetMapping
 	public Map<String, Object> getMainBottles() {
 
 		Map<String, Object> map = bservice.getMainBottles();
+
+		log.debug(map);
 
 		return map;
 	}
