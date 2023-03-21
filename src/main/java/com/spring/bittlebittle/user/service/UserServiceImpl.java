@@ -41,30 +41,13 @@ public class UserServiceImpl implements UserService {
         return dao.selectUser(user);
     }
 
+
     @Override
     public User loginUser(User user) {
         // login 시 사용하는 id 만 가지고 일단 db 를 불러온 뒤
         User loginUser = dao.selectLoginUser(user);
 
-<<<<<<< HEAD
-		// 筌띾슣鍮� 占쎌�占쏙옙 占쎈툡占쎌뵠占쎈탵揶쏉옙 占쎌뵬燁삼옙 占쎈릭筌욑옙 占쎈륫占쎌몵筌롳옙 db 占쎈퓠 鈺곌퀬�돳揶쏉옙 占쎈툧占쎈쭍 野껉퍔�뵠�⑨옙,
-		if (loginUser == null) {
-			log.debug("아이디가 존재하지 않는다");
-			return false;
-		}
 
-		// 筌띾슣鍮� �뜮袁⑨옙甕곕뜇�깈揶쏉옙 占쎌뵬燁살꼹釉�筌욑옙 占쎈륫占쎈뮉占쎈뼄筌롳옙
-		if (!passwordEncoder.matches(user.getUserPwd(), loginUser.getUserPwd())) {
-			log.debug(passwordEncoder.encode(user.getUserPwd()));
-			log.debug(user.getUserPwd());
-			log.debug(loginUser.getUserPwd());
-			log.debug("비밀번호가 일치하지 않는다.");
-			return false;
-		}
-		log.debug("로그인성공.");
-		return true;
-	}
-=======
         // 만약 유저 아이디가 일치 하지 않으면 db 에 조회가 안될 것이고,
         if (loginUser == null) {
             log.debug("해당 아이디의 유저가 존재하지 않습니다.");
@@ -82,7 +65,7 @@ public class UserServiceImpl implements UserService {
         log.debug("로그인에 성공했습니다.");
         return loginUser;
     }
->>>>>>> 90b33edeb442b7e180d262414960820976b5a61d
+
 
     @Override
     public int registerUser(User user) {

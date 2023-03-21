@@ -33,16 +33,12 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.selectOne("userMapper.selectOne", user);
     }
 
-<<<<<<< HEAD
+
 	public User selectLoginUser(User user) {
 		log.debug(user.toString());
 		return sqlSession.selectOne("userMapper.selectLoginUser", user);
 	}
-=======
-    public User selectLoginUser(User user) {
-        return sqlSession.selectOne("userMapper.selectLoginUser", user);
-    }
->>>>>>> 90b33edeb442b7e180d262414960820976b5a61d
+
 
     @Override
     public int insertUser(User user) {
@@ -78,20 +74,12 @@ public class UserDaoImpl implements UserDao {
         return sqlSession.update("userMapper.updateUserJwtWithIdx", userJwt);
     }
 
-<<<<<<< HEAD
+
 	@Override
 	public int deleteUserJwt(UserJwt userJwt) {
 		return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
 	}
 
-//////////////////////
-// �Ʒ��� tag ����
-=======
-    @Override
-    public int deleteUserJwt(UserJwt userJwt) {
-        return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
-    }
->>>>>>> 90b33edeb442b7e180d262414960820976b5a61d
 
 	@Override
 	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
@@ -109,10 +97,7 @@ public class UserDaoImpl implements UserDao {
 	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
 	}
 
-<<<<<<< HEAD
-	//���̵��ߺ�Ȯ��
-=======
->>>>>>> 90b33edeb442b7e180d262414960820976b5a61d
+
 	@Override
 	public User findByUserId(String userId) {
 		return sqlSession.selectOne("userMapper.findByUserId", userId);
