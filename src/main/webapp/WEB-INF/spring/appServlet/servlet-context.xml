@@ -24,7 +24,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 
-    <context:component-scan base-package="com.spring.bittlebittle" use-default-filters="true">
+	<context:component-scan base-package="com.spring.bittlebittle" use-default-filters="true">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
