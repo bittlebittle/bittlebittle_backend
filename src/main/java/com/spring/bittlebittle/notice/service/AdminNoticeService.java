@@ -1,8 +1,8 @@
 package com.spring.bittlebittle.notice.service;
 
-import java.util.List;
-
 import com.spring.bittlebittle.notice.vo.Notice;
+
+import java.util.List;
 
 public interface AdminNoticeService {
 	List<Notice> getNoticeList();

@@ -43,7 +43,9 @@ public interface UserDao  {
 //    String getTagName(int tagNo) throws Exception;
 
 	User findByUserId(String userId);
-	
+
+    User findByNickname(String nickname);
+
 	public List<Review> getUserReviews(int userNo);
 	public List<Reply> getUserComments(int userNo);
 	
