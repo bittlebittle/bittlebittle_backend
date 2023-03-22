@@ -182,7 +182,7 @@ public class AdminBottleController {
 			// 3. 새로 업로드된 파일이 없다.
 			} else {
 				// 3-1). 새로 업로드된 파일이 없고, 기존 파일이 있다면 삭제
-				if(!editBottle.getImgCusUrl().equals("")) {
+				if(editBottle.getImgCusUrl() != null && !editBottle.getImgCusUrl().equals("")) {
 					// 기존 파일 삭제
 					// 기존에 업로드되어 있던 파일의 경로.
 					String filePath = request.getServletContext().getRealPath("/resources/static/image/" + "bottle" + File.separator + editBottle.getImgCusUrl());
@@ -207,7 +207,7 @@ public class AdminBottleController {
 	// 삭제 (확인완료)
 	@GetMapping(value="/{bottleNo}/deletion")
 	public List<BottleAll> removeBottle(@PathVariable int bottleNo){
-		
+		                                                                                                                                                                                                         
 		
 		List<BottleAll> bottleList = bservice.removeBottle(bottleNo);
 		
