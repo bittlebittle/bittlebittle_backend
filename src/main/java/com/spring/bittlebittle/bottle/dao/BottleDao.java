@@ -2,6 +2,7 @@ package com.spring.bittlebittle.bottle.dao;
 
 
 import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleAll;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.List;
 
 public interface BottleDao {
 
-	List<Bottle> selectAllBottles(BottleSearch bottleSearch);
-
+	List<BottleAll> selectAllBottles(BottleSearch bottleSearch);
+	
 //	List<Bottle> selectMainList();
 
 	List<Bottle> selectNewList(int userNo);

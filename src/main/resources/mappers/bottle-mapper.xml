@@ -17,6 +17,21 @@
       <result property="imgCusUrl" column="IMG_CUS_URL" />
       <result property="status" column="STATUS" />
    </resultMap>
+   
+      <resultMap id="bottleAllResultSet" type="bottleAll">
+      <result property="bottleNo" column="BOTTLE_NO_PK"/>
+      <result property="bottleName" column="BOTTLE_NAME"/>
+      <result property="bottleContent" column="BOTTLE_CONTENT" />
+      <result property="bottleBrand" column="BOTTLE_BRAND" />
+       <result property="bottleAbv" column="BOTTLE_ABV" />
+      <result property="viewCnt" column="VIEW_CNT" />
+      <result property="createDate" column="CREATE_DATE" jdbcType="TIME" javaType="String" />
+      <result property="imgUrl" column="IMG_URL" />
+      <result property="imgCusUrl" column="IMG_CUS_URL" />
+      <result property="status" column="STATUS" />
+      <result property="reviewCount" column="reviewCount" />
+      <result property="grade" column="grade" />
+   </resultMap>
 
    <select id="selectOne" parameterType="Integer" resultMap="bottleResultSet">
          SELECT *
@@ -92,12 +107,15 @@
 
     <!--  태그 선택과 키워드 조회가 동시에 가능한 동적쿼리 -->
     <!--  parameterType, collection에는 뭐 들어가는지 더 알아봐야함 -->
-    <select id="selectAll" parameterType="bottleSearch" resultMap="bottleResultSet">
+    <select id="selectAll" parameterType="bottleSearch" resultMap="bottleAllResultSet">
         SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL,
-        GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no
+        GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no, 
+        IFNULL(COUNT(r.REVIEW_NO_PK),0) as reviewCount, 
+        IFNULL(ROUND(AVG(r.grade), 0), 0) as grade
         FROM bottle_tb b
             JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
             JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
+            LEFT JOIN review_tb r ON b.BOTTLE_NO_PK = r.BOTTLE_NO_FK
         <where>
                 b.status = 'y'
             <if test="tagNoList != null" >

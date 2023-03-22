@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleAll;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.dao.FavoriteDao;
@@ -52,18 +53,18 @@ public class BottleServiceImpl implements BottleService {
     @Override
     public Map<String, Object> getBottles(@ModelAttribute BottleSearch bottleSearch) {
 
-		int userNo = 1;
-		Favorite favorite = new Favorite();
-		favorite.setUserNo(userNo);
-
-		List<Favorite> favoriteList = fvdao.selectList(favorite);
-		List<Bottle> allBottles = bdao.selectAllBottles(bottleSearch);
+//		int userNo = 1;
+//		Favorite favorite = new Favorite();
+//		favorite.setUserNo(userNo);
+//
+//		List<Favorite> favoriteList = fvdao.selectList(favorite);
+		List<BottleAll> allBottles = bdao.selectAllBottles(bottleSearch);
 //		List<Tag> tagList = tdao.selectAllTag();
 //		List<TagType> tagTypeList = tdao.selectAllTagType();
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("bottle", allBottles);
-		map.put("Favorite", favoriteList);
+//		map.put("Favorite", favoriteList);
 //		map.put("tagList", tagList);
 //		map.put("tagTypeList", tagTypeList);
 
@@ -149,7 +150,7 @@ public class BottleServiceImpl implements BottleService {
 
 	@Override
 	@Transactional
-	public List<Bottle> addBottle(BottleInfo bottle) {
+	public List<BottleAll> addBottle(BottleInfo bottle) {
 		
 		bdao.insertOne(bottle);
 		int bottleNo = bdao.selectLastBottleNo();
@@ -162,7 +163,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		tdao.insertBottleTag(bottleTagList);
 		
-		List<Bottle> bottleList = bdao.selectAllBottles(null);
+		List<BottleAll> bottleList = bdao.selectAllBottles(null);
 		
 		return bottleList;
 
@@ -197,12 +198,12 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
-	public List<Bottle> removeBottle(int bottleNo) {
+	public List<BottleAll> removeBottle(int bottleNo) {
 		
 		bdao.deleteOne(bottleNo);
 		
 		// 완료되면 리스트불러오는 것 추가
-		List<Bottle> bottleList = bdao.selectAllBottles(null);
+		List<BottleAll> bottleList = bdao.selectAllBottles(null);
 		
 		return bottleList;
 	}
