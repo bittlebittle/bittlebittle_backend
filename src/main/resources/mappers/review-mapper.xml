@@ -64,11 +64,20 @@
 	</update>
 	
 	<update id="updateOne" parameterType="review">
-       <![CDATA[
          UPDATE review_tb
-         SET GRADE=#{grade}, REVIEW_TITLE=#{reviewTitle}, REVIEW_CONTENT=#{reviewContent}, IMG_URL=#{imgUrl}
+         set GRADE = #{grade},
+             REVIEW_TITLE = #{reviewTitle},
+             REVIEW_CONTENT = #{reviewContent},
+             IMG_URL = #{imgUrl},
+             IMG_CUS_URL = #{imgCusUrl}
+<!--             <if test="imgUrl != null and imgUrl != ''">-->
+<!--                 IMG_URL = #{imgUrl},-->
+<!--             </if>-->
+<!--             <if test="imgCusUrl != null and imgCusUrl != ''">-->
+<!--                 IMG_CUS_URL = #{imgCusUrl}-->
+<!--             </if>-->
+          set
          WHERE REVIEW_NO_PK=#{reviewNo}
-      ]]>
 	</update>
 	
 	<update id="deleteOne" parameterType="Integer">
@@ -81,7 +90,7 @@
 	
 	<select id="selectOneGrade" parameterType="Integer" resultType="Integer">
        <![CDATA[   
-        SELECT avg(grade)
+        SELECT IFNULL(ROUND(AVG(grade), 0), 0)
 		FROM review_tb
 		WHERE BOTTLE_NO_FK=#{bottleNo} and STATUS = 'Y'
       ]]>

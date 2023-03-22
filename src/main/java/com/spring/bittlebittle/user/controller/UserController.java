@@ -2,6 +2,8 @@ package com.spring.bittlebittle.user.controller;
 
 
 import com.google.gson.Gson;
+import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -99,14 +101,14 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 	
-    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        boolean success = service.sendEmailAuth(email);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("success", success);
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {
+//        String email = request.get("email");
+//        boolean success = service.sendEmailAuth(email);
+//        Map<String, Boolean> response = new HashMap<>();
+//        response.put("success", success);
+//        return ResponseEntity.ok(response);
+//    }
 	
 
 //    @GetMapping(value = "/accounts/auth/{socialLoginType}")
@@ -115,6 +117,7 @@ public class UserController {
 //        oService.request(socialLoginType);
 //    }
 
+    
     @GetMapping(value = "/{userNo}")
     public User getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("유저 조회");
@@ -126,6 +129,7 @@ public class UserController {
                                         .build())){
             // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
+            log.debug(user.toString());
             return user;
         }
         else {
@@ -186,7 +190,33 @@ public class UserController {
         }
         return ResponseEntity.ok().body(map);
     }
+    
+    @GetMapping("/{userNo}/reviews")
+    public ResponseEntity<List<Review>> getUserReviews(@PathVariable("userNo") int userNo) {
+        log.debug("리뷰 조회 실행");
+        List<Review> reviews = service.getUserReviews(userNo);
+        log.debug(reviews);
+        return ResponseEntity.ok(reviews);
+    }
 
+    @GetMapping("/{userNo}/comments")
+    public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+        log.debug("댓글 조회 실행");
+        List<Reply> comments = service.getUserComments(userNo);
+        log.debug(comments);
+        return ResponseEntity.ok(comments);
+    }
+    
+ // 회원 탈퇴 API 추가
+    @PutMapping("/withdraw/{userNo}")
+    public ResponseEntity<Void> withdrawUser(@PathVariable("userNo") int userNo) {
+    	service.withdrawUser(userNo);
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
+    
+    
     /*
 
     @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)

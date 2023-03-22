@@ -103,13 +103,14 @@ public class JwtUtil {
                     .getBody();
             claims.setExpiration(new Date(System.currentTimeMillis()));
             log.debug("access token의 유효기간 만료 변경");
-            if (service.removeUserJwt(userJwt) == 1) {
-                return true;
-            } else {
-                return false;
-            }
         } catch (Exception e) {
             log.debug("access token 기간 만료");
+        }
+
+        if (service.removeUserJwt(userJwt) == 1) {
+            // db에 저장된 jwt refresh 토큰 삭제에 성공
+            return true;
+        } else {
             return false;
         }
     }

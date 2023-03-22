@@ -17,6 +17,7 @@
         <typeAlias type="com.spring.bittlebittle.bottle.vo.Bottle" alias="bottle" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleInfo" alias="bottleInfo" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleSearch" alias="bottleSearch" />
+        <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleAll" alias="bottleAll" />
 
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="food" />

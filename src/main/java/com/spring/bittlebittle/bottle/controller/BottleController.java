@@ -1,7 +1,6 @@
 package com.spring.bittlebittle.bottle.controller;
 
 import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
 import com.spring.bittlebittle.favorite.vo.Favorite;
@@ -57,35 +56,37 @@ public class BottleController {
 
 
 
-	@GetMapping(params = "sorted = new")
-	public List<Bottle> getNewBottles(){
-
-		List<Bottle> bottlenewList = bservice.getNewBottles();
-
-		return  bottlenewList;
-	}
-
-	@GetMapping(params = "sorted = best")
-	public List<Bottle> getBestBottles(){
-
-		List<Bottle> bottlebestList = bservice.getBestBottles();
-
-		return  bottlebestList;
-	}
-
-	@GetMapping(params = "sorted = relatedFavorite")
-	public List<Bottle> getRelatedFavoriteBottles(){
-
-		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
-
-		return  bottleFavoriteList;
-	}
+//	@GetMapping(params = "sorted = new")
+//	public List<Bottle> getNewBottles(){
+//
+//		List<Bottle> bottlenewList = bservice.getNewBottles();
+//
+//		return  bottlenewList;
+//	}
+//
+//	@GetMapping(params = "sorted = best")
+//	public List<Bottle> getBestBottles(){
+//
+//		List<Bottle> bottlebestList = bservice.getBestBottles();
+//
+//		return  bottlebestList;
+//	}
+//
+//	@GetMapping(params = "sorted = relatedFavorite")
+//	public List<Bottle> getRelatedFavoriteBottles(){
+//
+//		List<Bottle> bottleFavoriteList = bservice.getBestBottles();
+//
+//		return  bottleFavoriteList;
+//	}
 
 	// 확인 완료
 	@GetMapping
 	public Map<String, Object> getMainBottles() {
 
 		Map<String, Object> map = bservice.getMainBottles();
+
+		log.debug(map);
 
 		return map;
 	}
@@ -94,31 +95,26 @@ public class BottleController {
 	@GetMapping(value="/{bottleNo}")
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
-		
 		Map<String, Object> map = bservice.getBottle(bottleNo);
-
 		return map;
 	} 
 	
 	// favorite 클릭했을 때 (확인완료)
-	@GetMapping(value="/{bottleNo}/favorite")
-	public List<Favorite> isFavorite(@PathVariable int bottleNo) {
+	@PostMapping(value="/{bottleNo}/favorite")
+	public List<Favorite> isFavorite(@PathVariable int bottleNo, @ModelAttribute Favorite favorite) {
 		
 		
-		// userNo -> session 등록되면 session에서 빼오는 것으로 할 것 
-		int userNo = 1;
-		
-
-		Favorite favorite = new Favorite(userNo, bottleNo);
-
+		log.debug(favorite);
 		
 		List<Favorite> favoriteList = fvservice.isFavorite(favorite);
 		
 		
 		if(favoriteList.isEmpty()) {
 			fvservice.addFavorite(favorite);
+			log.debug("찜하기");
 		} else {
 			fvservice.removeFavorite(favorite);
+			log.debug("찜제거하기");
 		}
 		
 		
