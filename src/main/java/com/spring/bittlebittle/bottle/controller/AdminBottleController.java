@@ -1,27 +1,36 @@
 package com.spring.bittlebittle.bottle.controller;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.google.gson.Gson;
 import com.spring.bittlebittle.bottle.service.BottleService;
 import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleAll;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.ImageUploadUtil;
 import com.spring.bittlebittle.utils.JwtUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value="/api/admin/bottles", produces="application/json; charset=UTF-8")
@@ -98,7 +107,7 @@ public class AdminBottleController {
 			// Service 단으로 b 를 넘겨서 insert 요청
 			// 넘어온 첨부파일이 있을 경우 b : 제목, 내용, 작성자, 원본파일명, 수정파일명
 			// 넘어온 첨부파일이 없을 경우 b : 제목, 내용, 작성자
-			List<Bottle> bottleList = bservice.addBottle(bottle);
+			List<BottleAll> bottleList = bservice.addBottle(bottle);
 //			map.put("bottleList", bottleList);
 //			map.put("request", "success");
 			// 리스트 or 새로운 bottle
@@ -197,10 +206,10 @@ public class AdminBottleController {
 	
 	// 삭제 (확인완료)
 	@GetMapping(value="/{bottleNo}/deletion")
-	public List<Bottle> removeBottle(@PathVariable int bottleNo){
+	public List<BottleAll> removeBottle(@PathVariable int bottleNo){
 		
 		
-		List<Bottle> bottleList = bservice.removeBottle(bottleNo);
+		List<BottleAll> bottleList = bservice.removeBottle(bottleNo);
 		
 		// 원래 없애야 하지만 DB 보존을 위해..
 		// tservice.removeBottleTag(bottleNo);
