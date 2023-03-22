@@ -183,7 +183,7 @@
 	<update id="deleteUser" parameterType="User">
 		UPDATE user_tb
 		SET status = "n"
-		WHERE user_no = #{userNo}
+		WHERE user_no_pk = #{userNo}
 	</update>
 
 
@@ -194,6 +194,12 @@
 		WHERE user_id = #{userId}
 	</select>
 
+	<select id="findByNickname" parameterType="String"
+			resultMap="userResultSet">
+		SELECT *
+		FROM user_tb
+		WHERE nickname = #{nickname}
+	</select>
 
 	<select id="selectReview" parameterType="int" resultMap="reviewNicknameResultSet">
 		select r.*, u.user_name

@@ -44,6 +44,8 @@ public interface UserService {
 
 	boolean isUsernameDuplicate(String userId);
 
+    boolean isNicknameuplicate(String nickname);
+
 	boolean sendEmailAuth(String email);
 
 	List<Review> getUserReviews(int userNo);

@@ -169,6 +169,17 @@ public class UserServiceImpl implements UserService {
 	}
 
     @Override
+    public boolean isNicknameuplicate(String nickname) {
+        User user = dao.findByNickname(nickname);
+        // 있으면 유저가 나올거고, 앖으면 null.
+        if(user != null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public boolean sendEmailAuth(String email) {
         return false;
     }

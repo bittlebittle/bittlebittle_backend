@@ -19,6 +19,7 @@
         from free_board_tb fb
             join user_tb u
             on fb.user_no_fk = u.user_no_pk
+        where fb.status = 'y'
         order by fb.BOARD_NO_PK desc
     </select>
 
@@ -47,13 +48,13 @@
                 , board_content = #{boardContent}
             </if>
         </set>
-        where board_no = #{boardNo}
+        where board_no_pk = #{boardNo}
     </update>
 
     <update id="deleteBoard" parameterType="int">
         update free_board_tb
         set status = 'N'
-        where board_no = #{boardNo}
+        where board_no_pk = #{boardNo}
     </update>
 
 <!--    <select id="isAuthor" parameterType="map" resultType="Integer">-->

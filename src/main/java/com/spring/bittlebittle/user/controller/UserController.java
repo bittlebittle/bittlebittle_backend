@@ -100,6 +100,15 @@ public class UserController {
         response.put("isDuplicate", isDuplicate);
         return ResponseEntity.ok().body(response);
     }
+
+    @PostMapping(value="/check-duplicate-nickname", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> checkDuplicateNickname(@RequestBody Map<String, String> request) {
+        String nickname = request.get("nickname");
+        boolean isDuplicate = service.isNicknameuplicate(nickname);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isDuplicate", isDuplicate);
+        return ResponseEntity.ok().body(response);
+    }
 	
 //    @PostMapping(value="/send-email-auth", produces = MediaType.APPLICATION_JSON_VALUE)
 //    public ResponseEntity<?> sendEmailAuth(@RequestBody Map<String, String> request) {

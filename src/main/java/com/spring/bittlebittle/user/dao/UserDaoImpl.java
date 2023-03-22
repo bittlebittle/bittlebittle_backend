@@ -106,6 +106,11 @@ log.debug(userJwt.toString());
 		return sqlSession.selectOne("userMapper.findByUserId", userId);
 	}
 
+	@Override
+	public User findByNickname(String nickname) {
+		return sqlSession.selectOne("userMapper.findByNickname", nickname);
+	}
+
 	public List<Review> getUserReviews(int userNo) {
 		return sqlSession.selectList("userMapper.selectReview",userNo);
 	}

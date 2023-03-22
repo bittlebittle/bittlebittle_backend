@@ -32,6 +32,7 @@ public class BoardDaoImpl implements BoardDao{
     }
 
     public int updateBoard(Board board) {
+        log.debug(board.toString());
         return sqlSession.update("boardMapper.updateBoard", board);
     }
 

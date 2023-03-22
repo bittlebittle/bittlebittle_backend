@@ -7,14 +7,15 @@ import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //import com.spring.bittlebittle.NotAuthorizedException;
 
@@ -64,25 +65,49 @@ public class BoardController {
         }
     }
 
-    @PostMapping(value = "/{boardNo}/set-data", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> updateBoard(@PathVariable int boardNo, @RequestBody Board board) {
-        board.setBoardNo(boardNo);
+    @PostMapping(value = "/set-data", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> editBoard(@RequestBody Board board, HttpServletRequest request) {
+        log.debug("보드 수정");
 
-        boardService.updateBoard(board);
-        return new ResponseEntity<>(board, HttpStatus.OK);
+        String token = jwtUtil.resolveAccessToken(request);
+        // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                .build())) {
+
+            boardService.updateBoard(board);
+            return new ResponseEntity<>(board, HttpStatus.OK);
+
+
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
 
     }
 
     @GetMapping(value = "/{boardNo}/deletion", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> deleteBoard(@PathVariable int boardNo, @RequestParam int userNo) {
-//        try {
-            boardService.deleteBoard(boardNo, userNo);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        } catch (NotAuthorizedException e) {
-//            return new ResponseEntity<HttpStatus>(HttpStatus.FORBIDDEN);
-//        } catch (NoSuchElementException e) {
-//            return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-//        }
+    public ResponseEntity<Object> removeBoard(@PathVariable int boardNo, HttpServletRequest request) {
+
+        log.debug("보드 삭제");
+
+        String token = jwtUtil.resolveAccessToken(request);
+        // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                .build())) {
+
+            boardService.deleteBoard(boardNo);
+            Map<String, Object> map = new HashMap<>();
+            map.put("requst", true);
+            return ResponseEntity.ok().body(map);
+
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
     }
 
 }

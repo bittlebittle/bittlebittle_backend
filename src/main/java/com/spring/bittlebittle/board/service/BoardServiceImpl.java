@@ -32,18 +32,11 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public void updateBoard(Board board) {
-        int boardNo = board.getBoardNo();
-        int userNo = board.getUserNo();
-//        if (dao.isAuthor(boardNo, userNo)) {
-//            dao.updateBoard(board);
-//
-//        }
+        dao.updateBoard(board);
     }
 
     @Override
-    public void deleteBoard(int boardNo, int userNo) {
-//        if (dao.isAuthor(boardNo, userNo)) {
-//            dao.deleteBoard(boardNo);
-//        }
+    public void deleteBoard(int boardNo) {
+        dao.deleteBoard(boardNo);
     }
 }

@@ -96,6 +96,7 @@ public class BoardReplyController {
             Map<String, Object> map = new HashMap<>();
             map.put("request", true);
             return ResponseEntity.ok().body(map);
+
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("token", false);
