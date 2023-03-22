@@ -189,6 +189,26 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public List<User> findAllUsers(int userNo) {
+		return dao.findAllUsers(userNo);
+	}
+
+	@Override
+	public List<User> searchUsers(String searchCriteria, String searchKeyword) {
+		return dao.searchUsers(searchCriteria, searchKeyword);
+	}
+
+	@Override
+	public int updateStatusToN(List<Long> userNos) {
+		return dao.updateStatusToN(userNos);
+	}
+
+	@Override
+	public int updateUsermodal(User user) {
+		return dao.updateUsermodal(user);
+	}
+
 //	@Override
 //	public boolean sendEmailAuth(String email) {
 //		SimpleMailMessage message = new SimpleMailMessage();

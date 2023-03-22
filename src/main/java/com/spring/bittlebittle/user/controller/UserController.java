@@ -214,6 +214,38 @@ public class UserController {
       return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @GetMapping
+    public ResponseEntity<List<User>> findAllUsers(int userNo) {
+        List<User> users = service.findAllUsers(userNo);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(
+            @RequestParam("searchCriteria") String searchCriteria,
+            @RequestParam("searchKeyword") String searchKeyword) {
+        List<User> users = service.searchUsers(searchCriteria, searchKeyword);
+        return ResponseEntity.ok(users);
+    }
+    
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateStatusToN(@RequestBody Map<String, List<Long>> payload) {
+        List<Long> userNos = payload.get("userNos");
+        int result = service.updateStatusToN(userNos);
+        return ResponseEntity.ok(result);
+    }
+    
+    @PostMapping(value = "/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@PathVariable Long userNo, @RequestBody User user) {
+        int result = service.updateUsermodal(user);
+        if (result > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    
     
     
     

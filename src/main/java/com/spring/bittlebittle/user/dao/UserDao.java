@@ -49,5 +49,16 @@ public interface UserDao  {
 	
 	void updateStatusToWithdraw(int userNo);
 	
+	List<User> findAllUsers(int userNo);
+	
+	List<User> searchUsers(String searchCriteria, String searchKeyword);
+	
+	int updateStatusToN(List<Long> userNos);
+	
+	int updateUsermodal(User user);
+	
+	
+	
+	
 
 }

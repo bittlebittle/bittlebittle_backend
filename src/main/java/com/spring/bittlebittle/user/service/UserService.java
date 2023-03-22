@@ -52,6 +52,15 @@ public interface UserService {
 	
 	void withdrawUser(int userNo);
 	
+	public List<User> findAllUsers(int userNo);
+	
+	public List<User> searchUsers(String searchCriteria, String searchKeyword);
+	
+	public int updateStatusToN(List<Long> userNos);
+	
+	public int updateUsermodal(User user);
+	
+	
 	
 
 }
