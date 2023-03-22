@@ -16,7 +16,7 @@
 
    <select id="selectRelated" parameterType="Integer" resultMap="foodResultSet">
        <![CDATA[   
-        SELECT f.food_no_pk
+        SELECT f.food_name, f.img_url, f.img_cus_url
 		FROM food_tag_tb ft
 		INNER JOIN food_tb f
 		ON f.food_no_pk=ft.food_no_fk
