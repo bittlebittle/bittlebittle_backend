@@ -111,7 +111,7 @@ log.debug(userJwt.toString());
 	}
 
 	public List<Reply> getUserComments(int userNo) {
-		return sqlSession.selectList("userMapper.selectReply",userNo);
+		return sqlSession.selectList("userMapper.selectReply", userNo);
 	}
 
 	@Override

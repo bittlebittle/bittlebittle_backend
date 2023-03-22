@@ -112,7 +112,7 @@ public class AdminBottleController {
 	// 수정완료 (확인완료)
 	@PostMapping(value="/set-data")
 	public ResponseEntity<Object> editBottle(@ModelAttribute BottleInfo editBottle,
-										  @RequestParam("reupfile") MultipartFile reupfile,
+										  @RequestParam(value="reupfile", required=false) MultipartFile reupfile,
 										  HttpServletRequest request) throws MalformedURLException {
 
 		Map<String, Object> map = null;
@@ -138,10 +138,10 @@ public class AdminBottleController {
 			 */
 
 			// 1. 새로 업로드된 파일이 있다.
-			if (!reupfile.getOriginalFilename().equals("")) {
-
+			if (reupfile != null) {
+			// !reupfile.getOriginalFilename().equals("") &&
 				// 2. 기존의 이미지 파일이 있다
-				if(!editBottle.getImgCusUrl().equals("")) {
+				if(editBottle.getImgCusUrl() != null && !editBottle.getImgCusUrl().equals("")) {
 
 					// 2-1-1) 만약 들어온 reupfile 과 기존의 db 파일이름이 동일하지 않으면!
 					if (!reupfile.getOriginalFilename().equals(editBottle.getImgCusUrl())) {

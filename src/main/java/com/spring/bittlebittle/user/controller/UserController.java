@@ -129,6 +129,7 @@ public class UserController {
                                         .build())){
             // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
+            log.debug(user.toString());
             return user;
         }
         else {
@@ -190,15 +191,19 @@ public class UserController {
         return ResponseEntity.ok().body(map);
     }
     
-    @GetMapping("/api/users/{userNo}/reviews")
+    @GetMapping("/{userNo}/reviews")
     public ResponseEntity<List<Review>> getUserReviews(@PathVariable("userNo") int userNo) {
+        log.debug("리뷰 조회 실행");
         List<Review> reviews = service.getUserReviews(userNo);
+        log.debug(reviews);
         return ResponseEntity.ok(reviews);
     }
 
-    @GetMapping("/api/users/{userNo}/comments")
+    @GetMapping("/{userNo}/comments")
     public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+        log.debug("댓글 조회 실행");
         List<Reply> comments = service.getUserComments(userNo);
+        log.debug(comments);
         return ResponseEntity.ok(comments);
     }
     

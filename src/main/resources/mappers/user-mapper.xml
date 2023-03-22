@@ -22,6 +22,32 @@
 		<result property="refreshToken" column="REFRESH_TOKEN" />
 	</resultMap>
 
+	<resultMap id="reviewNicknameResultSet"
+			   type="reviewNickname">
+		<result property="reviewNo" column="REVIEW_NO_PK"/>
+		<result property="userNo" column="USER_NO_FK"/>
+		<result property="bottleNo" column="BOTTLE_NO_FK" />
+		<result property="grade" column="GRADE" />
+		<result property="reviewTitle" column="REVIEW_TITLE" />
+		<result property="reviewContent" column="REVIEW_CONTENT" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="imgUrl" column="IMG_URL" />
+		<result property="imgCusUrl" column="IMG_CUS_URL" />
+		<result property="status" column="STATUS" />
+		<result property="userNickname" column="NICKNAME" />
+	</resultMap>
+
+	<resultMap id="replyNicknameResultSet"
+			   type="replyNickname">
+		<result property="replyNo" column="REPLY_NO_PK"/>
+		<result property="userNo" column="USER_NO_FK"/>
+		<result property="reviewNo" column="REVIEW_NO_FK" />
+		<result property="replyContent" column="REPLY_CONTENT" />
+		<result property="createTime" column="CREATE_DATE" jdbcType="TIME" javaType="String"/>
+		<result property="status" column="STATUS" />
+		<result property="userNickname" column="NICKNAME" />
+	</resultMap>
+
 	<insert id="insert" parameterType="user">
 		INSERT INTO USER_TB VALUES
 		(#{userId})
@@ -49,7 +75,7 @@
 
 	<select id="selectOne" parameterType="user"
 		resultMap="userResultSet">
-		SELECT user_no_pk, user_id, user_pwd, nickname
+		SELECT user_no_pk, user_id, user_pwd, user_name, nickname, email, phone, admin_yn, status
 		FROM USER_TB
 		<where>
 			<if test="userNo != null and userNo != 0">user_no_pk = #{userNo}</if>
@@ -59,7 +85,7 @@
 
 	<select id="selectLoginUser" parameterType="user"
 		resultMap="userResultSet">
-		SELECT user_no_pk, user_id, user_pwd, nickname, admin_yn
+		SELECT user_no_pk, user_id, user_pwd, user_name, nickname, admin_yn, status
 		FROM USER_TB
 		<where>
 			<if test="userId != null and userId != ''">user_id = #{userId}</if>
@@ -156,8 +182,7 @@
 
 	<update id="deleteUser" parameterType="User">
 		UPDATE user_tb
-		SET status =
-		"y"
+		SET status = "n"
 		WHERE user_no = #{userNo}
 	</update>
 
@@ -170,7 +195,7 @@
 	</select>
 
 
-	<select id="selectReview">
+	<select id="selectReview" parameterType="int" resultMap="reviewNicknameResultSet">
 		select r.*, u.user_name
 		from review_tb r
 		join user_tb u
@@ -178,7 +203,7 @@
 		where u.user_no_pk = #{userNo}
 	</select>
 
-	<select id="selectReply">
+	<select id="selectReply" parameterType="int" resultMap="replyNicknameResultSet">
 		select r.*, u.user_name
 		from reply_tb r
 		join user_tb u
