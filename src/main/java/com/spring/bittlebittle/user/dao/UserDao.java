@@ -34,9 +34,11 @@ public interface UserDao  {
 
 	User selectLoginUser(User user);
 
-	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
-	
-	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+//    int updateUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
 //    void deleteUserTags(int userNo) throws Exception;
 
