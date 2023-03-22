@@ -1,25 +1,17 @@
 package com.spring.bittlebittle.notice.controller;
 
-import java.util.List;
-
+import com.spring.bittlebittle.notice.service.AdminNoticeServiceImpl;
+import com.spring.bittlebittle.notice.vo.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.spring.bittlebittle.notice.service.AdminNoticeServiceImpl;
-import com.spring.bittlebittle.notice.vo.Notice;
+import java.util.List;
 
 @RestController
-@RequestMapping("/admin/api/faqs")
+@RequestMapping("/admin/faqs")
 public class AdminNoticeController {
 	@Autowired
 	private AdminNoticeServiceImpl adminNoticeServiceImpl;
