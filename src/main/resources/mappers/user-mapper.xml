@@ -93,15 +93,9 @@
 		</where>
 	</select>
 
-	<select id="selectList" resultType="user"
-		resultMap="userResultSet">
+	<select id="selectList" resultType="user" resultMap="userResultSet">
 		select *
 		from USER_TB
-		<where>
-			<if test="userNo != null">
-				user_no_pk = #{userNo}
-			</if>
-		</where>
 	</select>
 
 	<select id="selectListbyId" parameterType="User"
@@ -235,16 +229,16 @@
 		WHERE user_no = #{userNo}
 	</update>
 
-	<select id="findAllUsers" resultMap="UserResultMap">
+	<select id="findAllUsers" resultMap="userResultSet">
 		SELECT user_no_pk, user_id,
 		user_name, nickname, email, phone, status,
 		admin_yn
 		FROM user_tb
 	</select>
 
-	<select id="searchUsers" parameterType="map" resultType="User">
+	<select id="searchUsers" parameterType="map" resultMap="userResultSet">
 		SELECT *
-		FROM user
+		FROM user_tb
 		WHERE
 		<choose>
 			<when test="searchCriteria == 'user_name'">
@@ -284,7 +278,7 @@
 		결과적으로, 이 SQL 쿼리는 주어진 userNos 목록에 포함된 userNo 값을 가진 모든 레코드의 status 컬럼 값을 'N'으로 
 		업데이트합니다. -->
 
-	<update id="updateUsermodal" parameterType="User">
+	<update id="updateUsermodal" parameterType="user">
 		UPDATE user_tb
 		SET user_name = #{userName},
 		user_id = #{userId},

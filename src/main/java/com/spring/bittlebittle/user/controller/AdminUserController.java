@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,21 +20,24 @@ import java.util.List;
 import java.util.Map;
 
 @RestController// @Controller + @ResponseBody
-@RequestMapping(value = "api/admin", produces = "application/json; charset=utf-8")
+@RequestMapping(value = "api/admin/users", produces = "application/json; charset=utf-8")
 public class AdminUserController {
 	
 	private Logger log = LogManager.getLogger("case3");
 	
 	@Autowired
 	private AdminUserService adminService;
-	
+
+    @Autowired
+    private AdminUserService service;
+
 	@Autowired
     private OAuthService oService;
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
     private Gson gson;
-	
+
 	 // 사용자 정보 수정 API
     @PostMapping(value="/set-data", produces = "application/json; charset=utf-8")
     public ResponseEntity<String> updateUser(@RequestBody User user) {
@@ -59,14 +61,16 @@ public class AdminUserController {
     }
     
     //전체조회
-    
- // 모든 사용자 정보 조회 API
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = adminService.selectUsers();
-        		 return ResponseEntity.ok(users);
+    @GetMapping
+    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) int userNo) {
+        log.debug(userNo);
+        List<User> users = service.selectUsers();
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
-    
+
     //선택조회
     
  // 특정 사용자 정보 조회 API
