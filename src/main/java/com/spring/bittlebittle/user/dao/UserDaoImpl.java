@@ -1,6 +1,6 @@
 package com.spring.bittlebittle.user.dao;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
@@ -127,7 +127,7 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList("userMapper.selectReview",userNo);
 	}
 
-	public List<Reply> getUserComments(int userNo) {
+	public List<BoardReply> getUserComments(int userNo) {
 		return sqlSession.selectList("userMapper.selectReply", userNo);
 	}
 

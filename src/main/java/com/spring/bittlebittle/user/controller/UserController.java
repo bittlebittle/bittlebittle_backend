@@ -2,6 +2,7 @@ package com.spring.bittlebittle.user.controller;
 
 
 import com.google.gson.Gson;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.vo.UserTagInfo;
@@ -304,9 +305,9 @@ public class UserController {
     }
 
     @GetMapping("/{userNo}/comments")
-    public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+    public ResponseEntity<Object> getUserComments(@PathVariable("userNo") int userNo) {
         log.debug("댓글 조회 실행");
-        List<Reply> comments = service.getUserComments(userNo);
+        List<BoardReply> comments = service.getUserComments(userNo);
         log.debug(comments);
         return ResponseEntity.ok(comments);
     }

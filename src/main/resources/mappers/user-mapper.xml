@@ -47,6 +47,18 @@
 		<result property="userNickname" column="NICKNAME" />
 	</resultMap>
 
+	<resultMap id="BoardReplyNicknameResultSet" type="boardReply">
+		<result property="replyNo" column="FBR_NO_PK" />
+		<result property="userNo" column="USER_NO_FK" />
+		<result property="boardNo" column="BOARD_NO_FK" />
+		<result property="replyContent" column="FBR_CONTENT" />
+		<result property="createDate" column="CREATE_DATE"
+				jdbcType="TIME" javaType="String" />
+		<result property="status" column="STATUS" />
+		<result property="nickname" column="NICKNAME" />
+	</resultMap>
+
+
 	<insert id="insert" parameterType="user">
 		INSERT INTO USER_TB VALUES
 		(#{userId})
@@ -212,13 +224,10 @@
 		where u.user_no_pk = #{userNo}
 	</select>
 
-	<select id="selectReply" parameterType="int"
-		resultMap="replyNicknameResultSet">
-		select r.*, u.user_name
-		from reply_tb r
-		join user_tb u
-		on
-		r.`USER_NO_FK` = u.user_NO_pk
+	<select id="selectReply" parameterType="int" resultMap="BoardReplyNicknameResultSet">
+		select fbr.*, u.user_name
+		from Free_board_reply_tb fbr
+				 join user_tb u on fbr.user_no_fk = u.user_NO_pk
 		where u.user_no_pk = #{userNo}
 	</select>
 

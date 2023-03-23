@@ -1,6 +1,6 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
@@ -56,7 +56,7 @@ public interface UserService {
 
 	List<Review> getUserReviews(int userNo);
 
-	List<Reply> getUserComments(int userNo);
+	List<BoardReply> getUserComments(int userNo);
 	
 	void withdrawUser(int userNo);
 	

@@ -1,10 +1,9 @@
 package com.spring.bittlebittle.user.dao;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
-
 import com.spring.bittlebittle.user.vo.UserJwt;
 
 import java.util.List;
@@ -54,7 +53,7 @@ public interface UserDao  {
     User findByNickname(String nickname);
 
 	public List<Review> getUserReviews(int userNo);
-	public List<Reply> getUserComments(int userNo);
+	public List<BoardReply> getUserComments(int userNo);
 	
 	void updateStatusToWithdraw(int userNo);
 	

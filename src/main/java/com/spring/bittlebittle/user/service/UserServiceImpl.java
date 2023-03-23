@@ -1,6 +1,6 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
 import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.dao.UserDao;
@@ -215,7 +215,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<Reply> getUserComments(int userNo) {
+	public List<BoardReply> getUserComments(int userNo) {
 		return dao.getUserComments(userNo);
 	}
 

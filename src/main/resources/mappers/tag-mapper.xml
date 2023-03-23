@@ -159,7 +159,7 @@
     </select>
 
     <select id="selectTagTypeByUser" parameterType="userTagInfo" resultMap="tagTypeResultSet">
-        SELECT TAG_TYPE_NO_PK, TAG_TYPE_NAME
+        SELECT DISTINCT(TAG_TYPE_NO_PK), TAG_TYPE_NAME
         FROM user_tag_tb ut
         join tag_tb tt on ut.tag_no_fk = tt.tag_no_pk
         join tag_type_tb  ttt on tt.tag_type_no_fk = ttt.tag_type_no_pk
