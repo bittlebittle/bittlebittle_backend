@@ -1,7 +1,8 @@
 package com.spring.bittlebittle.user.dao;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import org.apache.ibatis.session.SqlSession;
@@ -21,8 +22,8 @@ public class UserDaoImpl implements UserDao {
     private SqlSession sqlSession;
 
     @Override
-    public List<User> selectUsers() {
-        return sqlSession.selectList("userMapper.selectList");
+    public List<User> selectUsers(int userNo) {
+        return sqlSession.selectList("userMapper.selectList", userNo);
     }
 
     @Override
@@ -80,8 +81,15 @@ public class UserDaoImpl implements UserDao {
 	public int deleteUserJwt(UserJwt userJwt) {
 		return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
 	}
+	@Override
+	public List<UserTagInfo> getUserTags(UserTagInfo userTagInfo) {
+		return sqlSession.selectList("tagMapper.selectTagByUser", userTagInfo);
+	}
 
-
+	@Override
+	public List<UserTagInfo> getUserTagTypes(UserTagInfo userTagInfo) {
+		return sqlSession.selectList("tagMapper.selectTagTypeByUser", userTagInfo);
+	}
 	@Override
 	public int addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
@@ -100,16 +108,8 @@ public class UserDaoImpl implements UserDao {
 //	}
 
 	@Override
-	public int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		int deletedCount = 0;
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("userNo", userNo);
-		for (int tagNo : tagNoList) {
-			paramMap.put("tagNo", tagNo);
-			int count = sqlSession.delete("tagMapper.deleteUserTag", paramMap);
-			deletedCount += count;
-		}
-		return deletedCount;
+	public int deleteUserTags(int userNo) throws Exception {
+		return sqlSession.delete("tagMapper.deleteUserTags", userNo);
 	}
 
 
@@ -127,7 +127,7 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.selectList("userMapper.selectReview",userNo);
 	}
 
-	public List<Reply> getUserComments(int userNo) {
+	public List<BoardReply> getUserComments(int userNo) {
 		return sqlSession.selectList("userMapper.selectReply", userNo);
 	}
 
@@ -135,6 +135,32 @@ public class UserDaoImpl implements UserDao {
 	public void updateStatusToWithdraw(int userNo) {
 		sqlSession.update("userMapper.updateWithdraw", userNo);
 		
+	}
+
+//	@Override
+//	public List<User> findAllUsers(int userNo) {
+//		return sqlSession.selectList("userMapper.findAllUsers", userNo);
+//	}
+
+	@Override
+	public List<User> searchUsers(String searchCriteria, String searchKeyword) {
+		Map<String, Object> params = new HashMap<>();
+        params.put("searchCriteria", searchCriteria);
+        params.put("searchKeyword", searchKeyword);
+
+        return sqlSession.selectList("userMapper.searchUsers", params);
+	}
+
+	@Override // 회원관리창에서 회원정보 선택삭제를 하는 부분
+	public int updateStatusToN(List<Long> userNos) {
+		
+		return sqlSession.update("userMapper.updateStatusToN", userNos);
+		
+	}
+
+	@Override
+	public int updateUsermodal(User user) {
+		return sqlSession.update("userMapper.updateUsermodal", user);
 	}
 
 

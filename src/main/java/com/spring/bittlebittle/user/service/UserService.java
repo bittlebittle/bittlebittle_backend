@@ -1,17 +1,19 @@
 package com.spring.bittlebittle.user.service;
 
-import com.spring.bittlebittle.reply.vo.Reply;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface UserService {
 
     // selectList
-    List<User> getUsers();
+    List<User> getUsers(int userNo);
 
     // selectOne
     User getUser(User user);
@@ -38,6 +40,8 @@ public interface UserService {
 
     int removeUserJwt(UserJwt userJwt);
 
+    Map<String, Object> getUserTags(UserTagInfo userTagInfo);
+
 	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
 //    void editUserTags(int userNo, List<Integer> tagNoList) throws Exception;
@@ -52,9 +56,18 @@ public interface UserService {
 
 	List<Review> getUserReviews(int userNo);
 
-	List<Reply> getUserComments(int userNo);
+	List<BoardReply> getUserComments(int userNo);
 	
 	void withdrawUser(int userNo);
+	
+//	public List<User> findAllUsers(int userNo);
+	
+	public List<User> searchUsers(String searchCriteria, String searchKeyword);
+	
+	public int updateStatusToN(List<Long> userNos);
+	
+	public int updateUsermodal(User user);
+	
 	
 	
 

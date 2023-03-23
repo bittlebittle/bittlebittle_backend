@@ -2,8 +2,10 @@ package com.spring.bittlebittle.user.controller;
 
 
 import com.google.gson.Gson;
+import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -19,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,9 +61,12 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getUsers() {
-        log.debug("user 전체 조회");
-        return service.getUsers();
+    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) Integer userNo) {
+        List<User> users = service.getUsers(userNo);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 	// 정보삭제(탈퇴)
@@ -88,13 +94,37 @@ public class UserController {
 	
 //////////////////////
 //아래는 tag 관련
-	
+	@GetMapping("/{userNo}/tags")
+    public ResponseEntity<Object> getUserTags(@PathVariable int userNo,
+                                              HttpServletRequest request) {
+        log.debug(userNo);
+        Map<String, Object> map = null;
+        String token = jwtUtil.resolveAccessToken(request);
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                .build())){
+            map = service.getUserTags(UserTagInfo.builder().userNo(userNo).build());
+            map.put("request", true);
+            return ResponseEntity.ok().body(map);
+        } else {
+            map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
+    }
+
 	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addUserTags(@PathVariable int userNo,
                                             @RequestBody Map<String, Object> requestMap,
                                             HttpServletRequest request) throws Exception {
         log.debug(userNo);
-        List<Integer> tagNoList = (List<Integer>) requestMap.get("tagNoList");
+        List<Object> inputList = (List<Object>) requestMap.get("tagNoList");
+        List<Integer> tagNoList = new ArrayList<>();
+        for (Object obj : inputList) {
+            // Double 값을 Integer로 변환하고 리스트에 추가
+            tagNoList.add(((Double) obj).intValue());
+        }
+        log.debug(tagNoList.toString());
         Map<String, Object> map = new HashMap<>();
         String token = jwtUtil.resolveAccessToken(request);
         if(jwtUtil.validateToken(token, UserJwt.builder()
@@ -275,9 +305,9 @@ public class UserController {
     }
 
     @GetMapping("/{userNo}/comments")
-    public ResponseEntity<List<Reply>> getUserComments(@PathVariable("userNo") int userNo) {
+    public ResponseEntity<Object> getUserComments(@PathVariable("userNo") int userNo) {
         log.debug("댓글 조회 실행");
-        List<Reply> comments = service.getUserComments(userNo);
+        List<BoardReply> comments = service.getUserComments(userNo);
         log.debug(comments);
         return ResponseEntity.ok(comments);
     }
@@ -288,6 +318,38 @@ public class UserController {
     	service.withdrawUser(userNo);
       return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+//    @GetMapping
+//    public ResponseEntity<List<User>> findAllUsers(int userNo) {
+//        List<User> users = service.findAllUsers(userNo);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(
+            @RequestParam("searchCriteria") String searchCriteria,
+            @RequestParam("searchKeyword") String searchKeyword) {
+        List<User> users = service.searchUsers(searchCriteria, searchKeyword);
+        return ResponseEntity.ok(users);
+    }
+    
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateStatusToN(@RequestBody Map<String, List<Long>> payload) {
+        List<Long> userNos = payload.get("userNos");
+        int result = service.updateStatusToN(userNos);
+        return ResponseEntity.ok(result);
+    }
+    
+    @PostMapping(value = "/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@PathVariable Long userNo, @RequestBody User user) {
+        int result = service.updateUsermodal(user);
+        if (result > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     
     
     

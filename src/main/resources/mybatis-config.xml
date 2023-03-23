@@ -27,6 +27,7 @@
         <typeAlias type="com.spring.bittlebittle.reply.vo.ReplyNickname" alias="replyNickname" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.Tag" alias="tag" />
         <typeAlias type="com.spring.bittlebittle.tag.vo.TagType" alias="tagType" />
+        <typeAlias type="com.spring.bittlebittle.tag.vo.UserTagInfo" alias="userTagInfo" />
 
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
         <typeAlias type="com.spring.bittlebittle.review.vo.ReviewNickname" alias="reviewNickname" />

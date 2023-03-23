@@ -76,7 +76,6 @@
 <!--             <if test="imgCusUrl != null and imgCusUrl != ''">-->
 <!--                 IMG_CUS_URL = #{imgCusUrl}-->
 <!--             </if>-->
-          set
          WHERE REVIEW_NO_PK=#{reviewNo}
 	</update>
 	
