@@ -13,5 +13,5 @@ public interface AdminNoticeService {
 
 	void updateNotice(Notice notice);
 
-	void deleteNotice(int noticeNo, int userNo);
+	void deleteNotice(int noticeNo);
 }

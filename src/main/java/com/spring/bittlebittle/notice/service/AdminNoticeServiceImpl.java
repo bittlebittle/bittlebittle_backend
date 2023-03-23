@@ -32,11 +32,11 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
 
 	@Override
 	public void updateNotice(Notice notice) {
-		int noticeNo = notice.getNoticeNo();
-		int userNo = notice.getUserNo();
+		adminNoticeDaoImpl.updateNotice(notice);
 	}
 
 	@Override
-	public void deleteNotice(int noticeNo, int userNo) {
+	public void deleteNotice(int noticeNo) {
+		adminNoticeDaoImpl.deleteNotice(noticeNo);
 	}
 }

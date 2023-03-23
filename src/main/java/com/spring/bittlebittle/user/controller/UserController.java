@@ -60,9 +60,12 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getUsers() {
-        log.debug("user 전체 조회");
-        return service.getUsers();
+    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) Integer userNo) {
+        List<User> users = service.getUsers(userNo);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 	// 정보삭제(탈퇴)
@@ -314,6 +317,38 @@ public class UserController {
     	service.withdrawUser(userNo);
       return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+//    @GetMapping
+//    public ResponseEntity<List<User>> findAllUsers(int userNo) {
+//        List<User> users = service.findAllUsers(userNo);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUsers(
+            @RequestParam("searchCriteria") String searchCriteria,
+            @RequestParam("searchKeyword") String searchKeyword) {
+        List<User> users = service.searchUsers(searchCriteria, searchKeyword);
+        return ResponseEntity.ok(users);
+    }
+    
+    @PostMapping(value = "/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateStatusToN(@RequestBody Map<String, List<Long>> payload) {
+        List<Long> userNos = payload.get("userNos");
+        int result = service.updateStatusToN(userNos);
+        return ResponseEntity.ok(result);
+    }
+    
+    @PostMapping(value = "/{userNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUser(@PathVariable Long userNo, @RequestBody User user) {
+        int result = service.updateUsermodal(user);
+        if (result > 0) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     
     
     

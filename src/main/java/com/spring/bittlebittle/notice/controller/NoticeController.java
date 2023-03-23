@@ -37,6 +37,7 @@ public class NoticeController {
 	@GetMapping(value = "/{noticeNo}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Notice> noticeDetail(@PathVariable int noticeNo) {
 		Notice notice = noticeService.getNotice(noticeNo);
+		log.debug(notice);
 		if (notice != null) {
 			return new ResponseEntity<>(notice, HttpStatus.OK);
 		} else {

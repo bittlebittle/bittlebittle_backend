@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
     private String key;
 
     @Override
-    public List<User> getUsers() {
-        return dao.selectUsers();
+    public List<User> getUsers(int userNo) {
+        return dao.selectUsers(userNo);
     }
 
     @Override
@@ -223,6 +223,26 @@ public class UserServiceImpl implements UserService {
 	public void withdrawUser(int userNo) {
 		dao.updateStatusToWithdraw(userNo);
 		
+	}
+
+//	@Override
+//	public List<User> findAllUsers(int userNo) {
+//		return dao.findAllUsers(userNo);
+//	}
+
+	@Override
+	public List<User> searchUsers(String searchCriteria, String searchKeyword) {
+		return dao.searchUsers(searchCriteria, searchKeyword);
+	}
+
+	@Override
+	public int updateStatusToN(List<Long> userNos) {
+		return dao.updateStatusToN(userNos);
+	}
+
+	@Override
+	public int updateUsermodal(User user) {
+		return dao.updateUsermodal(user);
 	}
 
 //	@Override

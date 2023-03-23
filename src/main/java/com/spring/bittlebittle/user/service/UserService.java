@@ -13,7 +13,7 @@ import java.util.Map;
 public interface UserService {
 
     // selectList
-    List<User> getUsers();
+    List<User> getUsers(int userNo);
 
     // selectOne
     User getUser(User user);
@@ -59,6 +59,15 @@ public interface UserService {
 	List<Reply> getUserComments(int userNo);
 	
 	void withdrawUser(int userNo);
+	
+//	public List<User> findAllUsers(int userNo);
+	
+	public List<User> searchUsers(String searchCriteria, String searchKeyword);
+	
+	public int updateStatusToN(List<Long> userNos);
+	
+	public int updateUsermodal(User user);
+	
 	
 	
 

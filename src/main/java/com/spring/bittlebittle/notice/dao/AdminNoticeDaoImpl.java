@@ -26,6 +26,6 @@ public class AdminNoticeDaoImpl implements AdminNoticeDao{
         sqlSession.update("NoticeMapper.adminUpdateNotice", notice);
     }
     public void deleteNotice(int noticeNo) {
-        sqlSession.delete("AdminMapper.adminDeleteBoard", noticeNo);
+        sqlSession.delete("NoticeMapper.adminDeleteNotice", noticeNo);
     }
 }

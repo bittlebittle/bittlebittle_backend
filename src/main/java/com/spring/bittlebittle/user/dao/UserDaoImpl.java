@@ -22,8 +22,8 @@ public class UserDaoImpl implements UserDao {
     private SqlSession sqlSession;
 
     @Override
-    public List<User> selectUsers() {
-        return sqlSession.selectList("userMapper.selectList");
+    public List<User> selectUsers(int userNo) {
+        return sqlSession.selectList("userMapper.selectList", userNo);
     }
 
     @Override
@@ -135,6 +135,32 @@ public class UserDaoImpl implements UserDao {
 	public void updateStatusToWithdraw(int userNo) {
 		sqlSession.update("userMapper.updateWithdraw", userNo);
 		
+	}
+
+//	@Override
+//	public List<User> findAllUsers(int userNo) {
+//		return sqlSession.selectList("userMapper.findAllUsers", userNo);
+//	}
+
+	@Override
+	public List<User> searchUsers(String searchCriteria, String searchKeyword) {
+		Map<String, Object> params = new HashMap<>();
+        params.put("searchCriteria", searchCriteria);
+        params.put("searchKeyword", searchKeyword);
+
+        return sqlSession.selectList("userMapper.searchUsers", params);
+	}
+
+	@Override // 회원관리창에서 회원정보 선택삭제를 하는 부분
+	public int updateStatusToN(List<Long> userNos) {
+		
+		return sqlSession.update("userMapper.updateStatusToN", userNos);
+		
+	}
+
+	@Override
+	public int updateUsermodal(User user) {
+		return sqlSession.update("userMapper.updateUsermodal", user);
 	}
 
 
