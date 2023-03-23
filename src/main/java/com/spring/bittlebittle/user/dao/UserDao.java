@@ -2,6 +2,7 @@ package com.spring.bittlebittle.user.dao;
 
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
 
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -34,11 +35,15 @@ public interface UserDao  {
 
 	User selectLoginUser(User user);
 
+    List<UserTagInfo> getUserTags(UserTagInfo userTagInfo);
+
+    List<UserTagInfo> getUserTagTypes(UserTagInfo userTagInfo);
+
 	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
 //    int updateUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
-	int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+	int deleteUserTags(int userNo) throws Exception;
 
 //    void deleteUserTags(int userNo) throws Exception;
 

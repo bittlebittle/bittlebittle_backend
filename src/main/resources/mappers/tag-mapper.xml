@@ -19,6 +19,15 @@
       <result property="tagTypeName" column="TAG_TYPE_NAME"/>
    </resultMap>
 
+    <resultMap id="userTagInfoResultSet" type="userTagInfo">
+        <result property="tagNo" column="tag_no_pk" />
+        <result property="tagName" column="TAG_NAME" />
+        <result property="tagTypeNo" column="TAG_TYPE_NO_PK" />
+        <result property="tagTypeName" column="TAG_TYPE_NAME"/>
+        <result property="userNo" column="user_no_pk" />
+        <result property="userName" column="user_name" />
+    </resultMap>
+
    <select id="selectAllTagType" resultMap="tagTypeResultSet">
        <![CDATA[   
          SELECT *
@@ -140,7 +149,21 @@
     <delete id="deleteUserTags" parameterType="map">
         DELETE FROM user_tag_tb
         WHERE user_no_fk = #{userNo}
-            and tag_no_fk = #{tag_no_fk}
    </delete>
+
+    <select id="selectTagByUser" parameterType="userTagInfo" resultMap="tagResultSet">
+        select tt.tag_type_no_fk, tt.tag_no_pk, tt.tag_name
+        from user_tag_tb ut
+        join tag_tb tt on ut.tag_no_fk = tt.tag_no_pk
+        where ut.user_no_fk = ${userNo};
+    </select>
+
+    <select id="selectTagTypeByUser" parameterType="userTagInfo" resultMap="tagTypeResultSet">
+        SELECT TAG_TYPE_NO_PK, TAG_TYPE_NAME
+        FROM user_tag_tb ut
+        join tag_tb tt on ut.tag_no_fk = tt.tag_no_pk
+        join tag_type_tb  ttt on tt.tag_type_no_fk = ttt.tag_type_no_pk
+        where ut.user_no_fk = ${userNo};
+    </select>
 
 </mapper>

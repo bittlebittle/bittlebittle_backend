@@ -141,7 +141,9 @@
         FROM bottle_tb b
                  JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
                  JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
-        WHERE ut.USER_NO_FK = #{userNo}
+        <where>
+            <if test="userNo != 0">ut.USER_NO_FK = #{userNo}</if>
+        </where>
         order by b.create_date desc, b.bottle_no_pk desc;
     </select>
 
