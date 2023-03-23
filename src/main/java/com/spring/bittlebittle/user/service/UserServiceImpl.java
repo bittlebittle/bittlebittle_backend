@@ -2,7 +2,8 @@ package com.spring.bittlebittle.user.service;
 
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
-import com.spring.bittlebittle.user.dao.UserDaoImpl;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
+import com.spring.bittlebittle.user.dao.UserDao;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
@@ -14,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -22,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     private Logger log = LogManager.getLogger("case3");
     @Autowired
-    private UserDaoImpl dao;
+    private UserDao dao;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -148,11 +151,27 @@ public class UserServiceImpl implements UserService {
 //		return dao.selectUser(user);
 //	}
 //
+    @Override
+    public Map<String, Object> getUserTags(UserTagInfo userTagInfo) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("tagList", dao.getUserTags(userTagInfo));
+        map.put("tagTypeList", dao.getUserTagTypes(userTagInfo));
+        return map;
+    }
 
 	@Override
     @Transactional
 	public int addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		return dao.addUserTags(userNo, tagNoList);
+        log.debug("정상적으로 들어오니");
+        List<UserTagInfo> list = dao.getUserTags(UserTagInfo.builder().userNo(userNo).build());
+        log.debug(list.toString());
+		if(!list.isEmpty()) {
+            int re1 = dao.deleteUserTags(userNo);
+            log.debug(re1);
+        }
+        int result = dao.addUserTags(userNo, tagNoList);
+        log.debug("결과 반환");
+        return result;
     }
 
 //    @Override
@@ -163,7 +182,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
 	public int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		return dao.deleteUserTags(userNo, tagNoList);
+		return dao.deleteUserTags(userNo);
     }
 
 	//아이디 중복확인, 이메일인증

@@ -93,15 +93,9 @@
 		</where>
 	</select>
 
-	<select id="selectList" resultType="user"
-		resultMap="userResultSet">
+	<select id="selectList" resultType="user" resultMap="userResultSet">
 		select *
 		from USER_TB
-		<where>
-			<if test="userNo != null">
-				user_no_pk = #{userNo}
-			</if>
-		</where>
 	</select>
 
 	<select id="selectListbyId" parameterType="user"
@@ -242,9 +236,9 @@
 		FROM user_tb
 	</select>
 
-	<select id="searchUsers" parameterType="map" resultType="user">
+	<select id="searchUsers" parameterType="map" resultMap="userResultSet">
 		SELECT *
-		FROM user
+		FROM user_tb
 		WHERE
 		<choose>
 			<when test="searchCriteria == 'user_name'">

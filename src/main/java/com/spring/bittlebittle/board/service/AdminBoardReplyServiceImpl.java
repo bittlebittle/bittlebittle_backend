@@ -3,8 +3,6 @@ package com.spring.bittlebittle.board.service;
 import com.spring.bittlebittle.board.dao.BoardReplyDaoImpl;
 import com.spring.bittlebittle.board.vo.BoardReply;
 import com.spring.bittlebittle.user.dao.UserDao;
-import com.spring.bittlebittle.user.vo.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +23,16 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
     }
 
     @Override
-    public void addReply(BoardReply boardReply, int userNo, String nickname) {
-        User user = userDao.selectUsers().get(0);
-        boardReply.setUserNo(user.getUserNo());
-        dao.addReply(boardReply);
-       
+    public void addReply(BoardReply reply, int userNo, String nickname) {
     }
+
+//    @Override
+//    public void addReply(BoardReply boardReply, int userNo, String nickname) {
+//        User user = userDao.selectUsers().get(0);
+//        boardReply.setUserNo(user.getUserNo());
+//        dao.addReply(boardReply);
+//
+//    }
 
 //    @Override
 //    public void updateReply(BoardReply reply) {
@@ -41,7 +43,12 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
     public void deleteReply(int replyNo) {
     	dao.deleteReply(replyNo);
     }
-    
+
+    @Override
+    public boolean isAdmin(String adminYn) {
+        return false;
+    }
+
 //  @Override
 //  public boolean isAdmin(String adminYn) {
 //      // Ư�� ����� �ۼ������� Ȯ���ϴ� ����
@@ -54,11 +61,11 @@ public class AdminBoardReplyServiceImpl implements AdminBoardReplyService{
 //      }
 //  }
   
-  @Override
-  public boolean isAdmin(String adminYn) {
-      User user = userDao.selectUsers().get(0);
-      return user.getAdminYn().equals("y");
-  } 
+//  @Override
+//  public boolean isAdmin(String adminYn) {
+//      User user = userDao.selectUsers().get(0);
+//      return user.getAdminYn().equals("y");
+//  }
     
     
 //    @Override

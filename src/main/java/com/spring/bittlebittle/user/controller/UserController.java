@@ -4,6 +4,7 @@ package com.spring.bittlebittle.user.controller;
 import com.google.gson.Gson;
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.service.UserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
@@ -19,9 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,13 +93,37 @@ public class UserController {
 	
 //////////////////////
 //아래는 tag 관련
-	
+	@GetMapping("/{userNo}/tags")
+    public ResponseEntity<Object> getUserTags(@PathVariable int userNo,
+                                              HttpServletRequest request) {
+        log.debug(userNo);
+        Map<String, Object> map = null;
+        String token = jwtUtil.resolveAccessToken(request);
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                .build())){
+            map = service.getUserTags(UserTagInfo.builder().userNo(userNo).build());
+            map.put("request", true);
+            return ResponseEntity.ok().body(map);
+        } else {
+            map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
+    }
+
 	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addUserTags(@PathVariable int userNo,
                                             @RequestBody Map<String, Object> requestMap,
                                             HttpServletRequest request) throws Exception {
         log.debug(userNo);
-        List<Integer> tagNoList = (List<Integer>) requestMap.get("tagNoList");
+        List<Object> inputList = (List<Object>) requestMap.get("tagNoList");
+        List<Integer> tagNoList = new ArrayList<>();
+        for (Object obj : inputList) {
+            // Double 값을 Integer로 변환하고 리스트에 추가
+            tagNoList.add(((Double) obj).intValue());
+        }
+        log.debug(tagNoList.toString());
         Map<String, Object> map = new HashMap<>();
         String token = jwtUtil.resolveAccessToken(request);
         if(jwtUtil.validateToken(token, UserJwt.builder()

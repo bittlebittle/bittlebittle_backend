@@ -2,10 +2,12 @@ package com.spring.bittlebittle.user.service;
 
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface UserService {
@@ -37,6 +39,8 @@ public interface UserService {
     UserJwt getUserJwtBySubject(UserJwt build);
 
     int removeUserJwt(UserJwt userJwt);
+
+    Map<String, Object> getUserTags(UserTagInfo userTagInfo);
 
 	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 

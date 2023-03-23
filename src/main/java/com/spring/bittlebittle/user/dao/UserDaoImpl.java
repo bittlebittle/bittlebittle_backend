@@ -2,6 +2,7 @@ package com.spring.bittlebittle.user.dao;
 
 import com.spring.bittlebittle.reply.vo.Reply;
 import com.spring.bittlebittle.review.vo.Review;
+import com.spring.bittlebittle.tag.vo.UserTagInfo;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import org.apache.ibatis.session.SqlSession;
@@ -80,8 +81,15 @@ public class UserDaoImpl implements UserDao {
 	public int deleteUserJwt(UserJwt userJwt) {
 		return sqlSession.delete("userMapper.deleteUserJwtWithUserJwtIdx", userJwt);
 	}
+	@Override
+	public List<UserTagInfo> getUserTags(UserTagInfo userTagInfo) {
+		return sqlSession.selectList("tagMapper.selectTagByUser", userTagInfo);
+	}
 
-
+	@Override
+	public List<UserTagInfo> getUserTagTypes(UserTagInfo userTagInfo) {
+		return sqlSession.selectList("tagMapper.selectTagTypeByUser", userTagInfo);
+	}
 	@Override
 	public int addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
@@ -100,16 +108,8 @@ public class UserDaoImpl implements UserDao {
 //	}
 
 	@Override
-	public int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		int deletedCount = 0;
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("userNo", userNo);
-		for (int tagNo : tagNoList) {
-			paramMap.put("tagNo", tagNo);
-			int count = sqlSession.delete("tagMapper.deleteUserTag", paramMap);
-			deletedCount += count;
-		}
-		return deletedCount;
+	public int deleteUserTags(int userNo) throws Exception {
+		return sqlSession.delete("tagMapper.deleteUserTags", userNo);
 	}
 
 
