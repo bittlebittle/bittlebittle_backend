@@ -52,8 +52,9 @@ public class AdminNoticeController {
 
 	@PostMapping(value = "/{noticeNo}/set-data", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Notice> updateNotice(@PathVariable int noticeNo, @RequestBody Notice notice) {
-		notice.setNoticeNo(noticeNo);
+		
 		log.debug(notice);
+	
 		adminNoticeServiceImpl.updateNotice(notice);
 		return new ResponseEntity<>(notice, HttpStatus.OK);
 	}
