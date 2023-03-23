@@ -77,7 +77,7 @@
               ,IMG_CUS_URL
             </if>
                )
-         VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv},
+         VALUES(#{bottleName}, #{bottleContent}, #{bottleBrand}, #{bottleAbv}
            <if test="imgUrl != null and imgUrl != ''">
            , #{imgUrl}
                 </if>
