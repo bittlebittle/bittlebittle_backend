@@ -7,17 +7,13 @@ import com.spring.bittlebittle.favorite.vo.Favorite;
 import com.spring.bittlebittle.food.service.FoodService;
 import com.spring.bittlebittle.review.service.ReviewService;
 import com.spring.bittlebittle.tag.service.TagService;
-import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -91,24 +87,10 @@ public class BottleController {
 
 	// 확인 완료
 	@GetMapping
-	public ResponseEntity<Object> getMainBottles(@RequestParam int userNo, HttpServletRequest request) {
-
-		String token = jwtUtil.resolveAccessToken(request);
-		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
-		log.debug(token);
-		log.debug(refreshTokenIdx);
-		if (jwtUtil.validateToken(token, UserJwt.builder()
-				.userJwtIdx(refreshTokenIdx)
-				.build())) {
+	public ResponseEntity<Object> getMainBottles(@RequestParam(defaultValue = "0") int userNo) {
 
 			Map<String, Object> map = bservice.getMainBottles(userNo);
-			log.debug(map);
 			return ResponseEntity.ok().body(map);
-		}else {
-			Map<String, Object> map = new HashMap<>();
-			map.put("token", false);
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
-		}
 	}
 
 	// 개별조회 (확인완료)

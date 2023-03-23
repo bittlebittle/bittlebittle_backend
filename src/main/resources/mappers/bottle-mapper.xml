@@ -136,26 +136,57 @@
 
 
     <!-- NEW 리스트  -->
-    <select id="selectNewBottles" resultMap="bottleResultSet">
+    <select id="selectNewBottles" parameterType="int" resultMap="bottleResultSet">
         SELECT b.create_date, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL, bt.tag_no_fk, ut.user_no_fk
         FROM bottle_tb b
-                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
-                 JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
-        WHERE ut.USER_NO_FK = #{userNo}
+             JOIN BOTTLE_TAG_TB bt
+                 ON b.bottle_no_pk = bt.bottle_no_fk
+             left JOIN user_tag_tb ut
+                 ON ut.tag_no_fk = bt.tag_no_fk
+        where ut.USER_NO_FK = #{userNo}
         order by b.create_date desc, b.bottle_no_pk desc;
     </select>
 
+    <!-- 비로그인 시 신규등록 순 -->
+    <select id="selectGuestNewBottles" parameterType="int" resultMap="bottleResultSet">
+    SELECT b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand,
+    b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL,
+    GROUP_CONCAT(bt.tag_no_fk ORDER BY bt.tag_no_fk SEPARATOR ', ') AS tag_no,
+    IFNULL(COUNT(r.REVIEW_NO_PK),0) as reviewCount,
+    IFNULL(ROUND(AVG(r.grade), 0), 0) as grade
+    FROM bottle_tb b
+    JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+    JOIN tag_tb t ON t.tag_no_pk = bt.tag_no_fk
+    LEFT JOIN review_tb r ON b.BOTTLE_NO_PK = r.BOTTLE_NO_FK
+    GROUP BY b.bottle_no_pk
+    order by b.create_date desc;
+    </select>
+
     <!-- BEST 리스트  -->
-    <select id="selectBestBottles" resultMap="bottleResultSet">
-        SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.bottle_content, b.bottle_brand, b.bottle_abv, b.IMG_URL, b.IMG_CUS_URL, bt.tag_no_fk, ut.user_no_fk
+    <select id="selectBestBottles" parameterType="int" resultMap="bottleResultSet">
+        SELECT round(ifNull(avg(r.grade), 0), 2) as grade, b.bottle_no_pk, b.bottle_name, b.IMG_URL, b.IMG_CUS_URL, bt.tag_no_fk
         FROM bottle_tb b
-                 JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
-                 JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
-                 left outer join review_tb r on b.bottle_no_pk = r.bottle_no_fk
-        WHERE ut.USER_NO_FK = #{userNo}
+        JOIN BOTTLE_TAG_TB bt
+            ON b.bottle_no_pk = bt.bottle_no_fk
+        JOIN user_tag_tb ut
+            ON ut.tag_no_fk = bt.tag_no_fk
+        left outer join review_tb r on b.bottle_no_pk = r.bottle_no_fk
+        where ut.USER_NO_FK = #{userNo}
         group by b.bottle_no_pk, bt.tag_no_fk
         order by grade desc, b.create_date desc;
     </select>
+
+    <!-- 비로그인 시 평점 순 -->
+    <select id="selectGuestBestBottles" parameterType="int" resultMap="bottleResultSet">
+    SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.IMG_URL, b.IMG_CUS_URL
+    FROM bottle_tb b
+    LEFT JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
+    LEFT JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
+    LEFT OUTER JOIN review_tb r ON b.bottle_no_pk = r.bottle_no_fk
+    GROUP BY b.bottle_no_pk
+    ORDER BY grade DESC, b.bottle_no_pk DESC, b.create_date DESC;
+    </select>
+
 
     <!-- 찜하기기반 리스트  -->
     <select id="selectRelatedFavorite" parameterType="Integer" resultMap="bottleResultSet">
@@ -169,12 +200,12 @@
                    FROM favorite_tb f
                             JOIN bottle_tag_tb bt
                                  ON f.BOTTLE_NO_FK=bt.BOTTLE_NO_FK
-                   WHERE f.USER_NO_FK= #{userNo}
+                   WHERE f.USER_NO_FK=#{userNo}
                    GROUP BY bt.TAG_NO_FK
                    ORDER BY count(bt.TAG_NO_FK) DESC
                        LIMIT 3) as t)
         GROUP BY b.BOTTLE_NO_PK
-        ORDER BY count(b.BOTTLE_NAME) DESC
+        ORDER BY count(b.BOTTLE_NAME) DESC;
     </select>
 
 

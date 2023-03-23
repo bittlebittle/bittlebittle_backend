@@ -1,16 +1,15 @@
 package com.spring.bittlebittle.bottle.dao;
 
 
-import java.util.List;
-
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleAll;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Repository
@@ -35,20 +34,28 @@ public class BottleDaoImpl implements BottleDao {
 
 	@Override
 	public List<Bottle> selectNewList(int userNo) {
-
-		return sqlSession.selectList("bottleMapper.selectNewBottles", userNo);
+		if( userNo != 0) {
+			return sqlSession.selectList("bottleMapper.selectNewBottles", userNo);
+		} else {
+			return sqlSession.selectList("bottleMapper.selectGuestNewBottles", userNo);
+		}
 	}
 
 	@Override
 	public List<Bottle> selectBestList(int userNo) {
 
-		return sqlSession.selectList("bottleMapper.selectBestBottles", userNo);
+		if( userNo != 0) {
+			return sqlSession.selectList("bottleMapper.selectBestBottles", userNo);
+		} else {
+			return sqlSession.selectList("bottleMapper.selectGuestBestBottles", userNo);
+		}
+
+
 	}
 
 	@Override
 	public List<Bottle> selectRelatedFavoriteList(int userNo) {
-
-		return sqlSession.selectList("bottleMapper.selectRelatedFavorite", userNo);
+			return sqlSession.selectList("bottleMapper.selectRelatedFavorite", userNo);
 	}
 
 	@Override

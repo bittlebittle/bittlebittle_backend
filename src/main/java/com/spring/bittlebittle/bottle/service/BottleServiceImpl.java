@@ -73,21 +73,28 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public Map<String, Object> getMainBottles(int userNo) {
 
-		Favorite favorite = new Favorite();
-		favorite.setUserNo(userNo);
-
-		List<Favorite> favoriteList = fvdao.selectList(favorite);
-		log.debug(favoriteList);
-
-		List<Bottle> bottleNewList = bdao.selectNewList(userNo);
-		List<Bottle> bottleBestList = bdao.selectBestList(userNo);
-		List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList(userNo);
-
 		Map<String, Object> map = new HashMap<>();
-		map.put("newBottle", bottleNewList);
-		map.put("bestBottle", bottleBestList);
-		map.put("relatedFavorite", bottleRelatedeFavoriteList);
-		map.put("favorite", favoriteList);
+		if(userNo !=0 ){
+			Favorite favorite = new Favorite();
+			favorite.setUserNo(userNo);
+			List<Favorite> favoriteList = fvdao.selectList(favorite);
+			List<Bottle> bottleNewList = bdao.selectNewList(userNo);
+			List<Bottle> bottleBestList = bdao.selectBestList(userNo);
+			List<Bottle> bottleRelatedeFavoriteList = bdao.selectRelatedFavoriteList(userNo);
+
+
+			map.put("newBottle", bottleNewList);
+			map.put("bestBottle", bottleBestList);
+			map.put("relatedFavorite", bottleRelatedeFavoriteList);
+			map.put("favorite", favoriteList);
+
+		} else {
+			List<Bottle> bottleNewList = bdao.selectNewList(userNo);
+			List<Bottle> bottleBestList = bdao.selectBestList(userNo);
+
+			map.put("newBottle", bottleNewList);
+			map.put("bestBottle", bottleBestList);
+		}
 
 		return map;
 	}
