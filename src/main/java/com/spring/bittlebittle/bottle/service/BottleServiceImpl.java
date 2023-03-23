@@ -1,18 +1,6 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
 import com.spring.bittlebittle.bottle.dao.BottleDao;
 import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleInfo;
@@ -27,6 +15,17 @@ import com.spring.bittlebittle.review.vo.ReviewNickname;
 import com.spring.bittlebittle.tag.dao.TagDao;
 import com.spring.bittlebittle.tag.vo.BottleTag;
 import com.spring.bittlebittle.tag.vo.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -71,9 +70,8 @@ public class BottleServiceImpl implements BottleService {
     }
 	// 메인 리스트
 	@Override
-	public Map<String, Object> getMainBottles( ) {
+	public Map<String, Object> getMainBottles(int userNo) {
 
-		int userNo = 2;
 		Favorite favorite = new Favorite();
 		favorite.setUserNo(userNo);
 

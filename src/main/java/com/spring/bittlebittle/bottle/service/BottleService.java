@@ -29,7 +29,7 @@ public interface BottleService {
 
 
 	// 로그인하면 나오는 메인 리스트
-	Map<String, Object> getMainBottles();
+	Map<String, Object> getMainBottles(int userNo);
 
 
 }
