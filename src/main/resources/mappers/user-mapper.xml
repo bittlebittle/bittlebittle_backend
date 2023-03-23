@@ -52,7 +52,7 @@
 		(#{userId})
 	</insert>
 
-	<insert id="registerUser" parameterType="User">
+	<insert id="registerUser" parameterType="user">
 		INSERT INTO user_tb
 		(user_id, user_pwd, user_name, nickname,email, phone)
 		VALUES
@@ -60,7 +60,7 @@
 		#{nickname}, #{email}, #{phone})
 	</insert>
 
-	<insert id="adminRegister" parameterType="User">
+	<insert id="adminRegister" parameterType="user">
 		INSERT INTO user_table
 		(user_no_pk, user_id, user_pwd, user_name, nickname, email,
 		phone,
@@ -104,14 +104,14 @@
 		</where>
 	</select>
 
-	<select id="selectListbyId" parameterType="User"
+	<select id="selectListbyId" parameterType="user"
 		resultMap="userResultSet">
 		select *
 		from USER_TB
 		where user_id = #{userId};
 	</select>
 
-	<select id="selectListbyNo" parameterType="User"
+	<select id="selectListbyNo" parameterType="user"
 		resultMap="userResultSet">
 		select *
 		from USER_TB
@@ -172,7 +172,7 @@
 		WHERE USER_JWT_IDX_PK = #{userJwtIdx}
 	</delete>
 
-	<update id="updateUser" parameterType="User">
+	<update id="updateUser" parameterType="user">
 		UPDATE user_tb
 		SET user_id
 		= #{userId},
@@ -186,7 +186,7 @@
 		user_id = #{userId}
 	</update>
 
-	<update id="deleteUser" parameterType="User">
+	<update id="deleteUser" parameterType="user">
 		UPDATE user_tb
 		SET status =
 		"n"
@@ -194,7 +194,7 @@
 	</update>
 
 
-	<select id="findByUserId" parameterType="User"
+	<select id="findByUserId" parameterType="user"
 		resultMap="userResultSet">
 		SELECT *
 		FROM user_tb
@@ -229,20 +229,20 @@
 	</select>
 
 	<!-- 회원 탈퇴 SQL 쿼리 -->
-	<update id="updateStatusToWithdraw" parameterType="User">
+	<update id="updateStatusToWithdraw" parameterType="user">
 		UPDATE users
 		SET status = 'N'
 		WHERE user_no = #{userNo}
 	</update>
 
-	<select id="findAllUsers" resultMap="UserResultMap">
+	<select id="findAllUsers" resultMap="userResultSet">
 		SELECT user_no_pk, user_id,
 		user_name, nickname, email, phone, status,
 		admin_yn
 		FROM user_tb
 	</select>
 
-	<select id="searchUsers" parameterType="map" resultType="User">
+	<select id="searchUsers" parameterType="map" resultType="user">
 		SELECT *
 		FROM user
 		WHERE
@@ -284,7 +284,7 @@
 		결과적으로, 이 SQL 쿼리는 주어진 userNos 목록에 포함된 userNo 값을 가진 모든 레코드의 status 컬럼 값을 'N'으로 
 		업데이트합니다. -->
 
-	<update id="updateUsermodal" parameterType="User">
+	<update id="updateUsermodal" parameterType="user">
 		UPDATE user_tb
 		SET user_name = #{userName},
 		user_id = #{userId},
