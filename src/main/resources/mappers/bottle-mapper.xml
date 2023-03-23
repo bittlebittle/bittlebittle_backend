@@ -16,6 +16,7 @@
       <result property="imgUrl" column="IMG_URL" />
       <result property="imgCusUrl" column="IMG_CUS_URL" />
       <result property="status" column="STATUS" />
+       <result property="grade" column="grade" />
    </resultMap>
    
       <resultMap id="bottleAllResultSet" type="bottleAll">
@@ -178,7 +179,7 @@
 
     <!-- 비로그인 시 평점 순 -->
     <select id="selectGuestBestBottles" parameterType="int" resultMap="bottleResultSet">
-    SELECT avg(r.grade) as grade, b.bottle_no_pk, b.bottle_name, b.IMG_URL, b.IMG_CUS_URL
+    SELECT round(ifNull(avg(r.grade), 0), 2) as grade, b.bottle_no_pk, b.bottle_name, b.IMG_URL, b.IMG_CUS_URL
     FROM bottle_tb b
     LEFT JOIN BOTTLE_TAG_TB bt ON b.bottle_no_pk = bt.bottle_no_fk
     LEFT JOIN user_tag_tb ut ON ut.tag_no_fk = bt.tag_no_fk
@@ -190,7 +191,7 @@
 
     <!-- 찜하기기반 리스트  -->
     <select id="selectRelatedFavorite" parameterType="Integer" resultMap="bottleResultSet">
-        SELECT b.BOTTLE_NO_PK, b.BOTTLE_NAME, b.BOTTLE_CONTENT, b.BOTTLE_BRAND, b.BOTTLE_ABV, b.IMG_URL
+        SELECT b.BOTTLE_NO_PK, b.BOTTLE_NAME, b.BOTTLE_CONTENT, b.BOTTLE_BRAND, b.BOTTLE_ABV, b.IMG_URL, b.IMG_CUS_URL
         FROM bottle_tb b
                  JOIN bottle_tag_tb bt
                       ON b.BOTTLE_NO_PK=bt.BOTTLE_NO_FK
