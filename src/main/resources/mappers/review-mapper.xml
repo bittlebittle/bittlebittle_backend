@@ -65,21 +65,18 @@
 	
 	<update id="updateOne" parameterType="review">
          UPDATE review_tb
-         <set>
-             GRADE = #{grade},
-             <if test="reviewTitle != null and reviewTitle != ''">
-                 REVIEW_TITLE = #{reviewTitle},
-             </if>
-             <if test="reviewContent != null and reviewContent != ''">
-                 REVIEW_CONTENT = #{reviewContent},
-             </if>
-             <if test="imgUrl != null and imgUrl != ''">
-                 IMG_URL = #{imgUrl},
-             </if>
-             <if test="imgCusUrl != null and imgCusUrl != ''">
-                 IMG_CUS_URL = #{imgCusUrl}
-             </if>
-          </set>
+         set GRADE = #{grade},
+             REVIEW_TITLE = #{reviewTitle},
+             REVIEW_CONTENT = #{reviewContent},
+             IMG_URL = #{imgUrl},
+             IMG_CUS_URL = #{imgCusUrl}
+<!--             <if test="imgUrl != null and imgUrl != ''">-->
+<!--                 IMG_URL = #{imgUrl},-->
+<!--             </if>-->
+<!--             <if test="imgCusUrl != null and imgCusUrl != ''">-->
+<!--                 IMG_CUS_URL = #{imgCusUrl}-->
+<!--             </if>-->
+          set
          WHERE REVIEW_NO_PK=#{reviewNo}
 	</update>
 	

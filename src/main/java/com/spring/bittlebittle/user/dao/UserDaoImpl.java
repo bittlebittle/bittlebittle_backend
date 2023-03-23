@@ -37,7 +37,6 @@ public class UserDaoImpl implements UserDao {
 
 
 	public User selectLoginUser(User user) {
-		log.debug(user.toString());
 		return sqlSession.selectOne("userMapper.selectLoginUser", user);
 	}
 
@@ -64,7 +63,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public UserJwt selectUserJwtBySubject(UserJwt userJwt) {
-log.debug(userJwt.toString());
         return sqlSession.selectOne("userMapper.selectUserJwtBySubject", userJwt);
     }
 
@@ -85,19 +83,33 @@ log.debug(userJwt.toString());
 
 
 	@Override
-	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+	public int addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("userNo", userNo);
 		paramMap.put("tagNoList", tagNoList);
-		sqlSession.insert("tagMapper.addUserTags", paramMap);
-
+		log.debug(tagNoList.toString());
+		return sqlSession.insert("tagMapper.insertUserTags", paramMap);
 	}
+
+//	@Override
+//	public int updateUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+//		Map<String, Object> paramMap = new HashMap<>();
+//		paramMap.put("userNo", userNo);
+//		paramMap.put("tagNoList", tagNoList);
+//		return sqlSession.update("tagMapper.updateUserTags", paramMap);
+//	}
+
 	@Override
-	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+	public int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		int deletedCount = 0;
 		Map<String, Object> paramMap = new HashMap<>();
-	    paramMap.put("userNo", userNo);
-	    paramMap.put("tagNoList", tagNoList);
-	    sqlSession.delete("tagMapper.deleteUserTags", paramMap);
+		paramMap.put("userNo", userNo);
+		for (int tagNo : tagNoList) {
+			paramMap.put("tagNo", tagNo);
+			int count = sqlSession.delete("tagMapper.deleteUserTag", paramMap);
+			deletedCount += count;
+		}
+		return deletedCount;
 	}
 
 
@@ -106,12 +118,17 @@ log.debug(userJwt.toString());
 		return sqlSession.selectOne("userMapper.findByUserId", userId);
 	}
 
+	@Override
+	public User findByNickname(String nickname) {
+		return sqlSession.selectOne("userMapper.findByNickname", nickname);
+	}
+
 	public List<Review> getUserReviews(int userNo) {
 		return sqlSession.selectList("userMapper.selectReview",userNo);
 	}
 
 	public List<Reply> getUserComments(int userNo) {
-		return sqlSession.selectList("userMapper.selectReply",userNo);
+		return sqlSession.selectList("userMapper.selectReply", userNo);
 	}
 
 	@Override

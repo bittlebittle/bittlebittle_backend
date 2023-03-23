@@ -9,6 +9,6 @@ public interface BoardService {
     Board getBoard(int boardNo);
     int addBoard(Board board);
     void updateBoard(Board board);
-    void deleteBoard(int boardNo, int userNo);
+    void deleteBoard(int boardNo);
 
 }

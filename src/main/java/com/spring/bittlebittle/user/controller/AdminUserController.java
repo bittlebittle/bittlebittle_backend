@@ -1,32 +1,24 @@
 package com.spring.bittlebittle.user.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.google.gson.Gson;
 import com.spring.bittlebittle.user.service.AdminUserService;
 import com.spring.bittlebittle.user.vo.User;
 import com.spring.bittlebittle.user.vo.UserJwt;
 import com.spring.bittlebittle.utils.JwtUtil;
 import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController// @Controller + @ResponseBody
 @RequestMapping(value = "api/admin", produces = "application/json; charset=utf-8")
@@ -108,9 +100,8 @@ public class AdminUserController {
     }
     
     //정보조회
-    
     @GetMapping(value = "/{userNo}")
-    public User getUser(@PathVariable int userNo, HttpServletRequest request){
+    public ResponseEntity<Object> getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("�쑀�� 議고쉶");
 
         // access token �쓽 �쑀�슚�꽦 寃��궗
@@ -122,10 +113,11 @@ public class AdminUserController {
                 )){
             // �쑀�� �젙蹂� 議고쉶
             User user = adminService.selectListbyNo(User.builder().userNo(userNo).build());
-            return user;
-        }
-        else {
-            return null;
+            return ResponseEntity.ok().body(user);
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
         }
     }
     

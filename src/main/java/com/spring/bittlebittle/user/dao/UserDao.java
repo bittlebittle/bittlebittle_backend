@@ -34,16 +34,20 @@ public interface UserDao  {
 
 	User selectLoginUser(User user);
 
-	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
-	
-	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+//    int updateUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
 //    void deleteUserTags(int userNo) throws Exception;
 
 //    String getTagName(int tagNo) throws Exception;
 
 	User findByUserId(String userId);
-	
+
+    User findByNickname(String nickname);
+
 	public List<Review> getUserReviews(int userNo);
 	public List<Reply> getUserComments(int userNo);
 	

@@ -16,19 +16,18 @@
 
    <select id="selectRelated" parameterType="Integer" resultMap="foodResultSet">
        <![CDATA[   
-        SELECT f.food_no_pk
+        SELECT f.food_name, f.img_url, f.img_cus_url
 		FROM food_tag_tb ft
 		INNER JOIN food_tb f
-		ON f.food_no_pk=ft.food_no_fk
-		WHERE tag_no_fk in (
-		SELECT tag_no_fk
-		FROM food_tb f
-		INNER JOIN food_tag_tb ft
-		ON f.food_no_pk=ft.food_no_fk
-		WHERE f.food_no_pk=#{bottleNo})
-		AND ft.food_no_fk != #{bottleNo}
-		GROUP BY food_no_fk
-		ORDER BY count(tag_no_fk) DESC
+		ON f.food_no_pk = ft.FOOD_NO_FK
+		WHERE ft.TAG_NO_FK IN
+		(SELECT bt.TAG_NO_FK
+		FROM bottle_tb b
+		INNER JOIN bottle_tag_tb bt
+		ON b.BOTTLE_NO_PK=bt.BOTTLE_NO_FK
+		WHERE b.bottle_no_pk=#{bottleNo})
+		GROUP by f.FOOD_NO_PK
+		ORDER BY count(ft.TAG_NO_FK) DESC
       ]]>
    </select>
 

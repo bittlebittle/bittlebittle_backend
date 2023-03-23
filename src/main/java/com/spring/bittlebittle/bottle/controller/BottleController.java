@@ -1,7 +1,6 @@
 package com.spring.bittlebittle.bottle.controller;
 
 import com.spring.bittlebittle.bottle.service.BottleService;
-import com.spring.bittlebittle.bottle.vo.Bottle;
 import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import com.spring.bittlebittle.favorite.service.FavoriteService;
 import com.spring.bittlebittle.favorite.vo.Favorite;
@@ -13,9 +12,12 @@ import com.spring.bittlebittle.utils.JwtUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +91,7 @@ public class BottleController {
 
 	// 확인 완료
 	@GetMapping
-	public Map<String, Object> getMainBottles(@RequestParam int userNo, HttpServletRequest request) {
+	public ResponseEntity<Object> getMainBottles(@RequestParam int userNo, HttpServletRequest request) {
 
 		String token = jwtUtil.resolveAccessToken(request);
 		String refreshTokenIdx = jwtUtil.resolveRefreshToken(request);
@@ -100,12 +102,13 @@ public class BottleController {
 				.build())) {
 
 			Map<String, Object> map = bservice.getMainBottles(userNo);
-
 			log.debug(map);
-		} else {
-
+			return ResponseEntity.ok().body(map);
+		}else {
+			Map<String, Object> map = new HashMap<>();
+			map.put("token", false);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
 		}
-		return map;
 	}
 
 	// 개별조회 (확인완료)
@@ -113,10 +116,6 @@ public class BottleController {
 	public Map<String, Object> getBottle(@PathVariable int bottleNo) {
 
 		Map<String, Object> map = bservice.getBottle(bottleNo);
-
-
-		log.debug(((Bottle)map.get("bottle")).toString());
-
 		return map;
 	} 
 	

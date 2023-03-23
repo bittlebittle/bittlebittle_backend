@@ -1,11 +1,13 @@
 package com.spring.bittlebittle.bottle.service;
 
 
-import com.spring.bittlebittle.bottle.vo.Bottle;
-import com.spring.bittlebittle.bottle.vo.BottleInfo;
-import com.spring.bittlebittle.bottle.vo.BottleSearch;
 import java.util.List;
 import java.util.Map;
+
+import com.spring.bittlebittle.bottle.vo.Bottle;
+import com.spring.bittlebittle.bottle.vo.BottleAll;
+import com.spring.bittlebittle.bottle.vo.BottleInfo;
+import com.spring.bittlebittle.bottle.vo.BottleSearch;
 
 public interface BottleService {
 
@@ -23,9 +25,9 @@ public interface BottleService {
 
 	Map<String, Object> editBottle(BottleInfo editBottle);
 
-	List<Bottle> removeBottle(int bottleNo);
+	List<BottleAll> removeBottle(int bottleNo);
 
-	List<Bottle> addBottle(BottleInfo bottle);
+	List<BottleAll> addBottle(BottleInfo bottle);
 
 
 	// 로그인하면 나오는 메인 리스트

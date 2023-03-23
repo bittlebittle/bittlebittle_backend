@@ -1,13 +1,12 @@
 package com.spring.bittlebittle.notice.service;
 
-import java.util.List;
-
+import com.spring.bittlebittle.notice.dao.AdminNoticeDaoImpl;
+import com.spring.bittlebittle.notice.vo.Notice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.bittlebittle.notice.dao.AdminNoticeDaoImpl;
-import com.spring.bittlebittle.notice.vo.Notice;
+import java.util.List;
 
 @Service
 @Transactional
@@ -39,6 +38,5 @@ public class AdminNoticeServiceImpl implements AdminNoticeService {
 
 	@Override
 	public void deleteNotice(int noticeNo, int userNo) {
-		adminNoticeDaoImpl.deleteNotice(noticeNo);
 	}
 }

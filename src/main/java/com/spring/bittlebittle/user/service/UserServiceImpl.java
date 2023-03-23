@@ -70,9 +70,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public int registerUser(User user) {
+    @Transactional
+    public User registerUser(User user) {
         user.setUserPwd(passwordEncoder.encode(user.getUserPwd()));
-        return dao.insertUser(user);
+        dao.insertUser(user);
+        return dao.selectLoginUser(user);
     }
 
     @Override
@@ -148,17 +150,21 @@ public class UserServiceImpl implements UserService {
 //
 
 	@Override
-	public void addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		
-		dao.addUserTags(userNo, tagNoList);
+    @Transactional
+	public int addUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		return dao.addUserTags(userNo, tagNoList);
+    }
 
-	}
+//    @Override
+//    public void editUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+//        dao.updateUserTags(userNo, tagNoList);
+//    }
 
-	@Override
-	public void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
-		dao.deleteUserTags(userNo, tagNoList);
-
-	}
+    @Override
+    @Transactional
+	public int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception {
+		return dao.deleteUserTags(userNo, tagNoList);
+    }
 
 	//아이디 중복확인, 이메일인증
 	@Override
@@ -167,6 +173,17 @@ public class UserServiceImpl implements UserService {
         // 있으면 유저가 나올거고, 앖으면 null.
         return user != null;
 	}
+
+    @Override
+    public boolean isNicknameuplicate(String nickname) {
+        User user = dao.findByNickname(nickname);
+        // 있으면 유저가 나올거고, 앖으면 null.
+        if(user != null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     @Override
     public boolean sendEmailAuth(String email) {

@@ -17,6 +17,7 @@
         <typeAlias type="com.spring.bittlebittle.bottle.vo.Bottle" alias="bottle" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleInfo" alias="bottleInfo" />
         <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleSearch" alias="bottleSearch" />
+        <typeAlias type="com.spring.bittlebittle.bottle.vo.BottleAll" alias="bottleAll" />
 
         <typeAlias type="com.spring.bittlebittle.review.vo.Review" alias="review" />
         <typeAlias type="com.spring.bittlebittle.food.vo.Food" alias="food" />
@@ -34,6 +35,7 @@
         <typeAlias type="com.spring.bittlebittle.board.vo.Board" alias="board" />
         <typeAlias type="com.spring.bittlebittle.board.vo.BoardReply" alias="boardReply" />
 
+        <typeAlias type="com.spring.bittlebittle.notice.vo.Notice" alias="notice" />
     </typeAliases>
 
     <!-- environment, mapper 설정 등이 모두 빠지게 된다. -->
