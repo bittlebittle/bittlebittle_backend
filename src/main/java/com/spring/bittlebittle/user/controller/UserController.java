@@ -16,6 +16,9 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +50,12 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getUsers() {
-        log.debug("user 전체 조회");
-        return service.getUsers();
+    public ResponseEntity<List<User>> getUsers(@RequestParam(required = false) Integer userNo) {
+        List<User> users = service.getUsers(userNo);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 	// 정보삭제(탈퇴)
@@ -214,11 +220,11 @@ public class UserController {
       return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @GetMapping
-    public ResponseEntity<List<User>> findAllUsers(int userNo) {
-        List<User> users = service.findAllUsers(userNo);
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<User>> findAllUsers(int userNo) {
+//        List<User> users = service.findAllUsers(userNo);
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
     
     @GetMapping("/search")
     public ResponseEntity<List<User>> searchUsers(

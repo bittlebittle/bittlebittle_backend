@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
     private String key;
 
     @Override
-    public List<User> getUsers() {
-        return dao.selectUsers();
+    public List<User> getUsers(int userNo) {
+        return dao.selectUsers(userNo);
     }
 
     @Override
@@ -189,10 +189,10 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-	@Override
-	public List<User> findAllUsers(int userNo) {
-		return dao.findAllUsers(userNo);
-	}
+//	@Override
+//	public List<User> findAllUsers(int userNo) {
+//		return dao.findAllUsers(userNo);
+//	}
 
 	@Override
 	public List<User> searchUsers(String searchCriteria, String searchKeyword) {

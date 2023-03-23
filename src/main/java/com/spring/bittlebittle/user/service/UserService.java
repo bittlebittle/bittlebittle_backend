@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
 
     // selectList
-    List<User> getUsers();
+    List<User> getUsers(int userNo);
 
     // selectOne
     User getUser(User user);
@@ -52,7 +52,7 @@ public interface UserService {
 	
 	void withdrawUser(int userNo);
 	
-	public List<User> findAllUsers(int userNo);
+//	public List<User> findAllUsers(int userNo);
 	
 	public List<User> searchUsers(String searchCriteria, String searchKeyword);
 	

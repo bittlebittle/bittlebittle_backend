@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserDao  {
 
-    List<User> selectUsers();
+    List<User> selectUsers(int userNo);
 
     List<User> selectUsersByKeyword(User user);
 
@@ -49,7 +49,7 @@ public interface UserDao  {
 	
 	void updateStatusToWithdraw(int userNo);
 	
-	List<User> findAllUsers(int userNo);
+//	List<User> findAllUsers(int userNo);
 	
 	List<User> searchUsers(String searchCriteria, String searchKeyword);
 	

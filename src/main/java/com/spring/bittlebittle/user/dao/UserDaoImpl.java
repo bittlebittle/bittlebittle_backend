@@ -21,8 +21,8 @@ public class UserDaoImpl implements UserDao {
     private SqlSession sqlSession;
 
     @Override
-    public List<User> selectUsers() {
-        return sqlSession.selectList("userMapper.selectList");
+    public List<User> selectUsers(int userNo) {
+        return sqlSession.selectList("userMapper.selectList", userNo);
     }
 
     @Override
@@ -120,10 +120,10 @@ log.debug(userJwt.toString());
 		
 	}
 
-	@Override
-	public List<User> findAllUsers(int userNo) {
-		return sqlSession.selectList("userMapper.findAllUsers", userNo);
-	}
+//	@Override
+//	public List<User> findAllUsers(int userNo) {
+//		return sqlSession.selectList("userMapper.findAllUsers", userNo);
+//	}
 
 	@Override
 	public List<User> searchUsers(String searchCriteria, String searchKeyword) {
