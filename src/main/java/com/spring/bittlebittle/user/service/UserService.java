@@ -18,7 +18,7 @@ public interface UserService {
 
     User loginUser(User user);
     // insert
-    int registerUser(User user);
+    User registerUser(User user);
 
     // update
     User editUser(User user);
@@ -38,9 +38,11 @@ public interface UserService {
 
     int removeUserJwt(UserJwt userJwt);
 
-	void addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+	int addUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
-	void deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+//    void editUserTags(int userNo, List<Integer> tagNoList) throws Exception;
+
+	int deleteUserTags(int userNo, List<Integer> tagNoList) throws Exception;
 
 	boolean isUsernameDuplicate(String userId);
 

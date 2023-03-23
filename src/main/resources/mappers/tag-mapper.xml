@@ -34,21 +34,17 @@
    </select>
 
 	<select id="selectTagByBottle" parameterType="Integer" resultMap="tagResultSet">
-       <![CDATA[   
          SELECT TAG_NO_PK,TAG_TYPE_NO_FK,TAG_NAME
          FROM bottle_tag_tb bt
          INNER JOIN tag_tb t
          ON bt.TAG_NO_FK=t.tag_no_pk
          WHERE bottle_no_fk = #{bottleNo}
-      ]]>
    </select>
    
    <delete id="deleteBottleTag" parameterType="Integer">
-       <![CDATA[   
          DELETE
          FROM bottle_tag_tb
          WHERE bottle_no_fk=#{bottleNo}
-      ]]>
    </delete>
    
    
@@ -131,4 +127,20 @@
          WHERE food_no_fk=#{foodNo}
       ]]>
    </delete>
+
+    <!-- user-tag 관게 테이블 -->
+    <insert id="insertUserTags" parameterType="map">
+        INSERT INTO user_tag_tb (tag_no_fk, user_no_fk)
+        VALUES
+        <foreach collection="tagNoList" item="tagNo" separator=",">
+            (#{tagNo}, #{userNo})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserTags" parameterType="map">
+        DELETE FROM user_tag_tb
+        WHERE user_no_fk = #{userNo}
+            and tag_no_fk = #{tag_no_fk}
+   </delete>
+
 </mapper>

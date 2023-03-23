@@ -49,7 +49,7 @@ public class BoardController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Board> addBoard(@RequestBody Board board, HttpServletRequest request) {
+    public ResponseEntity<Object> addBoard(@RequestBody Board board, HttpServletRequest request) {
 
         String token = jwtUtil.resolveAccessToken(request);
         // access token 과 refreshtokenIdx 를 가지고 조건 검사. 리턴 타입은 boolean
@@ -61,7 +61,9 @@ public class BoardController {
             boardService.addBoard(board);
             return new ResponseEntity<>(board, HttpStatus.CREATED);
         } else {
-            return ResponseEntity.ok().body(null);
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
         }
     }
 
@@ -74,11 +76,8 @@ public class BoardController {
         if(jwtUtil.validateToken(token, UserJwt.builder()
                 .userJwtIdx(jwtUtil.resolveRefreshToken(request))
                 .build())) {
-
             boardService.updateBoard(board);
             return new ResponseEntity<>(board, HttpStatus.OK);
-
-
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("token", false);

@@ -12,7 +12,10 @@ import com.spring.bittlebittle.utils.OAuth.service.OAuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,13 +40,21 @@ public class UserController {
     @PostMapping
     public ResponseEntity registerUser(@RequestBody User user) {
         log.debug(user.toString());
-        Map<String, Boolean> map = new HashMap<>();
-        if ( service.registerUser(user) == 1 ) {
+        Map<String, Object> map = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        User registerUser = service.registerUser(user);
+        log.debug(registerUser.toString());
+        if (  registerUser != null ) {
+            String accessToken = jwtUtil.createAccessJwt(user.getUserId());
+            String userJwtIdx = jwtUtil.createRefreshJwt(user.getUserId());
+            jwtUtil.setHeaderAccessToken(headers, accessToken);
+            jwtUtil.setHeaderRefreshToken(headers, userJwtIdx);
             map.put("request", true);
+            map.put("userNo", registerUser.getUserNo());
         } else {
             map.put("request", false);
         }
-        return ResponseEntity.ok().body(gson.toJson(map));
+        return ResponseEntity.ok().headers(headers).body(gson.toJson(map));
     }
 
     @GetMapping()
@@ -79,15 +90,60 @@ public class UserController {
 //아래는 tag 관련
 	
 	@PostMapping(value = "/{userNo}/tags", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> addUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-        service.addUserTags(userNo, tagNoList);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> addUserTags(@PathVariable int userNo,
+                                            @RequestBody Map<String, Object> requestMap,
+                                            HttpServletRequest request) throws Exception {
+        log.debug(userNo);
+        List<Integer> tagNoList = (List<Integer>) requestMap.get("tagNoList");
+        Map<String, Object> map = new HashMap<>();
+        String token = jwtUtil.resolveAccessToken(request);
+        if(jwtUtil.validateToken(token, UserJwt.builder()
+                .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+                .build())){
+            service.addUserTags(userNo, tagNoList);
+            map.put("request", true);
+            return ResponseEntity.ok().body(map);
+        } else {
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
     }
 
+//    @PostMapping(value = "/{userNo}/tags/set-data", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Object> editUserTags(@PathVariable int userNo,
+//                                              @RequestBody List<Integer> tagNoList,
+//                                              HttpServletRequest request) throws Exception {
+//
+//        Map<String, Object> map = new HashMap<>();
+//        String token = jwtUtil.resolveAccessToken(request);
+//        if(jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(jwtUtil.resolveRefreshToken(request)).build())){
+//            service.editUserTags(userNo, tagNoList);
+//            map.put("request", true);
+//            return ResponseEntity.ok().body(map);
+//        } else {
+//            map.put("token", false);
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+//        }
+//    }
+
     @PostMapping(value = "{userNo}/tags/deletion", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> deleteUserTags(@PathVariable int userNo, @RequestBody List<Integer> tagNoList) throws Exception {
-        service.deleteUserTags(userNo, tagNoList);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> deleteUserTags(@PathVariable int userNo,
+                                               @RequestBody List<Integer> tagNoList,
+                                               HttpServletRequest request) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        log.debug(userNo);
+        tagNoList.stream().forEach(tagNo -> log.debug(tagNo));
+        String token = jwtUtil.resolveAccessToken(request);
+        if(jwtUtil.validateToken(token, UserJwt.builder().userJwtIdx(jwtUtil.resolveRefreshToken(request)).build())){
+
+            service.deleteUserTags(userNo, tagNoList);
+            map.put("request", true);
+            return ResponseEntity.ok().body(map);
+        } else {
+            map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+        }
     }
 
     //이메일인증, 아이디 중복확인
@@ -128,7 +184,7 @@ public class UserController {
 
     
     @GetMapping(value = "/{userNo}")
-    public User getUser(@PathVariable int userNo, HttpServletRequest request){
+    public ResponseEntity<Object> getUser(@PathVariable int userNo, HttpServletRequest request){
         log.debug("유저 조회");
         // access token 디코딩
         String token = jwtUtil.resolveAccessToken(request);
@@ -139,14 +195,24 @@ public class UserController {
             // 토큰이 유효하다면 유저 정보 조회
             User user = service.getUser(User.builder().userNo(userNo).build());
             log.debug(user.toString());
-            return user;
-        }
-        else {
-            // 토큰이 유효하지 않다면
-            return null;
+            return ResponseEntity.ok().body(user);
+        } else {
+            Map<String, Object> map = new HashMap<>();
+            map.put("token", false);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
         }
     }
 
+    /*
+    if(jwtUtil.validateToken(token, UserJwt.builder()
+            .userJwtIdx(jwtUtil.resolveRefreshToken(request))
+            .build())){
+    } else {
+        Map<String, Object> map = new HashMap<>();
+        map.put("token", false);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
+    }
+    */
     @PostMapping(value = "/login")
     public ResponseEntity<Object> loginUserToken(@RequestBody User user) {
 
