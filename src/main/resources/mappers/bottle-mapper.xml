@@ -190,7 +190,7 @@
 
     <!-- 찜하기기반 리스트  -->
     <select id="selectRelatedFavorite" parameterType="Integer" resultMap="bottleResultSet">
-        SELECT b.BOTTLE_NO_PK, b.BOTTLE_NAME, b.BOTTLE_CONTENT, b.BOTTLE_BRAND, b.BOTTLE_ABV, b.IMG_URL
+        SELECT b.BOTTLE_NO_PK, b.BOTTLE_NAME, b.BOTTLE_CONTENT, b.BOTTLE_BRAND, b.BOTTLE_ABV, b.IMG_URL, b.IMG_CUS_URL
         FROM bottle_tb b
                  JOIN bottle_tag_tb bt
                       ON b.BOTTLE_NO_PK=bt.BOTTLE_NO_FK
