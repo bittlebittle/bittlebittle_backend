@@ -18,6 +18,8 @@ public class Bottle {
 	private String bottleBrand;
 	private double bottleAbv;
 	private int viewCnt;
+
+	private double grade;
 	private String createDate;
 	private String imgUrl;
 	private String imgCusUrl;
